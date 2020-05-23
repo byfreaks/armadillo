@@ -16,8 +16,7 @@ public class Game
     public Game(){
         playerObj = new GameObject("Player");
         playerObj.transform.position = new Vector3(0, 0, -10);
-        //playerObj.GetComponent<PlayerControllerScript>();
-
+        
         vehicleObj = new GameObject("TestSolid");
         vehicleObj.transform.position = new Vector3(0, 10, -10);
         vehicleObj.AddComponent<SpriteRenderer>().sprite = testSolidSprite;
