@@ -47,5 +47,11 @@ public class PlayerController : MonoBehaviour
         //Movement
         rb.velocity = new Vector2( Input.GetAxis("Horizontal") * moveSpeed ,rb.velocity.y);
 
+        //Jump
+        if(Input.GetKeyDown(KeyCode.Space)){
+            //TODO: create input class
+            rb.AddForce( new Vector2(0, jumpForce) );
+        }
+
     }
 }
