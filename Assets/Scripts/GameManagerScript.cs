@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+public class GameManagerScript : MonoBehaviour
 {
+    public Game gameInstance;
+    
     void Start()
     {
-        
+        gameInstance = new Game();
     }
-
-    void Update()
-    {
-        
-    }
+    
 }
