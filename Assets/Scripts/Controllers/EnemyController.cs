@@ -31,9 +31,9 @@ public class EnemyController : MonoBehaviour
     private Vector2 targetPosition;
 
     //Attributes
-    public float distanceToAttack;
-    public float moveSpeed;
-    public int moveDirection;
+    private float distanceToAttack;
+    private float moveSpeed;
+    private int moveDirection;
     public Sprite sprite;
     
     // Start is called before the first frame update
@@ -46,7 +46,7 @@ public class EnemyController : MonoBehaviour
         targetPosition = target.GetComponent<Rigidbody2D>().position;
 
         //TEST: These attributes will be set differently
-        distanceToAttack = 3f;
+        distanceToAttack = 0.5f;
         moveSpeed = 1.5f;
         sr.sprite = this.sprite;
         rb.constraints = RigidbodyConstraints2D.FreezePositionY;
