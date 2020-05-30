@@ -33,6 +33,7 @@ public class EnemyController : MonoBehaviour
     //Attributes
     public float distanceToAttack;
     public float moveSpeed;
+    public int moveDirection;
     public Sprite sprite;
     
     // Start is called before the first frame update
@@ -42,7 +43,7 @@ public class EnemyController : MonoBehaviour
         sr = gameObject.AddComponent<SpriteRenderer>();
         rb = gameObject.AddComponent<Rigidbody2D>();
         bc = gameObject.AddComponent<BoxCollider2D>();
-        targetPosition = target.GetComponent<Transform>().position;
+        targetPosition = target.GetComponent<Rigidbody2D>().position;
 
         //TEST: These attributes will be set differently
         distanceToAttack = 3f;
@@ -56,6 +57,9 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Update ref to his target
+        targetPosition = target.GetComponent<Rigidbody2D>().position;
+        
         //Check where is the enemy
         currentContextState = getContextState();
 
@@ -76,7 +80,7 @@ public class EnemyController : MonoBehaviour
     {
         if(enemyContext == ContextState.SameCar){
             //Close to his target
-            if(Mathf.Abs(targetPosition.x - transform.position.x) < distanceToAttack) return BehaviourState.Attack;
+            if(Mathf.Abs(targetPosition.x - rb.position.x) < distanceToAttack) return BehaviourState.Attack;
             //Far from his target
             else return BehaviourState.FollowTarget;
         }
@@ -88,15 +92,16 @@ public class EnemyController : MonoBehaviour
     public void updateByState(BehaviourState enemyBehaviour, Vector2 targetPosition){
         if(enemyBehaviour == BehaviourState.FollowTarget)
         {
-            int moveDirectionX = (targetPosition.x - rb.position.x > 0) ? 1 : -1;           
-            rb.velocity = new Vector2(moveSpeed * moveDirectionX, rb.velocity.y);
+            moveDirection = (targetPosition.x - rb.position.x > 0) ? 1 : -1;           
+            rb.velocity = new Vector2(moveSpeed * moveDirection, rb.velocity.y);
             Debug.Log("Siguiendo el objetivo");
+            sr.color = new Color32(255,255,255,255);
         }
         else if(enemyBehaviour == BehaviourState.Attack)
         {
             rb.velocity = Vector2.zero;
-            sr.color = new Color32(230,83,83,90);
             Debug.Log("Atacando");
+            sr.color = new Color32(230,83,83,90);
         }
         else if(enemyBehaviour == BehaviourState.Idle)
             Debug.Log("Idle...");
