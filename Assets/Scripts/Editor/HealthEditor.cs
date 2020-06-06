@@ -32,7 +32,7 @@ public class HealthEditor : Editor
 
         if(GUILayout.Button("Kill entity"))
         {
-            health.HealthPoints = 0;
+            health.killEntity();
         }
 
         if(GUILayout.Button("Set max health Points"))

@@ -45,4 +45,8 @@ public class Health : MonoBehaviour
     public void decrementHealthPoints(int points){
         this.HealthPoints = this.HealthPoints - points;
     }
+
+    public void killEntity(){
+        this.HealthPoints = 0;
+    }
 }
