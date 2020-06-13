@@ -15,10 +15,17 @@ public class PlayerController : MonoBehaviour
     private float moveSpeed;
     [SerializeField]
     private float jumpForce;
-    [SerializeField]
+    
 
     //Sprite Settings
+    [SerializeField]
     private Sprite sprite;
+
+    //Attack Settings
+    //temporal
+    [SerializeField]
+    private GameObject attackMask;
+    private GameObject atk;
 
     void Start()
     {
@@ -51,6 +58,14 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space)){
             //TODO: create input class
             rb.AddForce( new Vector2(0, jumpForce) );
+        }
+
+        if(Input.GetKeyDown(KeyCode.E) && attackMask != null && atk == null){
+            atk = Instantiate(attackMask);
+            atk.transform.parent = this.transform;
+            //set postiion (temporal)
+            var mePos = this.transform.position;
+            atk.transform.position = new Vector2(mePos.x + 1, mePos.y);
         }
 
     }
