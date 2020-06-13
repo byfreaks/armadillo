@@ -28,7 +28,7 @@ public class CarController : MonoBehaviour
 
         //TEST: These attributes will be set differently
         rb.bodyType = RigidbodyType2D.Kinematic;
-        moveTo(1, 2.5f);
+        //moveTo(1, 2.5f);
         //
     }
 
