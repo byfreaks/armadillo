@@ -52,4 +52,12 @@ public class CarController : MonoBehaviour
         this.driver = driver;
     }
 
+    public void unlinkPassenger(){
+        this.passenger = null;
+    }
+
+    public void unlinkDriver(){
+        this.driver = null;
+    }
+
 }
