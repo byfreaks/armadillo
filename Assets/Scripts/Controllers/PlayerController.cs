@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviour
     private float moveSpeed;
     [SerializeField]
     private float jumpForce;
-    
 
     //Sprite Settings
     [SerializeField]
@@ -26,6 +25,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameObject attackMask;
     private GameObject atk;
+
+    [SerializeField] 
+    private GameObject testProjectile;
 
     void Start()
     {
@@ -66,6 +68,12 @@ public class PlayerController : MonoBehaviour
             //set postiion (temporal)
             var mePos = this.transform.position;
             atk.transform.position = new Vector2(mePos.x + 1, mePos.y);
+        }
+
+        if(Input.GetMouseButtonDown(1) && testProjectile != null){
+            var proj = Instantiate(testProjectile);
+            proj.transform.position = this.transform.position;
+            proj.GetComponent<ProjectileController>().Setup( Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position, 19.8f  );
         }
 
     }
