@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18a49a7ad53a6194f832c92d8bc9dcee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 3565173152638740738, guid: 96cac4f7b0960524d9c26ebb8d2bd226,
+  playerPrefab: {fileID: 3565173152638740738, guid: 44caf857d2f69e046b047eb430874518,
     type: 3}
-  vehiclePrefab: {fileID: 1380336377063555561, guid: adc541e8979ad7142931d019d1b955d6,
+  vehiclePrefab: {fileID: 1380336377063555561, guid: c7150001ae4f0bf43ba2d11fd2f71866,
     type: 3}
