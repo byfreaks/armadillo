@@ -40,9 +40,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3565173152638740738}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ed0fc53f9d320542b849081e384275a, type: 3}
+  m_Script: {fileID: 11500000, guid: 62ea0a83d91e8c94f872a7854de2506b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 12
   jumpForce: 420
   sprite: {fileID: 21300000, guid: 65a07c5611e728042a49f7796d2924a7, type: 3}
+  attackMask: {fileID: 570433053595842152, guid: b4ed8d5fb5055be4fbd844769ce18f5d,
+    type: 3}
