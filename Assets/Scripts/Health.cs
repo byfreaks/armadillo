@@ -9,21 +9,10 @@ public class Health : MonoBehaviour
     private bool alive;
 
     private void Awake() {
-        this.IsAlive = true;
-        this.HealthPoints = 100;
-        this.MaxHealthPoints = 100;
-        this.MinHealthPoints = 10;
-    }
-
-    public int HealthPoints{
-        get { return healthPoints; }
-        set { 
-            if(value > this.MaxHealthPoints){
-                healthPoints = this.MaxHealthPoints;
-            }else{
-                healthPoints = value; 
-            }
-        }
+        this.healthPoints = 100;
+        this.maxHealthPoints = 100;
+        this.minHealthPoints = 10;
+        this.alive = true;
     }
 
     //Propiedad que sirve para verificar si una entidad está viva tomando en cuenta los puntos de vida de la misma.
@@ -42,6 +31,19 @@ public class Health : MonoBehaviour
     public int MinHealthPoints{
         get { return minHealthPoints; }
         set { minHealthPoints = value; }
+    }
+
+    public int HealthPoints{
+        get { return healthPoints; }
+        set {
+            if(value >= this.MaxHealthPoints){
+                healthPoints = this.MaxHealthPoints;
+            }else if(value <= 0){
+                healthPoints = 0;
+            }else{
+                healthPoints = value; 
+            }
+        }
     }
 
     public void incrementHealthPoints(int points){
