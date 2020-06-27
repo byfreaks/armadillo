@@ -16,6 +16,7 @@ public class HUDController : MonoBehaviour
 
     private void Update() {
         this.setHealthBar();
+        this.resetHUDHealth();
     }
 
     // Valores de inicio para el HUD.
@@ -23,6 +24,12 @@ public class HUDController : MonoBehaviour
         HUDHealthBar.value = playerHealth.HealthPoints;
         HUDHealthBar.maxValue = playerHealth.MaxHealthPoints;
         HUDHealthBar.minValue = 0;
+    }
+
+    private void resetHUDHealth(){
+        if(HUDHealthBar.maxValue != playerHealth.MaxHealthPoints){
+            HUDHealthBar.maxValue = playerHealth.MaxHealthPoints;
+        }
     }
 
     // Actualización de la barra de vida en base a los HealthPoints.
