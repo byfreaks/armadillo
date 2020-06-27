@@ -2,22 +2,67 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputController : MonoBehaviour
+public static class InputController
 {
-    // Start is called before the first frame update
-
-    // Update is called once per frame
-    void Update()
-    {
-        this.LeftKey();
+    public static bool Left(ICActions inputType){
+        return keyAction(inputType, KeyCode.A);
     }
 
-    public bool LeftKey(){
-        if(Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)){
-           Debug.Log("Left Key");
-           return true; 
-        }else{
-            return false;
+    public static bool Right(ICActions inputType){
+        return keyAction(inputType, KeyCode.D);
+    }
+
+    public static bool Up(ICActions inputType){
+        return keyAction(inputType, KeyCode.W);
+    }
+
+    public static bool Down(ICActions inputType){
+        return keyAction(inputType, KeyCode.S);
+    }
+
+    public static bool Jump(ICActions inputType){
+        return keyAction(inputType, KeyCode.Space);
+    }
+
+    public static bool Build(ICActions inputType){
+        return keyAction(inputType, KeyCode.B);
+    }
+
+    public static bool Reload(ICActions inputType){
+        return keyAction(inputType, KeyCode.R);
+    }
+
+    public static bool Shot(ICActions inputType){
+        return mouseAction(inputType, 1);
+    }
+
+    // Acciones de keyboard
+    public static bool keyAction(ICActions inputType, KeyCode key){
+        switch (inputType)
+        {
+            case ICActions.key:
+                return !(Input.GetKey(key));
+            case ICActions.keyDown:
+                return !(Input.GetKeyDown(key));
+            case ICActions.keyUp:
+                return !(Input.GetKeyUp(key));
+            default:
+                return false;
+        }
+    }
+
+    // Acciones de mouse
+    public static bool mouseAction(ICActions inputType, int key){
+        switch (inputType)
+        {
+            case ICActions.key:
+                return !(Input.GetMouseButton(key));
+            case ICActions.keyDown:
+                return !(Input.GetMouseButtonDown(key));
+            case ICActions.keyUp:
+                return !(Input.GetMouseButtonUp(key));
+            default:
+                return false;
         }
     }
 }
