@@ -14,12 +14,18 @@ public class HUDController : MonoBehaviour
         this.initHealthBar();
     }
 
+    private void Update() {
+        this.setHealthBar();
+    }
+
+    // Valores de inicio para el HUD.
     private void initHealthBar(){
         HUDHealthBar.value = playerHealth.HealthPoints;
         HUDHealthBar.maxValue = playerHealth.MaxHealthPoints;
         HUDHealthBar.minValue = 0;
     }
 
+    // Actualización de la barra de vida en base a los HealthPoints.
     private void setHealthBar(){
         if(HUDHealthBar.value != playerHealth.HealthPoints){
             HUDHealthBar.value = playerHealth.HealthPoints;
@@ -27,10 +33,7 @@ public class HUDController : MonoBehaviour
         }
     }
 
-    private void Update() {
-        this.setHealthBar();
-    }
-
+    // Cambio de color en base a la cantidad de vida actual y la referencia de los puntos máximos actuales.
     private void setColorHealthBar(){
         Image HUDColor = HUDHealthBar.fillRect.GetComponent<Image>();
         int healthPoints = playerHealth.HealthPoints;
