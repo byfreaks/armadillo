@@ -34,13 +34,14 @@ public class HUDController : MonoBehaviour
     private void setColorHealthBar(){
         Image HUDColor = HUDHealthBar.fillRect.GetComponent<Image>();
         int healthPoints = playerHealth.HealthPoints;
+        int MaxHealthPoints = playerHealth.MaxHealthPoints;
 
-        if(healthPoints >= 65){
-            HUDColor.color = Color.cyan;
-        }else if(healthPoints < 65 && healthPoints >= 35){
+        if(healthPoints <= MaxHealthPoints/3){
+            HUDColor.color = Color.red;
+        }else if(healthPoints > MaxHealthPoints/3 && healthPoints < MaxHealthPoints/2){
             HUDColor.color = Color.yellow;
         }else{
-            HUDColor.color = Color.red;
+            HUDColor.color = Color.cyan;
         }
     }
 
