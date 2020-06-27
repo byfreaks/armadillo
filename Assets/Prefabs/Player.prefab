@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3565173152638740736}
-  - component: {fileID: 3565173152638740739}
+  - component: {fileID: 2048454768646577345}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3565173152638740739
+--- !u!114 &2048454768646577345
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,13 +40,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3565173152638740738}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62ea0a83d91e8c94f872a7854de2506b, type: 3}
+  m_Script: {fileID: 11500000, guid: ecf14f85179c54845b62891c1da44467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 15
+  moveSpeed: 12
   jumpForce: 420
-  sprite: {fileID: 21300000, guid: 65a07c5611e728042a49f7796d2924a7, type: 3}
-  attackMask: {fileID: 570433053595842152, guid: b4ed8d5fb5055be4fbd844769ce18f5d,
+  sprite: {fileID: 21300000, guid: d1134834f70f9454dbb6abfc36bbdb8d, type: 3}
+  attackMask: {fileID: 570433053595842152, guid: b81d52c77e4950f46aa43d8e231edc70,
     type: 3}
-  testProjectile: {fileID: 3972398175323087079, guid: 5203b26ced25d4a4fac32879594566aa,
+  testProjectile: {fileID: 3972398175323087079, guid: 2d374047b5171bd43ab159dccb846677,
     type: 3}
