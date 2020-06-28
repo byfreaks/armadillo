@@ -31,7 +31,5 @@ public class Game
             vehicleObj.AddComponent<BoxCollider2D>();
             vehicleObj.AddComponent<Rigidbody2D>().isKinematic = true;
         }
-        
-
     }
 }
