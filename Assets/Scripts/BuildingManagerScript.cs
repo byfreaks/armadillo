@@ -26,6 +26,8 @@ public class BuildingManagerScript : MonoBehaviour
             }
         } 
     }
+
+    private GameObject objectToBuild;
     public GameObject ghostObject;
     private SpriteRenderer ghostSprite;
     public LayerMask buildingMask;
@@ -50,6 +52,7 @@ public class BuildingManagerScript : MonoBehaviour
 
         //Building Ghost
         ghostObject = new GameObject("BuildingObject");
+        ghostObject.AddComponent<BuildableObject>();
         ghostSprite = ghostObject.AddComponent<SpriteRenderer>();
         
     }
@@ -60,9 +63,9 @@ public class BuildingManagerScript : MonoBehaviour
         }
 
         if(BuildMode){
-            ghostSprite.sprite = buildableObjects[currentBuildableObject].GetComponent<SpriteRenderer>().sprite;
-            var selectedObject = buildableObjects[currentBuildableObject];
-            Bounds bounds = selectedObject.GetComponent<SpriteRenderer>().bounds;
+            objectToBuild =  buildableObjects[currentBuildableObject];
+            ghostSprite.sprite = objectToBuild.GetComponent<SpriteRenderer>().sprite;
+            Bounds bounds = objectToBuild.GetComponent<SpriteRenderer>().bounds;
 
             //Calculate Position
             var mpos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -91,10 +94,11 @@ public class BuildingManagerScript : MonoBehaviour
             //Create Object
             if(Input.GetMouseButtonDown(0) && CheckForSiblings() && !CheckForSpace()){
                 print($"CELL[:{xcell},{ycell}]" );
-                var obj = Instantiate(selectedObject);
+                var obj = Instantiate(objectToBuild);
                 var pos = ghostObject.transform.position;
                 obj.transform.position = new Vector3(pos.x, pos.y, pos.z+1);
                 obj.transform.parent = buildState.transform;
+                obj.GetComponent<BuildableObject>().Build();
             }
         } else {
             ghostSprite.sprite = null;
@@ -115,6 +119,7 @@ public class BuildingManagerScript : MonoBehaviour
     private bool CheckForSiblings(){
         bool left, right, top, bottom = false;
         var origin = ghostObject.transform.position;
+        var requirements = objectToBuild.GetComponent<BuildableObject>().requirements;
         var distance = 2;
 
         //Left cast
@@ -136,6 +141,12 @@ public class BuildingManagerScript : MonoBehaviour
         RaycastHit2D bottomRay = Physics2D.Raycast(origin, Vector2.down, distance, buildingMask);
         Debug.DrawRay(origin, Vector2.down * distance, bottomRay.collider==null?Color.red:Color.green);
         bottom = bottomRay.collider;
+
+        //Check Requirements
+        if(!left && requirements.Left) return false;
+        if(!right && requirements.Right) return false;
+        if(!top && requirements.Top) return false;
+        if(!bottom && requirements.Bottom) return false;
 
         return left || right || top || bottom;
     }
