@@ -9,7 +9,10 @@ public class EnemyController : MonoBehaviour
     {
         FollowTarget,
         Attack,
-        Idle
+        Idle,
+        Drive,
+        Aim,
+        Shoot
     }
     public enum ContextState
     {
@@ -23,12 +26,15 @@ public class EnemyController : MonoBehaviour
     private SpriteRenderer sr;
 
     //States
-    private BehaviourState currentBehaviourState;
-    private ContextState currentContextState;
+    public BehaviourState currentBehaviourState;
+    public ContextState currentContextState;
 
     //Target
     public GameObject target;
     private Vector2 targetPosition;
+
+    //Entity to be managed by him
+    public GameObject entityManaged;
 
     //Attributes
     private float distanceToAttack;
@@ -47,7 +53,7 @@ public class EnemyController : MonoBehaviour
 
         //TEST: These attributes will be set differently
         distanceToAttack = 0.5f;
-        moveSpeed = 1.5f;
+        moveSpeed = 5f;
         sr.sprite = this.sprite;
         rb.constraints = RigidbodyConstraints2D.FreezePositionY;
         //
@@ -73,7 +79,7 @@ public class EnemyController : MonoBehaviour
     public ContextState getContextState()
     {
         //TODO: Calculate where is the enemy
-        return ContextState.SameCar;
+        return currentContextState;
     }
 
     public BehaviourState getBehaviourState(ContextState enemyContext, Vector2 targetPosition)
@@ -84,8 +90,10 @@ public class EnemyController : MonoBehaviour
             //Far from his target
             else return BehaviourState.FollowTarget;
         }
-        
-        //TODO: else if(enemyContext == ContextState.EnemyCar){}    
+        else if(enemyContext == ContextState.EnemyCar){
+            //TODO
+            return currentBehaviourState;
+        }    
         return BehaviourState.Idle;
     }
 
@@ -102,6 +110,24 @@ public class EnemyController : MonoBehaviour
             rb.velocity = Vector2.zero;
             Debug.Log("Atacando");
             sr.color = new Color32(230,83,83,90);
+        }
+        else if(enemyBehaviour == BehaviourState.Drive)
+        {
+            int action = Random.Range(-1,2);
+            Debug.Log("Idle...");
+            entityManaged.GetComponent<CarController>().moveTo(action, 7f);
+            currentBehaviourState = BehaviourState.Idle;
+        }
+        else if(enemyBehaviour == BehaviourState.Aim)
+        {
+            entityManaged.GetComponent<TorretController>().pointTo(targetPosition);
+        }
+        else if(enemyBehaviour == BehaviourState.Shoot)
+        {
+            entityManaged.GetComponent<TorretController>().shoot();
+            BehaviourState[] values = {BehaviourState.Aim, BehaviourState.Shoot};
+            int random = Random.Range(0, values.Length);
+            currentBehaviourState = (BehaviourState)  values.GetValue(random);
         }
         else if(enemyBehaviour == BehaviourState.Idle)
             Debug.Log("Idle...");
