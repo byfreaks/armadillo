@@ -28,6 +28,18 @@ public static class InputController
         return keyAction(inputType, KeyCode.B);
     }
 
+    public static bool CreateObject(ICActions inputType){
+        return mouseAction(inputType, 0);
+    }
+
+    public static bool LeftArrow(ICActions inputType){
+        return keyAction(inputType, KeyCode.LeftArrow);
+    }
+
+    public static bool RightArrow(ICActions inputType){
+        return keyAction(inputType, KeyCode.RightArrow);
+    }
+
     public static bool Reload(ICActions inputType){
         return keyAction(inputType, KeyCode.R);
     }
@@ -36,16 +48,32 @@ public static class InputController
         return mouseAction(inputType, 1);
     }
 
+    public static bool MeleeAttack(ICActions inputType){
+        return keyAction(inputType, KeyCode.E);
+    }
+
+    public static float HorizontalMovement(){
+        return Input.GetAxis("Horizontal");
+    }
+
+    public static float MouseScroll(){
+        return Input.mouseScrollDelta.y;
+    }
+
+    public static Vector3 MousePosition(){
+        return Input.mousePosition;
+    }
+
     // Acciones de keyboard
     public static bool keyAction(ICActions inputType, KeyCode key){
         switch (inputType)
         {
             case ICActions.key:
-                return !(Input.GetKey(key));
+                return (Input.GetKey(key));
             case ICActions.keyDown:
-                return !(Input.GetKeyDown(key));
+                return (Input.GetKeyDown(key));
             case ICActions.keyUp:
-                return !(Input.GetKeyUp(key));
+                return (Input.GetKeyUp(key));
             default:
                 return false;
         }
@@ -56,11 +84,11 @@ public static class InputController
         switch (inputType)
         {
             case ICActions.key:
-                return !(Input.GetMouseButton(key));
+                return (Input.GetMouseButton(key));
             case ICActions.keyDown:
-                return !(Input.GetMouseButtonDown(key));
+                return (Input.GetMouseButtonDown(key));
             case ICActions.keyUp:
-                return !(Input.GetMouseButtonUp(key));
+                return (Input.GetMouseButtonUp(key));
             default:
                 return false;
         }

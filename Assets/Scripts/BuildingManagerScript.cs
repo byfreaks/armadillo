@@ -58,7 +58,7 @@ public class BuildingManagerScript : MonoBehaviour
     }
 
     void Update(){
-        if(Input.GetKeyDown(KeyCode.B)){
+        if(InputController.Build(ICActions.keyDown)){
             BuildMode = !BuildMode;
         }
 
@@ -68,7 +68,7 @@ public class BuildingManagerScript : MonoBehaviour
             Bounds bounds = objectToBuild.GetComponent<SpriteRenderer>().bounds;
 
             //Calculate Position
-            var mpos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            var mpos = Camera.main.ScreenToWorldPoint(InputController.MousePosition());
             var gridOrigin = vehicleCorner.position;
             var buildPos = mpos-gridOrigin; //Take offset into account
 
@@ -80,9 +80,9 @@ public class BuildingManagerScript : MonoBehaviour
             ghostObject.transform.position = new Vector3(xPos, yPos, -8);
             
             //Change Selected Item
-            if(Input.GetKeyDown(KeyCode.LeftArrow) || Input.mouseScrollDelta.y > 0){
+            if(InputController.LeftArrow(ICActions.keyDown) || InputController.MouseScroll() > 0){
                 CurrentBuildableObject = CurrentBuildableObject-1;
-            } else if(Input.GetKeyDown(KeyCode.RightArrow) || Input.mouseScrollDelta.y < 0){
+            } else if(InputController.RightArrow(ICActions.keyDown) || InputController.MouseScroll() < 0){
                 CurrentBuildableObject = CurrentBuildableObject+1;
             }
 
@@ -92,7 +92,7 @@ public class BuildingManagerScript : MonoBehaviour
             //TODO: Check for resource permissions to build [not this build]
 
             //Create Object
-            if(Input.GetMouseButtonDown(0) && CheckForSiblings() && !CheckForSpace()){
+            if(InputController.CreateObject(ICActions.keyDown) && CheckForSiblings() && !CheckForSpace()){
                 print($"CELL[:{xcell},{ycell}]" );
                 var obj = Instantiate(objectToBuild);
                 var pos = ghostObject.transform.position;
