@@ -54,6 +54,9 @@ public class TorretController : MonoBehaviour
 
     public void shoot(){
         GameObject projectile = Instantiate(projectileTemplate);
+        //Set Damage component
+        projectile.AddComponent<Damage>();
+        projectile.GetComponent<Damage>().setDamage("Bullet", 20);
         projectile.transform.position = transform.position;
         projectile.GetComponent<ProjectileController>().Setup(direction, projectileSpeed);
     }
