@@ -6,6 +6,11 @@ public class CorpseController : MonoBehaviour
 {
     public Transform ground; //temporal assignment
 
+    private void Start() {
+        if(ground is null)
+            ground = GameObject.Find("GameManager").GetComponent<GameManagerScript>().groundTransform;    
+    }
+
     private void Update() {
         if(this.transform.position.y <= ground.transform.position.y){
             if(this.gameObject.TryGetComponent<Rigidbody2D>(out var rb)){

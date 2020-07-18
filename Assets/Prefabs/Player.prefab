@@ -45,7 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 12
   jumpForce: 420
-  sprite: {fileID: 21300000, guid: d1134834f70f9454dbb6abfc36bbdb8d, type: 3}
+  sprite: {fileID: 5864988276522048943, guid: ae8f56aeabdaad143abf6352d432a1ce, type: 3}
   attackMask: {fileID: 570433053595842152, guid: b81d52c77e4950f46aa43d8e231edc70,
     type: 3}
   testProjectile: {fileID: 3972398175323087079, guid: 2d374047b5171bd43ab159dccb846677,

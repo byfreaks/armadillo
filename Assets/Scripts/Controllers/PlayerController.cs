@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
     //Components
     private Rigidbody2D rb;
     private BoxCollider2D bc;
     private SpriteRenderer sr;
+    private Health hc;
 
     //Movement Settings
     [SerializeField]
@@ -29,12 +29,32 @@ public class PlayerController : MonoBehaviour
     [SerializeField] 
     private GameObject testProjectile;
 
+    [SerializeField]
+    public struct PlayerStatus{
+        public bool dead;
+        public bool canMove;
+
+        public void set_dead(){
+            dead = true;
+            canMove = false;
+            GameHelper.GameManager.PlayerIsDead();
+        }
+    }
+    PlayerStatus status = new PlayerStatus();
+    
+
     void Start()
     {
+
+        //PlayerStatus setup
+        status.dead = false;
+        status.canMove = true;
+
         //Create and save component references
         sr = gameObject.AddComponent<SpriteRenderer>();
         rb = gameObject.AddComponent<Rigidbody2D>();
         bc = gameObject.AddComponent<BoxCollider2D>();
+        hc = gameObject.AddComponent<Health>();
 
         //Setup
         //TODO: consider setting up component as they are created to declutter code
@@ -53,11 +73,20 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+
+        if(!status.dead && !hc.IsAlive){
+            status.set_dead();
+            CorpseController corpse = gameObject.AddComponent<CorpseController>();
+            bc.isTrigger = true;
+        }
+
+
         //Movement
-        rb.velocity = new Vector2( Input.GetAxis("Horizontal") * moveSpeed ,rb.velocity.y);
+        if(status.canMove)
+            rb.velocity = new Vector2( Input.GetAxis("Horizontal") * moveSpeed ,rb.velocity.y);
 
         //Jump
-        if(Input.GetKeyDown(KeyCode.Space)){
+        if(Input.GetKeyDown(KeyCode.Space) && status.canMove){
             //TODO: create input class
             rb.AddForce( new Vector2(0, jumpForce) );
         }
