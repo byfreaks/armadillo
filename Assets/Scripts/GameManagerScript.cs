@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,9 +6,10 @@ public class GameManagerScript : MonoBehaviour
 {
     public GameObject playerPrefab;
     public GameObject vehiclePrefab;
-
+    public Transform groundTransform;
     public GameObject inGameMenu;
-
+    
+    [SerializeField]
     public Game gameInstance;
 
     void Awake() {
@@ -18,6 +19,11 @@ public class GameManagerScript : MonoBehaviour
     void Start()
     {
         gameInstance = new Game(playerPrefab, vehiclePrefab);
+        gameInstance.gameState = GameState.RUN_Running;
+    }
+
+    public void PlayerIsDead(){
+        gameInstance.gameState = GameState.GOV_DeadPlayer;
     }
     
     void Update() {
