@@ -12,7 +12,8 @@ public class EnemyController : MonoBehaviour
         Idle,
         Drive,
         Aim,
-        Shoot
+        Shoot,
+        Dead
     }
     public enum ContextState
     {
@@ -24,6 +25,8 @@ public class EnemyController : MonoBehaviour
     private Rigidbody2D rb;
     private BoxCollider2D bc;
     private SpriteRenderer sr;
+    private Health hc;
+    private CorpseController corpse;
 
     //States
     public BehaviourState currentBehaviourState;
@@ -47,15 +50,15 @@ public class EnemyController : MonoBehaviour
     {
         //Create and save component references
         sr = gameObject.AddComponent<SpriteRenderer>();
+        sr.sprite = this.sprite;
         rb = gameObject.AddComponent<Rigidbody2D>();
         bc = gameObject.AddComponent<BoxCollider2D>();
+        hc = gameObject.AddComponent<Health>();
         targetPosition = target.GetComponent<Rigidbody2D>().position;
 
         //TEST: These attributes will be set differently
         distanceToAttack = 0.5f;
         moveSpeed = 5f;
-        sr.sprite = this.sprite;
-        rb.constraints = RigidbodyConstraints2D.FreezePositionY;
         //
         
     }
@@ -63,17 +66,20 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Update ref to his target
-        targetPosition = target.GetComponent<Rigidbody2D>().position;
-        
-        //Check where is the enemy
-        currentContextState = getContextState();
+        if(currentBehaviourState != BehaviourState.Dead)
+        {
+            //Update ref to his target
+            targetPosition = target.GetComponent<Rigidbody2D>().position;
+            
+            //Check where is the enemy
+            currentContextState = getContextState();
 
-        //Check what should do the enemy
-        currentBehaviourState = getBehaviourState(currentContextState, targetPosition);
+            //Check what should do the enemy
+            currentBehaviourState = getBehaviourState(currentContextState, targetPosition);
 
-        //Execute state action 
-        updateByState(currentBehaviourState, targetPosition);
+            //Execute state action 
+            updateByState(currentBehaviourState, targetPosition);
+        }
     }
 
     public ContextState getContextState()
@@ -84,13 +90,19 @@ public class EnemyController : MonoBehaviour
 
     public BehaviourState getBehaviourState(ContextState enemyContext, Vector2 targetPosition)
     {
-        if(enemyContext == ContextState.SameCar){
+        if(!hc.IsAlive)
+        {
+            return BehaviourState.Dead;
+        }
+        else if(enemyContext == ContextState.SameCar)
+        {
             //Close to his target
             if(Mathf.Abs(targetPosition.x - rb.position.x) < distanceToAttack) return BehaviourState.Attack;
             //Far from his target
             else return BehaviourState.FollowTarget;
         }
-        else if(enemyContext == ContextState.EnemyCar){
+        else if(enemyContext == ContextState.EnemyCar)
+        {
             //TODO
             return currentBehaviourState;
         }    
@@ -102,32 +114,36 @@ public class EnemyController : MonoBehaviour
         {
             moveDirection = (targetPosition.x - rb.position.x > 0) ? 1 : -1;           
             rb.velocity = new Vector2(moveSpeed * moveDirection, rb.velocity.y);
-            Debug.Log("Siguiendo el objetivo");
+            Debug.Log("FollowTarget...");
             sr.color = new Color32(255,255,255,255);
         }
         else if(enemyBehaviour == BehaviourState.Attack)
         {
             rb.velocity = Vector2.zero;
-            Debug.Log("Atacando");
+            Debug.Log("Attack...");
             sr.color = new Color32(230,83,83,90);
         }
         else if(enemyBehaviour == BehaviourState.Drive)
         {
-            int action = Random.Range(-1,2);
-            Debug.Log("Idle...");
-            entityManaged.GetComponent<CarController>().moveTo(action, 7f);
-            currentBehaviourState = BehaviourState.Idle;
+            entityManaged.GetComponent<CarController>().moveTo(1, 7f);
+            Debug.Log("Drive...");
         }
         else if(enemyBehaviour == BehaviourState.Aim)
         {
             entityManaged.GetComponent<TorretController>().pointTo(targetPosition);
+            Debug.Log("Aim...");
         }
         else if(enemyBehaviour == BehaviourState.Shoot)
         {
             entityManaged.GetComponent<TorretController>().shoot();
-            BehaviourState[] values = {BehaviourState.Aim, BehaviourState.Shoot};
-            int random = Random.Range(0, values.Length);
-            currentBehaviourState = (BehaviourState)  values.GetValue(random);
+            Debug.Log("Shoot!");
+            currentBehaviourState = BehaviourState.Aim;
+        }
+        else if(enemyBehaviour == BehaviourState.Dead)
+        {
+            if(corpse == null) corpse = gameObject.AddComponent<CorpseController>();
+            bc.isTrigger = true;
+            Debug.Log("Dead!");
         }
         else if(enemyBehaviour == BehaviourState.Idle)
             Debug.Log("Idle...");

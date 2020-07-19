@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Game
 {
     //Partida
     public GameObject playerObj; //Player Preset
     public GameObject vehicleObj;
     public Camera cameraObj;
+
+    public GameState gameState = GameState.PRE_Setup;
 
     [Header("Temporal settings")]
     //Temporal

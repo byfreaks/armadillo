@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3565173152638740738
+--- !u!1 &7744555143750784081
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,45 +8,43 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3565173152638740736}
-  - component: {fileID: 2048454768646577345}
+  - component: {fileID: 7744555143750784087}
+  - component: {fileID: 7744555143750784080}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3565173152638740736
+--- !u!4 &7744555143750784087
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3565173152638740738}
+  m_GameObject: {fileID: 7744555143750784081}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 2.79, y: 7.66, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2048454768646577345
+--- !u!114 &7744555143750784080
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3565173152638740738}
+  m_GameObject: {fileID: 7744555143750784081}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecf14f85179c54845b62891c1da44467, type: 3}
+  m_Script: {fileID: 11500000, guid: fbb05e742f0707242a71ca0e1a8f33d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 12
-  jumpForce: 420
-  sprite: {fileID: 5864988276522048943, guid: ae8f56aeabdaad143abf6352d432a1ce, type: 3}
-  attackMask: {fileID: 570433053595842152, guid: b81d52c77e4950f46aa43d8e231edc70,
-    type: 3}
-  testProjectile: {fileID: 3972398175323087079, guid: 2d374047b5171bd43ab159dccb846677,
-    type: 3}
+  currentBehaviourState: 2
+  currentContextState: 1
+  target: {fileID: 0}
+  entityManaged: {fileID: 0}
+  sprite: {fileID: 21300000, guid: d1134834f70f9454dbb6abfc36bbdb8d, type: 3}
