@@ -4,20 +4,13 @@ using UnityEngine;
 
 public class Wheel : MonoBehaviour
 {
-    public Transform socket;
+    //public Transform socket;
     [Range(0,4000)]
     public float rotationSpeed;
     private float oldRotationSpeed;
     private Rigidbody2D rb;
 
     private void Start() {
-        //Follow socket
-        if(socket == null){
-            Debug.LogWarning("Wheel must have a socket transform assigned");
-            return;
-        }
-        this.transform.position = socket.position;
-
         //Add rigidbody
         rb = gameObject.AddComponent<Rigidbody2D>();
         rb.mass = 10;
@@ -30,8 +23,6 @@ public class Wheel : MonoBehaviour
     }
 
     private void Update() {
-        if(socket == null) return;
-
         if(oldRotationSpeed != rotationSpeed){
             //RotationChanged
             rb.angularVelocity = 0;

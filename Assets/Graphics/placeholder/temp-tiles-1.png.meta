@@ -1,0 +1,488 @@
+fileFormatVersion: 2
+guid: ee76d073d1884ce49926496d538b5d8f
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1433942400020271969
+    second: platform
+  - first:
+      213: 6023669342910129641
+    second: crate_metal_1
+  - first:
+      213: -1464227034830155928
+    second: crate_metal_2
+  - first:
+      213: -6482614123143937906
+    second: crate-metal-half
+  - first:
+      213: -8193906884758524757
+    second: crate_wood_half
+  - first:
+      213: -2221202394796383709
+    second: crate_wood_1
+  - first:
+      213: -2214663571770381061
+    second: crate_wood_2
+  - first:
+      213: -1298982007412771471
+    second: crate_wood_3
+  - first:
+      213: 1273491207480884673
+    second: plat_wood_single
+  - first:
+      213: -1585872159462309896
+    second: plat_wood_left
+  - first:
+      213: -3811068538304729824
+    second: plat_wood_center
+  - first:
+      213: -2332914384325361307
+    second: plat_wood_right
+  - first:
+      213: 267840119460488631
+    second: temp-tiles-1_12
+  - first:
+      213: -6020158650185151592
+    second: temp-tiles-1_13
+  - first:
+      213: 4530459209724919292
+    second: temp-tiles-1_14
+  - first:
+      213: -8870127108892598138
+    second: temp-tiles-1_15
+  - first:
+      213: -3162642058735498489
+    second: temp-tiles-1_16
+  - first:
+      213: 943258484072072580
+    second: temp-tiles-1_17
+  - first:
+      213: -5983322188242063875
+    second: temp-tiles-1_18
+  - first:
+      213: 76826761418218046
+    second: temp-tiles-1_19
+  - first:
+      213: 5711776281031296485
+    second: temp-tiles-1_20
+  - first:
+      213: 7220346185852825176
+    second: temp-tiles-1_21
+  - first:
+      213: -5270281647974652334
+    second: temp-tiles-1_22
+  - first:
+      213: 5353474286215917343
+    second: temp-tiles-1_23
+  - first:
+      213: -6565955943127313349
+    second: temp-tiles-1_24
+  - first:
+      213: -122352367387955902
+    second: temp-tiles-1_25
+  - first:
+      213: -1453506311887689672
+    second: temp-tiles-1_26
+  - first:
+      213: 5713727824619768249
+    second: temp-tiles-1_27
+  - first:
+      213: 8089856064786675636
+    second: temp-tiles-1_28
+  - first:
+      213: 7666871984483819111
+    second: temp-tiles-1_29
+  - first:
+      213: -6969746812881878636
+    second: temp-tiles-1_30
+  - first:
+      213: 4064845731742186616
+    second: temp-tiles-1_31
+  - first:
+      213: 2771920638752523229
+    second: temp-tiles-1_32
+  - first:
+      213: -164863448346354879
+    second: temp-tiles-1_33
+  - first:
+      213: -7451950398387818982
+    second: temp-tiles-1_34
+  - first:
+      213: -8917915589774563181
+    second: temp-tiles-1_35
+  - first:
+      213: -1236957536254453485
+    second: temp-tiles-1_36
+  - first:
+      213: 2044629923510958574
+    second: temp-tiles-1_37
+  - first:
+      213: 1455782907382902522
+    second: temp-tiles-1_38
+  - first:
+      213: 3196483600228608072
+    second: temp-tiles-1_39
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: platform
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 96
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f9cab6a0cfc991ce0800000000000000
+      internalID: -1433942400020271969
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crate_metal_1
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9e5a1944a5f589350800000000000000
+      internalID: 6023669342910129641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crate_metal_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86fcc6605450eabe0800000000000000
+      internalID: -1464227034830155928
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crate-metal-half
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 16
+        width: 16
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8043162dc02906a0800000000000000
+      internalID: -6482614123143937906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crate_wood_half
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 16
+        width: 16
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bac275bf915694e80800000000000000
+      internalID: -8193906884758524757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crate_wood_1
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 17
+        width: 16
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3222aebb034bc21e0800000000000000
+      internalID: -2221202394796383709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crate_wood_2
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bfce0ab173fe341e0800000000000000
+      internalID: -2214663571770381061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crate_wood_3
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 16
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 175b98e1fb619fde0800000000000000
+      internalID: -1298982007412771471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: plat_wood_single
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 32
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1cd3b7681895ca110800000000000000
+      internalID: 1273491207480884673
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: plat_wood_left
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 48
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8ff311c5ca9ddf9e0800000000000000
+      internalID: -1585872159462309896
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: plat_wood_center
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 48
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02deda73b5d5c1bc0800000000000000
+      internalID: -3811068538304729824
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: plat_wood_right
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 48
+        width: 16
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 56143ee4ab2df9fd0800000000000000
+      internalID: -2332914384325361307
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
