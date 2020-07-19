@@ -54,15 +54,15 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         //Movement
-        rb.velocity = new Vector2( Input.GetAxis("Horizontal") * moveSpeed ,rb.velocity.y);
+        rb.velocity = new Vector2( InputController.HorizontalMovement() * moveSpeed ,rb.velocity.y);
 
         //Jump
-        if(Input.GetKeyDown(KeyCode.Space)){
+        if(InputController.Jump(ICActions.keyDown)){
             //TODO: create input class
             rb.AddForce( new Vector2(0, jumpForce) );
         }
 
-        if(Input.GetKeyDown(KeyCode.E) && attackMask != null && atk == null){
+        if(InputController.MeleeAttack(ICActions.keyDown) && attackMask != null && atk == null){
             atk = Instantiate(attackMask);
             atk.AddComponent<Damage>();
             atk.GetComponent<Damage>().setDamage(DamageTypes.PLY_MELEE, 10);
@@ -72,12 +72,12 @@ public class PlayerController : MonoBehaviour
             atk.transform.position = new Vector2(mePos.x + 1, mePos.y);
         }
 
-        if(Input.GetMouseButtonDown(1) && testProjectile != null){
+        if(InputController.Shot(ICActions.keyDown) && testProjectile != null){
             var proj = Instantiate(testProjectile);
             proj.AddComponent<Damage>();
             proj.GetComponent<Damage>().setDamage(DamageTypes.PLY_BULLET, 20);
             proj.transform.position = this.transform.position;
-            proj.GetComponent<ProjectileController>().Setup( Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position, 19.8f  );
+            proj.GetComponent<ProjectileController>().Setup( Camera.main.ScreenToWorldPoint(InputController.MousePosition()) - this.transform.position, 19.8f  );
         }
 
     }
