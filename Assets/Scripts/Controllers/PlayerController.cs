@@ -92,6 +92,8 @@ public class PlayerController : MonoBehaviour
 
         if(InputController.MeleeAttack(ICActions.keyDown) && attackMask != null && atk == null){
             atk = Instantiate(attackMask);
+            atk.AddComponent<Damage>();
+            atk.GetComponent<Damage>().setDamage(DamageTypes.PLY_MELEE, 10);
             atk.transform.parent = this.transform;
             //set postiion (temporal)
             var mePos = this.transform.position;
@@ -100,6 +102,8 @@ public class PlayerController : MonoBehaviour
 
         if(InputController.Shot(ICActions.keyDown) && testProjectile != null){
             var proj = Instantiate(testProjectile);
+            proj.AddComponent<Damage>();
+            proj.GetComponent<Damage>().setDamage(DamageTypes.PLY_BULLET, 20);
             proj.transform.position = this.transform.position;
             proj.GetComponent<ProjectileController>().Setup( Camera.main.ScreenToWorldPoint(InputController.MousePosition()) - this.transform.position, 19.8f  );
         }
