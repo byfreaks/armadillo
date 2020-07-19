@@ -83,15 +83,14 @@ public class PlayerController : MonoBehaviour
 
         //Movement
         if(status.canMove)
-            rb.velocity = new Vector2( Input.GetAxis("Horizontal") * moveSpeed ,rb.velocity.y);
+            rb.velocity = new Vector2( InputController.HorizontalMovement() * moveSpeed ,rb.velocity.y);
 
         //Jump
-        if(Input.GetKeyDown(KeyCode.Space) && status.canMove){
-            //TODO: create input class
+        if(InputController.Jump(ICActions.keyDown) && status.canMove){
             rb.AddForce( new Vector2(0, jumpForce) );
         }
 
-        if(Input.GetKeyDown(KeyCode.E) && attackMask != null && atk == null){
+        if(InputController.MeleeAttack(ICActions.keyDown) && attackMask != null && atk == null){
             atk = Instantiate(attackMask);
             atk.transform.parent = this.transform;
             //set postiion (temporal)
@@ -99,10 +98,10 @@ public class PlayerController : MonoBehaviour
             atk.transform.position = new Vector2(mePos.x + 1, mePos.y);
         }
 
-        if(Input.GetMouseButtonDown(1) && testProjectile != null){
+        if(InputController.Shot(ICActions.keyDown) && testProjectile != null){
             var proj = Instantiate(testProjectile);
             proj.transform.position = this.transform.position;
-            proj.GetComponent<ProjectileController>().Setup( Camera.main.ScreenToWorldPoint(Input.mousePosition) - this.transform.position, 19.8f  );
+            proj.GetComponent<ProjectileController>().Setup( Camera.main.ScreenToWorldPoint(InputController.MousePosition()) - this.transform.position, 19.8f  );
         }
 
     }
