@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Damage : MonoBehaviour {  
-    public DamageTypes name;
+    public DamageTypes type;
     public int points;
 
     public int damagePoints { 
@@ -15,8 +15,8 @@ public class Damage : MonoBehaviour {
         } 
     }
 
-    public void setDamage(DamageTypes name, int points){
-        this.name = name;
+    public void setDamage(DamageTypes type, int points){
+        this.type = type;
         this.points = points;
     }
 }

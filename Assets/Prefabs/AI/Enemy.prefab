@@ -40,11 +40,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 7744555143750784081}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbb05e742f0707242a71ca0e1a8f33d8, type: 3}
+  m_Script: {fileID: 11500000, guid: fc858af10a8e9e443a08bc166be6ee83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentBehaviourState: 2
-  currentContextState: 1
-  target: {fileID: 0}
+  rb: {fileID: 0}
+  bc: {fileID: 0}
+  sr: {fileID: 0}
+  hc: {fileID: 0}
+  corpse: {fileID: 0}
+  currentContext: 0
+  currentObjective: 0
   entityManaged: {fileID: 0}
+  closeDistance: 0
+  moveSpeed: 0
   sprite: {fileID: 21300000, guid: d1134834f70f9454dbb6abfc36bbdb8d, type: 3}
