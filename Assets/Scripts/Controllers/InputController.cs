@@ -44,6 +44,10 @@ public static class InputController
         return keyAction(inputType, KeyCode.R);
     }
 
+    public static bool Pause(ICActions inputType){
+        return keyAction(inputType, KeyCode.P);
+    }
+
     public static bool Shot(ICActions inputType){
         return mouseAction(inputType, 1);
     }
