@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
         //Create and save component references
         sr = gameObject.AddComponent<SpriteRenderer>();
         rb = gameObject.AddComponent<Rigidbody2D>();
+        rb.freezeRotation = true;
         bc = gameObject.AddComponent<BoxCollider2D>();
         hc = gameObject.AddComponent<Health>();
 
@@ -76,6 +77,7 @@ public class PlayerController : MonoBehaviour
 
         if(!status.dead && !hc.IsAlive){
             status.set_dead();
+            this.gameObject.GetComponent<Rigidbody2D>().freezeRotation = false;
             CorpseController corpse = gameObject.AddComponent<CorpseController>();
             bc.isTrigger = true;
         }

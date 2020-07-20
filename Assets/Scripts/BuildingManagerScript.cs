@@ -10,6 +10,10 @@ public class BuildingManagerScript : MonoBehaviour
     public GameObject buildState;
     Transform vehicleCorner;
 
+    //Flux Engine
+    public GameObject fluxEnginePrefab;
+    public GameObject BuiltEngine;
+
     //Settings
     public bool BuildMode = false;
     public int gridSize = 16;
@@ -54,31 +58,25 @@ public class BuildingManagerScript : MonoBehaviour
         ghostObject = new GameObject("BuildingObject");
         ghostObject.AddComponent<BuildableObject>();
         ghostSprite = ghostObject.AddComponent<SpriteRenderer>();
+
+        //fluxEngine
+        if(fluxEnginePrefab!=null)
+            BuiltEngine = BuildAtGridPosition(fluxEnginePrefab, new Vector2(Random.Range(1,5),0));
         
     }
 
     void Update(){
+        //temporal "vehicleDestroyed" gameover
+        if(BuiltEngine!=null)
+            if(BuiltEngine.TryGetComponent<Health>(out var comp))
+                if(!comp.IsAlive)
+                    GameHelper.Player.gameObject.GetComponent<Health>().killEntity();
+
         if(InputController.Build(ICActions.keyDown)){
             BuildMode = !BuildMode;
         }
 
         if(BuildMode){
-            objectToBuild =  buildableObjects[currentBuildableObject];
-            ghostSprite.sprite = objectToBuild.GetComponent<SpriteRenderer>().sprite;
-            Bounds bounds = objectToBuild.GetComponent<SpriteRenderer>().bounds;
-
-            //Calculate Position
-            var mpos = Camera.main.ScreenToWorldPoint(InputController.MousePosition());
-            var gridOrigin = vehicleCorner.position;
-            var buildPos = mpos-gridOrigin; //Take offset into account
-
-            var xcell = Mathf.FloorToInt(buildPos.x/gridSize)*gridSize;
-            var ycell = Mathf.FloorToInt(buildPos.y/gridSize)*gridSize;
-
-            var xPos = xcell+gridOrigin.x+bounds.size.x/2;
-            var yPos = ycell+gridOrigin.y+bounds.size.y/2;
-            ghostObject.transform.position = new Vector3(xPos, yPos, -8);
-            
             //Change Selected Item
             if(InputController.LeftArrow(ICActions.keyDown) || InputController.MouseScroll() > 0){
                 CurrentBuildableObject = CurrentBuildableObject-1;
@@ -86,22 +84,71 @@ public class BuildingManagerScript : MonoBehaviour
                 CurrentBuildableObject = CurrentBuildableObject+1;
             }
 
-            // CheckForSiblings();
-            ghostSprite.color = CheckForSpace() ? new Color(1,0.5f,0.5f,0.8f) : new Color(0.5f,1,0.5f,1);
-            
-            //TODO: Check for resource permissions to build [not this build]
+            var mpos = Camera.main.ScreenToWorldPoint(InputController.MousePosition());
+            BuildAtMousePosition(buildableObjects[currentBuildableObject], mpos);
 
-            //Create Object
-            if(InputController.CreateObject(ICActions.keyDown) && CheckForSiblings() && !CheckForSpace()){
-                print($"CELL[:{xcell},{ycell}]" );
-                var obj = Instantiate(objectToBuild);
-                var pos = ghostObject.transform.position;
-                obj.transform.position = new Vector3(pos.x, pos.y, pos.z+1);
-                obj.transform.parent = buildState.transform;
-                obj.GetComponent<BuildableObject>().Build();
-            }
         } else {
             ghostSprite.sprite = null;
+        }
+    }
+
+    private GameObject BuildAtMousePosition(GameObject prefab, Vector3 mousePos){
+        objectToBuild =  prefab;
+        ghostSprite.sprite = objectToBuild.GetComponent<SpriteRenderer>().sprite;
+        Bounds bounds = objectToBuild.GetComponent<SpriteRenderer>().bounds;
+
+        //Calculate Position
+        var gridOrigin = vehicleCorner.position;
+        var buildPos = mousePos-gridOrigin; //Take offset into account
+
+        var xcell = Mathf.FloorToInt(buildPos.x/gridSize)*gridSize;
+        var ycell = Mathf.FloorToInt(buildPos.y/gridSize)*gridSize;
+
+        var xPos = xcell+gridOrigin.x+bounds.size.x/2;
+        var yPos = ycell+gridOrigin.y+bounds.size.y/2;
+        ghostObject.transform.position = new Vector3(xPos, yPos, -8);
+
+        // CheckForSiblings();
+        ghostSprite.color = CheckForSpace() ? new Color(1,0.5f,0.5f,0.8f) : new Color(0.5f,1,0.5f,1);
+
+        //Create Object
+        if(InputController.CreateObject(ICActions.keyDown) && CheckForSiblings() && !CheckForSpace()){
+            print($"CELL[:{xcell},{ycell}]" );
+            var obj = Instantiate(objectToBuild);
+            var pos = ghostObject.transform.position;
+            obj.transform.position = new Vector3(pos.x, pos.y, pos.z+1);
+            obj.transform.parent = buildState.transform;
+            return obj.GetComponent<BuildableObject>().Build();;
+        } else {
+            return null;
+        }
+    } 
+
+    private GameObject BuildAtGridPosition(GameObject prefab, Vector2 gridPos){
+        objectToBuild =  prefab;
+        ghostSprite.sprite = objectToBuild.GetComponent<SpriteRenderer>().sprite;
+        Bounds bounds = objectToBuild.GetComponent<SpriteRenderer>().bounds;
+
+        //Calculate Position
+        var gridOrigin = vehicleCorner.position;
+
+        var xPos = gridPos.x+gridOrigin.x+bounds.size.x/2;
+        var yPos = gridPos.y+gridOrigin.y+bounds.size.y/2;
+        ghostObject.transform.position = new Vector3(xPos, yPos, -8);
+
+        // CheckForSiblings();
+        ghostSprite.color = CheckForSpace() ? new Color(1,0.5f,0.5f,0.8f) : new Color(0.5f,1,0.5f,1);
+
+        //Create Object
+        if(CheckForSiblings() && !CheckForSpace()){
+            print($"CELL[:{gridPos.x},{gridPos.y}]" );
+            var obj = Instantiate(objectToBuild);
+            var pos = ghostObject.transform.position;
+            obj.transform.position = new Vector3(pos.x, pos.y, pos.z+1);
+            obj.transform.parent = buildState.transform;
+            return obj.GetComponent<BuildableObject>().Build();
+        } else {
+            return null;
         }
     }
 
@@ -120,26 +167,27 @@ public class BuildingManagerScript : MonoBehaviour
         bool left, right, top, bottom = false;
         var origin = ghostObject.transform.position;
         var requirements = objectToBuild.GetComponent<BuildableObject>().requirements;
-        var distance = 2;
+        var distance = gridSize;
+        var duration = 0.65f;
 
         //Left cast
         RaycastHit2D leftRay = Physics2D.Raycast(origin, Vector2.left, distance, buildingMask);
-        Debug.DrawRay(origin, Vector2.left * distance, leftRay.collider==null?Color.red:Color.green);
+        Debug.DrawRay(origin, Vector2.left * distance, leftRay.collider==null?Color.red:Color.green, duration);
         left = leftRay.collider;
 
         //Right cast
         RaycastHit2D rightRay = Physics2D.Raycast(origin, Vector2.right, distance, buildingMask);
-        Debug.DrawRay(origin, Vector2.right * distance, rightRay.collider==null?Color.red:Color.green);
+        Debug.DrawRay(origin, Vector2.right * distance, rightRay.collider==null?Color.red:Color.green, duration);
         right = rightRay.collider;
 
         //Top cast
         RaycastHit2D topRay = Physics2D.Raycast(origin, Vector2.up, distance, buildingMask);
-        Debug.DrawRay(origin, Vector2.up * distance, topRay.collider==null?Color.red:Color.green);
+        Debug.DrawRay(origin, Vector2.up * distance, topRay.collider==null?Color.red:Color.green, duration);
         top = topRay.collider;
 
         //Bottom cast
         RaycastHit2D bottomRay = Physics2D.Raycast(origin, Vector2.down, distance, buildingMask);
-        Debug.DrawRay(origin, Vector2.down * distance, bottomRay.collider==null?Color.red:Color.green);
+        Debug.DrawRay(origin, Vector2.down * distance, bottomRay.collider==null?Color.red:Color.green, duration);
         bottom = bottomRay.collider;
 
         //Check Requirements
@@ -165,13 +213,13 @@ public class BuildingManagerScript : MonoBehaviour
         Gizmos.color = new Color(1,1,1,0.2f);
         //Horizontal lines
         for(int i = 0; i < 7; i++){
-            var or = gridOrigin + new Vector3(0, i*2, 0);
+            var or = gridOrigin + new Vector3(0, i*gridSize, 0);
             Gizmos.DrawLine(or+new Vector3(-4,0,0), or+(new Vector3(16,0,0)) );
         }
 
         //Vertical lines
         for(int i = -2; i < 9; i++){
-            var or = gridOrigin + new Vector3(i*2, 0, 0);
+            var or = gridOrigin + new Vector3(i*gridSize, 0, 0);
             Gizmos.DrawLine(or, or+(new Vector3(0,12,0)) );
         }
     }
