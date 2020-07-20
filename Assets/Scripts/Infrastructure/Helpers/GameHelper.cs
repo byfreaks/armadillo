@@ -4,10 +4,7 @@ using UnityEngine;
 
 public static class GameHelper
 {
-    public static GameManagerScript GameManager { get => GetGameManager(); }
-    public static Game GameInstance { get => GetGameManager().gameInstance; }
-    
-    private static GameManagerScript GetGameManager(){
-        return GameObject.Find("GameManager").GetComponent<GameManagerScript>();
-    }
+    public static GameManagerScript GameManager { get => GameObject.Find("GameManager").GetComponent<GameManagerScript>(); }
+    public static PlayerController Player {get => GameObject.Find("Player").GetComponent<PlayerController>(); }
+
 }

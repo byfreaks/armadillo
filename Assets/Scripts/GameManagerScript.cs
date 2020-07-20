@@ -25,6 +25,10 @@ public class GameManagerScript : MonoBehaviour
     public void PlayerIsDead(){
         gameInstance.gameState = GameState.GOV_DeadPlayer;
     }
+
+    public void EngineDestroyed(){
+        gameInstance.gameState = GameState.GOV_VehicleDestroyed;
+    }
     
     void Update() {
         if (InputController.Pause(ICActions.keyDown)) {
