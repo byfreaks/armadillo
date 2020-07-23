@@ -7,14 +7,12 @@ public class HealthEditor : Editor
 {
     public override void OnInspectorGUI()
     {
+
+        DrawDefaultInspector();
         //Referencia al componente Health para poder acceder a sus propiedades y métodos.
         Health health = (Health)target;
 
         //Campos de propiedades del componente Health.
-        EditorGUILayout.Space();
-        health.HealthPoints = EditorGUILayout.IntField("Health points", health.HealthPoints);
-        health.MaxHealthPoints = EditorGUILayout.IntField("Max health points", health.MaxHealthPoints);
-        health.MinHealthPoints = EditorGUILayout.IntField("Min health points", health.MinHealthPoints);
         health.IsAlive = EditorGUILayout.Toggle("Is alive", health.IsAlive);
         EditorGUILayout.Space(20);
         

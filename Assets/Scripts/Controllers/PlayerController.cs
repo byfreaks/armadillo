@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
     private GameObject attackMask;
     private GameObject atk;
 
+    private DamageTypes damageFrom = DamageTypes.ENM_DAMAGE;
+
     [SerializeField] 
     private GameObject testProjectile;
 
@@ -42,6 +44,16 @@ public class PlayerController : MonoBehaviour
     }
     PlayerStatus status = new PlayerStatus();
     
+    private void OnTriggerEnter2D(Collider2D other) {
+        if(other.TryGetComponent<Damage>(out var dmg)){
+            if(damageFrom.HasFlag(dmg.type)){
+                hc.decrementHealthPoints( dmg.damagePoints );
+                if(!hc.IsAlive && !status.dead){
+                    PlayerDeath();
+                }
+            }
+        }
+    }
 
     void Start()
     {
@@ -72,17 +84,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void PlayerDeath(){
+        status.set_dead();
+        this.gameObject.GetComponent<Rigidbody2D>().freezeRotation = false;
+        CorpseController corpse = gameObject.AddComponent<CorpseController>();
+        bc.isTrigger = true;
+    }
+
     void Update()
     {
-
-        if(!status.dead && !hc.IsAlive){
-            status.set_dead();
-            this.gameObject.GetComponent<Rigidbody2D>().freezeRotation = false;
-            CorpseController corpse = gameObject.AddComponent<CorpseController>();
-            bc.isTrigger = true;
-        }
-
-
         //Movement
         if(status.canMove)
             rb.velocity = new Vector2( InputController.HorizontalMovement() * moveSpeed ,rb.velocity.y);
