@@ -28,7 +28,7 @@ public class AutoDestroy : MonoBehaviour
         }
     }
     
-    bool DestroyNow(){
+    public bool DestroyNow(){
         try
         {
             GameObject.Destroy(this.gameObject);
