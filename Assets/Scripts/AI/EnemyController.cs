@@ -25,6 +25,7 @@ public class EnemyController : MonoBehaviour
     public float closeDistance;
     public float moveSpeed;
     public Sprite sprite;
+    public DamageTypes damageFrom;
     
     // Start is called before the first frame update
     void Start()
@@ -45,6 +46,7 @@ public class EnemyController : MonoBehaviour
         //TEST: These attributes will be set differently
         closeDistance = 3f;
         moveSpeed = 5f;
+        damageFrom = DamageTypes.PLAYER_DAMAGE;
         //
         
     }
@@ -55,12 +57,9 @@ public class EnemyController : MonoBehaviour
         //Check if it is necessary a transition to a new Behaviour
         if(nextBehaviour != null) doBehaviourTransition();
         else
-        {
-            //Check if entity is dead
-            if(!hc.IsAlive && currentBehaviour.getBehaviourName() != "Dead") nextBehaviour = new Dead(this);
-            
+        {           
             //Calculate next behaviour (when is Idle)
-            else if(currentBehaviour.getBehaviourName() == "Idle") calculateNextBehaviour();
+            if(currentBehaviour.getBehaviourName() == "Idle") calculateNextBehaviour();
 
             else currentBehaviour.update();
         }
@@ -80,5 +79,17 @@ public class EnemyController : MonoBehaviour
         currentBehaviour = nextBehaviour;
         nextBehaviour = null;
         currentBehaviour.init();
+    }
+
+    //Damage detection
+    void OnTriggerEnter2D(Collider2D other) {
+        if(other.TryGetComponent<Damage>(out var dmg)){
+            if(damageFrom.HasFlag(dmg.type)){
+                hc.decrementHealthPoints( dmg.damagePoints );
+                if(!hc.IsAlive && currentBehaviour.getBehaviourName() != "Dead"){
+                    nextBehaviour = new Dead(this);
+                }
+            }
+        }
     }
 }
