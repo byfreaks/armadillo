@@ -3,8 +3,11 @@
 [ExecuteInEditMode]
 public class Health : MonoBehaviour
 {
+    [SerializeField]
     private int healthPoints;
+    [SerializeField]
     private int maxHealthPoints;
+    [SerializeField]
     private int minHealthPoints;
     private bool alive;
 
