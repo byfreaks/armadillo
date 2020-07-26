@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816215632344968444}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 2.6, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7816215632602703426}
@@ -57,7 +57,7 @@ Transform:
   m_GameObject: {fileID: 7816215632602703431}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.97, y: 0.14, z: -4.737749}
-  m_LocalScale: {x: 4, y: 1, z: 1}
+  m_LocalScale: {x: 6, y: 1, z: 1}
   m_Children:
   - {fileID: 7816215633982907443}
   - {fileID: 7816215632344968445}
@@ -126,8 +126,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bb28ce3164bdf246827fe7836c65b13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  passenger: {fileID: 0}
+  passengers: []
   passengerSeat: {fileID: 7816215632344968444}
+  distanceBetweenSeats: 2
   driver: {fileID: 0}
   driverSeat: {fileID: 7816215633982907442}
 --- !u!1 &7816215633982907442
@@ -154,7 +155,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7816215633982907442}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 2.6, z: 0}
+  m_LocalPosition: {x: 0.7, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7816215632602703426}

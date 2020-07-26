@@ -11,11 +11,12 @@ public class CarController : MonoBehaviour
     private SpriteRenderer sr;
 
     [Header("Passenger")]
-    public Rigidbody2D passenger;
+    public List<GameObject> passengers;
     public GameObject passengerSeat;
+    public float distanceBetweenSeats;
 
     [Header("Driver")]
-    public Rigidbody2D driver;
+    public GameObject driver;
     public GameObject driverSeat;
 
     // Start is called before the first frame update
@@ -28,7 +29,6 @@ public class CarController : MonoBehaviour
 
         //TEST: These attributes will be set differently
         rb.bodyType = RigidbodyType2D.Kinematic;
-        //moveTo(1, 2.5f);
         //
     }
 
@@ -36,24 +36,28 @@ public class CarController : MonoBehaviour
     void Update()
     {
         //Update entities positions
-        if(passenger != null) passenger.position = passengerSeat.transform.position;
-        if(driver != null) driver.position = driverSeat.transform.position;
+        if(passengers.Count > 0)
+        {
+            for(int i=0; i<passengers.Count;i++)
+                passengers[i].transform.position = new Vector2(passengerSeat.transform.position.x - (distanceBetweenSeats*i),passengerSeat.transform.position.y);
+        }
+        if(driver != null) driver.transform.position = driverSeat.transform.position;
     }
 
     public void moveTo(int direction, float speed){
         rb.velocity = new Vector2(speed * direction, rb.velocity.y);
     }
 
-    public void linkAsPassenger(Rigidbody2D passenger){
-        this.passenger = passenger;
+    public void linkAsPassenger(GameObject passenger){
+        this.passengers.Add(passenger);
     }
 
-    public void linkAsDriver(Rigidbody2D driver){
+    public void linkAsDriver(GameObject driver){
         this.driver = driver;
     }
 
-    public void unlinkPassenger(){
-        this.passenger = null;
+    public void unlinkPassenger(GameObject passenger){
+        this.passengers.Remove(passenger);
     }
 
     public void unlinkDriver(){

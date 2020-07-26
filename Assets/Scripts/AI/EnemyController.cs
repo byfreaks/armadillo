@@ -40,14 +40,6 @@ public class EnemyController : MonoBehaviour
         //Enemy Logic values
         currentBehaviour = new Idle(this);
         currentBehaviour.init();
-        currentContext = EnemyContext.OtherCar;
-        currentObjective = EnemyObjective.MeleeAttack;
-
-        //TEST: These attributes will be set differently
-        closeDistance = 3f;
-        moveSpeed = 5f;
-        damageFrom = DamageTypes.PLAYER_DAMAGE;
-        //
         
     }
 

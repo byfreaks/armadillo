@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7744555143750784081
+--- !u!1 &9173477662674760818
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,50 +8,49 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7744555143750784087}
-  - component: {fileID: 7744555143750784080}
+  - component: {fileID: 2124809906966364818}
+  - component: {fileID: 5573401511949338840}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: EnemyInstantiatorTool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7744555143750784087
+--- !u!4 &2124809906966364818
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7744555143750784081}
+  m_GameObject: {fileID: 9173477662674760818}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.79, y: 7.66, z: 0}
+  m_LocalPosition: {x: 11.424378, y: 0.19786073, z: -27.183594}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7744555143750784080
+--- !u!114 &5573401511949338840
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7744555143750784081}
+  m_GameObject: {fileID: 9173477662674760818}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc858af10a8e9e443a08bc166be6ee83, type: 3}
+  m_Script: {fileID: 11500000, guid: eccb1a9793d3d2a419f48ed96755e932, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
-  bc: {fileID: 0}
-  sr: {fileID: 0}
-  hc: {fileID: 0}
-  corpse: {fileID: 0}
-  currentContext: 0
-  currentObjective: 0
-  entityManaged: {fileID: 0}
-  closeDistance: 3
-  moveSpeed: 5
-  sprite: {fileID: 21300000, guid: d1134834f70f9454dbb6abfc36bbdb8d, type: 3}
-  damageFrom: 6
+  prefabEnemy: {fileID: 7744555143750784081, guid: 15d034cc869cb9b46816cce33d815f21,
+    type: 3}
+  prefabCar: {fileID: 7816215632602703431, guid: 10669462834672548b5a824b2f90074e,
+    type: 3}
+  prefabTorret: {fileID: 3772896858749389954, guid: 2f3c30b3f8155ba48afcdf7b03bb3b8b,
+    type: 3}
+  enemySpeed: 0
+  context: 0
+  objective: 0
+  numberOfPassengers: 0
+  numberOfTorrets: 0
