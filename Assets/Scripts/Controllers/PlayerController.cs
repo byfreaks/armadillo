@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer sr;
     private Health hc;
 
+    //Weapon
+    private WeaponController wc;
+
     //Movement Settings
     [SerializeField]
     private float moveSpeed;
@@ -20,11 +23,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Sprite sprite;
 
-    //Attack Settings
-    //temporal
-    [SerializeField]
-    private GameObject attackMask;
-    private GameObject atk;
+    //Weapon Settings
+    public WeaponController EquipedWeapon;
 
     private DamageTypes damageFrom = DamageTypes.ENM_DAMAGE;
 
@@ -35,6 +35,13 @@ public class PlayerController : MonoBehaviour
     public struct PlayerStatus{
         public bool dead;
         public bool canMove;
+        public bool canShoot;
+
+        public void init(){
+            dead = false;
+            canMove = true;
+            canShoot = false;
+        }
 
         public void set_dead(){
             dead = true;
@@ -59,8 +66,7 @@ public class PlayerController : MonoBehaviour
     {
 
         //PlayerStatus setup
-        status.dead = false;
-        status.canMove = true;
+        status.init();
 
         //Create and save component references
         sr = gameObject.AddComponent<SpriteRenderer>();
@@ -93,7 +99,14 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        //Movement
+
+        if(!status.dead && !hc.IsAlive){
+            status.set_dead();
+            this.gameObject.GetComponent<Rigidbody2D>().freezeRotation = false;
+            CorpseController corpse = gameObject.AddComponent<CorpseController>();
+            bc.isTrigger = true;
+        }
+
         if(status.canMove)
             rb.velocity = new Vector2( InputController.HorizontalMovement() * moveSpeed ,rb.velocity.y);
 
@@ -102,17 +115,25 @@ public class PlayerController : MonoBehaviour
             rb.AddForce( new Vector2(0, jumpForce) );
         }
 
-        if(InputController.MeleeAttack(ICActions.keyDown) && attackMask != null && atk == null){
-            atk = Instantiate(attackMask);
-            atk.AddComponent<Damage>();
-            atk.GetComponent<Damage>().setDamage(DamageTypes.PLY_MELEE, 10);
-            atk.transform.parent = this.transform;
-            //set postiion (temporal)
-            var mePos = this.transform.position;
-            atk.transform.position = new Vector2(mePos.x + 1, mePos.y);
+        //Handle weapons
+        if(EquipedWeapon!=null){
+            var weapon = EquipedWeapon;
+            weapon.wielderTransform = this.transform;
+            if(InputController.mouseAction(ICActions.key, 1)){
+                weapon.Set(WeaponCommands.hold);
+                if(InputController.mouseAction(ICActions.keyDown, 0)){
+                    weapon.Attack(DamageTypes.PLY_MELEE);
+                }
+            } else if (InputController.mouseAction(ICActions.key, 2)){
+                weapon.Set(WeaponCommands.point);
+            } else if(Input.GetKey(KeyCode.Alpha2)) {
+                weapon.Set(WeaponCommands.store);
+            } else {
+                weapon.Set(WeaponCommands.sheath);
+            }
         }
 
-        if(InputController.Shot(ICActions.keyDown) && testProjectile != null){
+        if(InputController.Shot(ICActions.keyDown) && testProjectile != null && status.canShoot){
             var proj = Instantiate(testProjectile);
             proj.AddComponent<Damage>();
             proj.GetComponent<Damage>().setDamage(DamageTypes.PLY_BULLET, 20);
