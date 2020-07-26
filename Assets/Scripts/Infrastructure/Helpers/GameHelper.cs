@@ -4,7 +4,16 @@ using UnityEngine;
 
 public static class GameHelper
 {
-    public static GameManagerScript GameManager { get => GameObject.Find("GameManager").GetComponent<GameManagerScript>(); }
-    public static PlayerController Player {get => GameObject.Find("Player").GetComponent<PlayerController>(); }
+    private static GameManagerScript gameManager;
+    public static GameManagerScript GameManager { get => gameManager ?? GetGameManager(); set => gameManager = value; }
+    private static GameManagerScript GetGameManager(){ return gameManager = GameObject.Find("GameManager").GetComponent<GameManagerScript>(); }
+    
+    private static PlayerController player;
+    public static PlayerController Player { get => player ?? GetPlayerController(); set => player = value; }
+    private static PlayerController GetPlayerController(){ return player = GameObject.Find("Player").GetComponent<PlayerController>(); }
 
+    public static void ClearCache(){
+        gameManager = null;
+        player = null;
+    }
 }
