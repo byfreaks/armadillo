@@ -38,16 +38,16 @@ namespace AI
         {
             //Update target position
             targetPosition = target.GetComponent<Rigidbody2D>().position;
-            
+
             //Check conditions to keep at this behaviour
             if(checkBehaviourConditions())
             {
                 //Update
                 moveDirection = (targetPosition.x - ec.rb.position.x > 0) ? 1 : -1;               
-                ec.rb.velocity = new Vector2(ec.moveSpeed * moveDirection, ec.rb.velocity.y);
+                ec.rb.velocity = new Vector2(ec.MoveSpeed * moveDirection, ec.rb.velocity.y);
             }
             else
-                if(target.name == "Player") ec.nextBehaviour = new MeleeAttack(ec, target);
+                if(target.name == "Player") ec.CurrentBehaviour = new MeleeAttack(ec, target);
         }
         public override void final()
         {
@@ -61,7 +61,7 @@ namespace AI
         public override bool checkBehaviourConditions()
         {
             //Far from his target
-            if(Mathf.Abs(targetPosition.x - ec.rb.position.x) > ec.closeDistance) return true;
+            if(Mathf.Abs(targetPosition.x - ec.rb.position.x) > ec.ContactDistance) return true;
             //Close to his target
             else return false;
         }
