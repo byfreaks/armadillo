@@ -24,12 +24,7 @@ namespace AI{
         {
             GameObject enemy = Instantiate(prefabEnemy);
             EnemyController ec = enemy.GetComponent<EnemyController>();
-
-            //Set values
-            enemy.transform.position = transform.position;
-            ec.moveSpeed = enemySpeed;
-            ec.currentContext = context;
-            ec.currentObjective = objective;
+            ec.enemyConstructor(transform.position,enemySpeed,context,objective);
 
             return enemy;
         }
@@ -38,12 +33,7 @@ namespace AI{
         {
             GameObject enemy = Instantiate(prefabEnemy);
             EnemyController ec = enemy.GetComponent<EnemyController>();
-
-            //Set values
-            enemy.transform.position = transform.position;
-            ec.moveSpeed = enemySpeed;
-            ec.currentContext = context;
-            ec.currentObjective = objective;
+            ec.enemyConstructor(transform.position,enemySpeed,context,objective);
 
             return enemy;
         }

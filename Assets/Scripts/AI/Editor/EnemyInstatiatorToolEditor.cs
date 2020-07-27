@@ -13,10 +13,8 @@ namespace AI{
         {
 
             DrawDefaultInspector();
-            //Referencia al componente Health para poder acceder a sus propiedades y métodos.
             EnemyInstantiatorTool tool = (EnemyInstantiatorTool) target;
             
-            //Botones de acción para ejecutar los distintos métodos descritos en el componente Health.
             EditorGUILayout.Space(20);
             EditorGUILayout.LabelField("Actions");
             if(GUILayout.Button("Create Enemy"))
