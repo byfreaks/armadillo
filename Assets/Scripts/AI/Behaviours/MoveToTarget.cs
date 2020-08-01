@@ -46,8 +46,6 @@ namespace AI
                 moveDirection = (targetPosition.x - ec.rb.position.x > 0) ? 1 : -1;               
                 ec.rb.velocity = new Vector2(ec.MoveSpeed * moveDirection, ec.rb.velocity.y);
             }
-            else
-                if(target.name == "Player") ec.CurrentBehaviour = new MeleeAttack(ec, target);
         }
         public override void final()
         {
@@ -63,7 +61,14 @@ namespace AI
             //Far from his target
             if(Mathf.Abs(targetPosition.x - ec.rb.position.x) > ec.ContactDistance) return true;
             //Close to his target
-            else return false;
+            else{
+                ec.StartCoroutine(
+                    ec.BehaviourTransition(
+                        nextBehaviour: new MeleeAttack(ec,target)
+                    )
+                );
+                return false;
+            } 
         }
 
         public override string getBehaviourName(){

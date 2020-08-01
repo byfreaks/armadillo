@@ -43,8 +43,6 @@ namespace AI
             {
                 //Do Nothing...
             }
-            else
-                ec.CurrentBehaviour = new MoveToTarget(ec, target);
         }
         public override void final()
         {
@@ -57,7 +55,16 @@ namespace AI
         public override bool checkBehaviourConditions()
         {
             //Far from his target
-            if(Mathf.Abs(targetPosition.x - ec.rb.position.x) > ec.ContactDistance) return false;
+            if(Mathf.Abs(targetPosition.x - ec.rb.position.x) > ec.ContactDistance)
+            {
+                ec.StartCoroutine(
+                    ec.BehaviourTransition(
+                        nextBehaviour: new MoveToTarget(ec,target)
+                    )
+                );
+                return false;
+            } 
+                
             //Close to his target
             else return true;
         }

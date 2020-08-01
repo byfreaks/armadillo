@@ -57,7 +57,6 @@ namespace AI
                 updateAction();
                 checkActionEnd();
             }
-            else ec.CurrentBehaviour = new Idle(ec);
         }
         public override void final()
         {

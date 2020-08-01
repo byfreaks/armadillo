@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AI;
 
 public class CarController : MonoBehaviour
 {
@@ -58,11 +59,16 @@ public class CarController : MonoBehaviour
     }
     public void unlinkDriver(){
         this.driver = null;
+        if(getNumberOfPassangers() > 0)
+            passengers[0].GetComponent<EnemyController>().CurrentObjective = EnemyObjective.Drive;
     }
     public void moveTo(Vector2 direction, float speed){
         rb.velocity = speed * direction;
     }
-
+    public bool hasDriver()
+    {
+        return (driver != null);
+    }
     //Passengers methods
     public void linkAsPassenger(GameObject passenger){
         this.passengers.Add(passenger);

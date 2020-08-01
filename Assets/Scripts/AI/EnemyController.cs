@@ -23,7 +23,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private EnemyContext currentContext;
     [SerializeField] private GameObject currentVehicle;
     private EnemyBehaviour currentBehaviour;
-    private bool blockUpdate = false;
+    [SerializeField] private bool blockUpdate = false;
 
     #region Unity Engine Loop Methods 
     // Start is called before the first frame update
@@ -52,7 +52,12 @@ public class EnemyController : MonoBehaviour
         if(!blockUpdate)
         { 
             CurrentBehaviour.update();
-            if(!hc.IsAlive) CurrentBehaviour = new Dead(this); //[TEST ONLY]
+            if(!hc.IsAlive && CurrentBehaviour.getBehaviourName() != "Dead") 
+                StartCoroutine(
+                    BehaviourTransition(
+                        nextBehaviour: new Dead(this)
+                    )
+                );
         }
     }
     #endregion
@@ -65,7 +70,11 @@ public class EnemyController : MonoBehaviour
             if(damageFrom.HasFlag(dmg.type)){
                 hc.decrementHealthPoints( dmg.damagePoints );
                 if(!hc.IsAlive && CurrentBehaviour.getBehaviourName() != "Dead"){
-                    CurrentBehaviour = new Dead(this);
+                    StartCoroutine(
+                        BehaviourTransition(
+                            nextBehaviour: new Dead(this)
+                        )
+                    );
                 }
             }
         }
@@ -90,15 +99,38 @@ public class EnemyController : MonoBehaviour
     //Method called when currentContext or currentObjective are modified
     void calculateNextBehaviour()
     {
-        if(CurrentContext == EnemyContext.SameCar && CurrentObjective == EnemyObjective.MeleeAttack) CurrentBehaviour = new MoveToTarget(this, GameObject.Find("Player"));
-        if(CurrentContext == EnemyContext.OtherCar && CurrentObjective == EnemyObjective.Drive) CurrentBehaviour = new Driver(this,currentVehicle.GetComponent<CarController>());
-        if(CurrentContext == EnemyContext.OtherCar && CurrentObjective == EnemyObjective.MeleeAttack) CurrentBehaviour = new Passenger(this,currentVehicle.GetComponent<CarController>());
+        if(CurrentContext == EnemyContext.SameCar && CurrentObjective == EnemyObjective.MeleeAttack) 
+            StartCoroutine(
+                BehaviourTransition(
+                    nextBehaviour: new MoveToTarget(this, GameObject.Find("Player")),
+                    secondsBefore: 1f
+                )
+            );
+        if(CurrentContext == EnemyContext.OtherCar && CurrentObjective == EnemyObjective.MeleeAttack) 
+            StartCoroutine(
+                BehaviourTransition(
+                    nextBehaviour: new Passenger(this,currentVehicle.GetComponent<CarController>()),
+                    secondsBefore: 1f
+                )
+            );
+        if(CurrentContext == EnemyContext.OtherCar && CurrentObjective == EnemyObjective.Drive) 
+            StartCoroutine(
+                BehaviourTransition(
+                    nextBehaviour: new Driver(this,currentVehicle.GetComponent<CarController>()),
+                    secondsBefore: 1f
+                )
+            );
     }
    
-    IEnumerator BehaviourTransitionTime()
+    public IEnumerator BehaviourTransition(EnemyBehaviour nextBehaviour, float secondsBefore = 0, float secondsDuring = 0,float secondsAfter = 0)
     {
         blockUpdate = true;
-        yield return new WaitForSeconds(1); //[HARDCODE]
+        if(secondsBefore > 0) yield return new WaitForSeconds(secondsBefore);
+        if(currentBehaviour!=null) currentBehaviour.final(); //END CURRENT BEHAVIOUR
+        if(secondsDuring > 0) yield return new WaitForSeconds(secondsDuring);
+        currentBehaviour = nextBehaviour; //SET NEW BEHAVIOUR
+        currentBehaviour.init(); //INIT BEHAVIOUR
+        if(secondsAfter > 0) yield return new WaitForSeconds(secondsAfter);
         blockUpdate = false;
     }
     #endregion
@@ -133,16 +165,6 @@ public class EnemyController : MonoBehaviour
         }
         get { return currentContext; }
     }
-    public EnemyBehaviour CurrentBehaviour
-    {
-        set
-        {
-            if(currentBehaviour!=null) currentBehaviour.final();
-            StartCoroutine(BehaviourTransitionTime());
-            currentBehaviour = value;
-            currentBehaviour.init();
-        }
-        get { return currentBehaviour; }
-    }
+    public EnemyBehaviour CurrentBehaviour {get { return currentBehaviour; } }
     #endregion
 }

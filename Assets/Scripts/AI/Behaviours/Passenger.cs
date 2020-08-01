@@ -22,10 +22,8 @@ namespace AI
         {  
             cc.linkAsPassenger(ec.gameObject);
 
-            //Debug
-            Debug.Log("Start: Passenger");
-            ec.sr.color = new Color32(80,97,31,90);
-            //
+            Debug.Log("Start: Passenger");  //[DEBUG]
+            ec.sr.color = new Color32(80,97,31,90); //[DEBUG]
         }
         public override void update()
         {   
@@ -34,14 +32,11 @@ namespace AI
             {
                 
             }
-            else ec.CurrentBehaviour = new Idle(ec);
         }
         public override void final()
         {
             cc.unlinkPassenger(ec.gameObject);
-            //Debug
-            Debug.Log("End: Passenger");
-            //
+            Debug.Log("End: Passenger"); //[DEBUG]
         }
         #endregion
         
