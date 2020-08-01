@@ -89,6 +89,7 @@ public class EnemyController : MonoBehaviour
         {
             Debug.DrawLine(transform.position,(Vector2) transform.position + (hits[1].distance * Vector2.down),Color.red);
             currentVehicle = hits[1].collider.gameObject;
+            if(currentVehicle.name == "Vehicle" && currentContext != EnemyContext.SameCar) CurrentContext = EnemyContext.SameCar; //HARDCODE
         }
         else
             currentVehicle = null;

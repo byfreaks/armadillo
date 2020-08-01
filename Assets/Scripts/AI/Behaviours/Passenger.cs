@@ -10,11 +10,13 @@ namespace AI
         //Entities controllers
         private EnemyController ec;
         private CarController cc;
+        private GameObject playerVehicle;
         
         public Passenger(EnemyController ec, CarController cc)
         {
             this.ec = ec;
             this.cc = cc;
+            playerVehicle = GameObject.Find("Vehicle");
         }
 
         #region Behaviour Flow
@@ -30,7 +32,14 @@ namespace AI
             //Check conditions to keep at this behaviour
             if(checkBehaviourConditions())
             {
-                
+                if(Mathf.Abs(playerVehicle.transform.position.x - ec.transform.position.x) < 8f)
+                {
+                    cc.unlinkPassenger(ec.gameObject);
+                    //ec.rb.AddForce(new Vector2(5f,700f)); //[HARDCODE]
+                    ec.rb.velocity = Vector2.zero; //[HARDCODE]
+                    ec.transform.position = new Vector3(playerVehicle.transform.position.x, playerVehicle.transform.position.y + 10, playerVehicle.transform.position.z); //[HARDCODE]
+                    ec.BlockUpdate = true;
+                }
             }
         }
         public override void final()

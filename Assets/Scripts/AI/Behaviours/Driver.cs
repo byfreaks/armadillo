@@ -102,11 +102,11 @@ namespace AI
             if(currentAction == DriverActions.MoveInZone || currentAction == DriverActions.MoveToBoardZone)
             {
                 differenceToTarget = currentPoint - (Vector2) cc.transform.position;
-                cc.moveTo(differenceToTarget.normalized, 5f); //[HARDCODE]
+                cc.moveTo(differenceToTarget.normalized, 6.5f); //[HARDCODE]
             }
             else if(currentAction == DriverActions.Escape)
             {
-                cc.moveTo(Vector2.right, 10f); //[HARDCODE]
+                cc.moveTo(Vector2.right, 15f); //[HARDCODE]
             }
             else if(currentAction == DriverActions.Idle)
             {
