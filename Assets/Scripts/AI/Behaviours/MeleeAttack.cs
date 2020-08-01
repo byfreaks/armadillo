@@ -33,7 +33,6 @@ namespace AI
             ec.sr.color = new Color32(230,83,83,90);
             //
         }
-
         public override void update()
         {
             //Update target position

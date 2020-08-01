@@ -12,6 +12,7 @@ public class CarController : MonoBehaviour
 
     [Header("Passenger")]
     public List<GameObject> passengers;
+    public List<GameObject> weapons;
     public GameObject passengerSeat;
     public float distanceBetweenSeats;
 
@@ -38,30 +39,51 @@ public class CarController : MonoBehaviour
         //Update entities positions
         if(passengers.Count > 0)
         {
-            for(int i=0; i<passengers.Count;i++)
-                passengers[i].transform.position = new Vector2(passengerSeat.transform.position.x - (distanceBetweenSeats*i),passengerSeat.transform.position.y);
+            int i=0;
+            for(;i<weapons.Count;i++)
+                weapons[i].transform.position = new Vector2(passengerSeat.transform.position.x - (distanceBetweenSeats*i),passengerSeat.transform.position.y);
+            for(int j=0;j<passengers.Count;j++,i++)
+                passengers[j].transform.position = new Vector2(passengerSeat.transform.position.x - (distanceBetweenSeats*i),passengerSeat.transform.position.y);
         }
         if(driver != null) driver.transform.position = driverSeat.transform.position;
+        
+        //Behaviour when there isn't driver
+        if(driver == null)
+            moveTo(Vector2.left,10f);
     }
 
-    public void moveTo(int direction, float speed){
-        rb.velocity = new Vector2(speed * direction, rb.velocity.y);
-    }
-
-    public void linkAsPassenger(GameObject passenger){
-        this.passengers.Add(passenger);
-    }
-
+    //Driver methods
     public void linkAsDriver(GameObject driver){
         this.driver = driver;
     }
+    public void unlinkDriver(){
+        this.driver = null;
+    }
+    public void moveTo(Vector2 direction, float speed){
+        rb.velocity = speed * direction;
+    }
 
+    //Passengers methods
+    public void linkAsPassenger(GameObject passenger){
+        this.passengers.Add(passenger);
+    }
     public void unlinkPassenger(GameObject passenger){
         this.passengers.Remove(passenger);
     }
+    public int getNumberOfPassangers(){
+        return this.passengers.Count;
+    }
 
-    public void unlinkDriver(){
-        this.driver = null;
+    //Weapon methods
+    public void linkAsWeapon(GameObject weapon){
+        this.weapons.Add(weapon);
+    }
+    public int getNumberOfActiveWeapons()
+    {
+        int count = 0;
+        for (int i=0;i<weapons.Count;i++)
+            if(weapons[i].GetComponent<TorretController>().isActive()) count++;
+        return count;
     }
 
 }

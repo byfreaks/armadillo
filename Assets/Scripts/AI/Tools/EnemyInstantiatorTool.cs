@@ -29,11 +29,11 @@ namespace AI{
             return enemy;
         }
 
-        public GameObject createEnemy(float enemySpeed, EnemyContext context, EnemyObjective objective)
+        public GameObject createEnemy(float enemySpeed, EnemyContext context, EnemyObjective objective, GameObject vehicle = null)
         {
             GameObject enemy = Instantiate(prefabEnemy);
             EnemyController ec = enemy.GetComponent<EnemyController>();
-            ec.enemyConstructor(transform.position,enemySpeed,context,objective);
+            ec.enemyConstructor(transform.position,enemySpeed,context,objective,vehicle);
 
             return enemy;
         }
@@ -46,13 +46,13 @@ namespace AI{
             //Set values
             enemyCar.transform.position = transform.position;
             //Create Driver
-            createEnemy(5f,EnemyContext.OtherCar,EnemyObjective.Drive);
+            createEnemy(5f,EnemyContext.OtherCar,EnemyObjective.Drive, enemyCar);
             //Create Torrets
             for(int i=0; i<numberOfTorrets;i++)
                 cc.linkAsPassenger(createTorret());
             //Create Passengers
             for(int i=0; i<numberOfPassengers;i++)
-                createEnemy(5f,EnemyContext.OtherCar,EnemyObjective.MeleeAttack);
+                createEnemy(5f,EnemyContext.OtherCar,EnemyObjective.MeleeAttack,enemyCar);
 
             return enemyCar;
         }

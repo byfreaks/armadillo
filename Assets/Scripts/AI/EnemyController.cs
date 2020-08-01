@@ -23,6 +23,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private EnemyContext currentContext;
     [SerializeField] private GameObject currentVehicle;
     private EnemyBehaviour currentBehaviour;
+    private bool blockUpdate = false;
 
     #region Unity Engine Loop Methods 
     // Start is called before the first frame update
@@ -48,7 +49,11 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CurrentBehaviour.update();
+        if(!blockUpdate)
+        { 
+            CurrentBehaviour.update();
+            if(!hc.IsAlive) CurrentBehaviour = new Dead(this); //[TEST ONLY]
+        }
     }
     #endregion
     
@@ -86,19 +91,30 @@ public class EnemyController : MonoBehaviour
     void calculateNextBehaviour()
     {
         if(CurrentContext == EnemyContext.SameCar && CurrentObjective == EnemyObjective.MeleeAttack) CurrentBehaviour = new MoveToTarget(this, GameObject.Find("Player"));
+        if(CurrentContext == EnemyContext.OtherCar && CurrentObjective == EnemyObjective.Drive) CurrentBehaviour = new Driver(this,currentVehicle.GetComponent<CarController>());
+        if(CurrentContext == EnemyContext.OtherCar && CurrentObjective == EnemyObjective.MeleeAttack) CurrentBehaviour = new Passenger(this,currentVehicle.GetComponent<CarController>());
+    }
+   
+    IEnumerator BehaviourTransitionTime()
+    {
+        blockUpdate = true;
+        yield return new WaitForSeconds(1); //[HARDCODE]
+        blockUpdate = false;
     }
     #endregion
     
     #region Setters&Getters
-    public void enemyConstructor(Vector3 position, float moveSpeed, EnemyContext context, EnemyObjective objective)
+    public void enemyConstructor(Vector3 position, float moveSpeed, EnemyContext context, EnemyObjective objective, GameObject vehicle = null)
     {
         transform.position = position;
         this.MoveSpeed = moveSpeed;
         this.currentContext = context;
         this.currentObjective = objective;
+        this.currentVehicle = vehicle;
     }
     public float ContactDistance {set { contactDistance = value; } get { return contactDistance; }}
     public float MoveSpeed {set { moveSpeed = value; } get { return moveSpeed; }}
+    public bool BlockUpdate {set { blockUpdate = value; } }
     public EnemyObjective CurrentObjective
     {
         set
@@ -122,6 +138,7 @@ public class EnemyController : MonoBehaviour
         set
         {
             if(currentBehaviour!=null) currentBehaviour.final();
+            StartCoroutine(BehaviourTransitionTime());
             currentBehaviour = value;
             currentBehaviour.init();
         }
