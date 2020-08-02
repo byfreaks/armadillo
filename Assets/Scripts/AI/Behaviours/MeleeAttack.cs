@@ -33,7 +33,6 @@ namespace AI
             ec.sr.color = new Color32(230,83,83,90);
             //
         }
-
         public override void update()
         {
             //Update target position
@@ -44,8 +43,6 @@ namespace AI
             {
                 //Do Nothing...
             }
-            else
-                ec.nextBehaviour = new MoveToTarget(ec, target);
         }
         public override void final()
         {
@@ -58,7 +55,16 @@ namespace AI
         public override bool checkBehaviourConditions()
         {
             //Far from his target
-            if(Mathf.Abs(targetPosition.x - ec.rb.position.x) > ec.closeDistance) return false;
+            if(Mathf.Abs(targetPosition.x - ec.rb.position.x) > ec.ContactDistance)
+            {
+                ec.StartCoroutine(
+                    ec.BehaviourTransition(
+                        nextBehaviour: new MoveToTarget(ec,target)
+                    )
+                );
+                return false;
+            } 
+                
             //Close to his target
             else return true;
         }

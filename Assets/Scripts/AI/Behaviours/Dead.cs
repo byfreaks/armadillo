@@ -23,6 +23,7 @@ namespace AI
             
             ec.corpse = ec.gameObject.AddComponent<CorpseController>();
             ec.bc.isTrigger = true;
+            ec.BlockUpdate = true;
             //Debug
             Debug.Log("Start: Dead");
             ec.sr.color = new Color32(84,79,79,255);

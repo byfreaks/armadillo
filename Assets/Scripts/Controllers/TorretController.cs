@@ -52,6 +52,10 @@ public class TorretController : MonoBehaviour
         shooter = null;
     }
 
+    public bool isActive(){
+        return (shooter!=null);
+    }
+
     public void shoot(){
         GameObject projectile = Instantiate(projectileTemplate);
         //Set Damage component
