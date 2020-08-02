@@ -49,16 +49,14 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!blockUpdate)
-        { 
-            CurrentBehaviour.update();
-            if(!hc.IsAlive && CurrentBehaviour.getBehaviourName() != "Dead") 
-                StartCoroutine(
-                    BehaviourTransition(
-                        nextBehaviour: new Dead(this)
-                    )
-                );
-        }
+        if(blockUpdate) return;
+        CurrentBehaviour.update();
+        if(!hc.IsAlive && CurrentBehaviour.getBehaviourName() != "Dead") 
+            StartCoroutine(
+                BehaviourTransition(
+                    nextBehaviour: new Dead(this)
+                )
+            );
     }
     #endregion
     
@@ -107,7 +105,7 @@ public class EnemyController : MonoBehaviour
                     secondsBefore: 1f
                 )
             );
-        if(CurrentContext == EnemyContext.OtherCar && CurrentObjective == EnemyObjective.MeleeAttack) 
+        if(CurrentContext == EnemyContext.OtherCar && CurrentObjective == EnemyObjective.MeleeAttack && currentVehicle!= null) 
             StartCoroutine(
                 BehaviourTransition(
                     nextBehaviour: new Passenger(this,currentVehicle.GetComponent<CarController>()),
@@ -118,6 +116,13 @@ public class EnemyController : MonoBehaviour
             StartCoroutine(
                 BehaviourTransition(
                     nextBehaviour: new Driver(this,currentVehicle.GetComponent<CarController>()),
+                    secondsBefore: 1f
+                )
+            );
+        else
+            StartCoroutine(
+                BehaviourTransition(
+                    nextBehaviour: new Idle(this),
                     secondsBefore: 1f
                 )
             );
