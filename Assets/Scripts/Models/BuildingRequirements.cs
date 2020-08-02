@@ -5,10 +5,10 @@ public class BuildingRequirements{
 
     //Directional requirements
     
-    [SerializeField] private bool top;
-    [SerializeField] private bool bottom;
-    [SerializeField] private bool right;
-    [SerializeField] private bool left;
+    [SerializeField] private bool top = false;
+    [SerializeField] private bool bottom = false;
+    [SerializeField] private bool right = false;
+    [SerializeField] private bool left = false;
 
     public bool Top { get => top; }
     public bool Bottom { get => bottom; }

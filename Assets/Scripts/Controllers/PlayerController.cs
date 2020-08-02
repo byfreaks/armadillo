@@ -15,21 +15,21 @@ public class PlayerController : MonoBehaviour
 
     //Movement Settings
     [SerializeField]
-    private float moveSpeed;
+    private float moveSpeed = 10;
     [SerializeField]
-    private float jumpForce;
+    private float jumpForce = 260;
 
     //Sprite Settings
     [SerializeField]
-    private Sprite sprite;
+    private Sprite sprite = null;
 
     //Weapon Settings
-    public WeaponController EquipedWeapon;
+    public WeaponController EquipedWeapon = null;
 
     private DamageTypes damageFrom = DamageTypes.ENM_DAMAGE;
 
     [SerializeField] 
-    private GameObject testProjectile;
+    private GameObject testProjectile = null;
 
     [SerializeField]
     public struct PlayerStatus{
