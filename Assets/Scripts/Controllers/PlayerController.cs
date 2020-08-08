@@ -23,6 +23,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Sprite sprite = null;
 
+    //Player Controllers
+    private PlayerInput input;
+
     //Weapon Settings
     public WeaponController EquipedWeapon = null;
 
@@ -74,6 +77,7 @@ public class PlayerController : MonoBehaviour
         rb.freezeRotation = true;
         bc = gameObject.AddComponent<BoxCollider2D>();
         hc = gameObject.AddComponent<Health>();
+        input = gameObject.AddComponent<PlayerInput>();
 
         //Setup
         //TODO: consider setting up component as they are created to declutter code
@@ -108,10 +112,10 @@ public class PlayerController : MonoBehaviour
         }
 
         if(status.canMove)
-            rb.velocity = new Vector2( InputController.HorizontalMovement() * moveSpeed ,rb.velocity.y);
+            rb.velocity = new Vector2(input.AxisHorizontal * moveSpeed, rb.velocity.y);
 
         //Jump
-        if(InputController.Jump(ICActions.keyDown) && status.canMove){
+        if(input.Jump && status.canMove){
             rb.AddForce( new Vector2(0, jumpForce) );
         }
 
@@ -133,12 +137,12 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if(InputController.Shot(ICActions.keyDown) && testProjectile != null && status.canShoot){
+        if(input.Shoot && testProjectile != null && status.canShoot){
             var proj = Instantiate(testProjectile);
             proj.AddComponent<Damage>();
             proj.GetComponent<Damage>().setDamage(DamageTypes.PLY_BULLET, 20);
             proj.transform.position = this.transform.position;
-            proj.GetComponent<ProjectileController>().Setup( Camera.main.ScreenToWorldPoint(InputController.MousePosition()) - this.transform.position, 19.8f  );
+            proj.GetComponent<ProjectileController>().Setup( input.GetCursorDirection(this.transform), 19.8f  );
         }
 
     }
