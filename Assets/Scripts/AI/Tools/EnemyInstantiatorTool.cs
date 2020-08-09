@@ -6,10 +6,13 @@ namespace AI{
     [ExecuteInEditMode]
     public class EnemyInstantiatorTool : MonoBehaviour
     {
+
+
         [Header("Templates")]
         public GameObject prefabEnemy;
         public GameObject prefabCar;
         public GameObject prefabTorret;
+        [HideInInspector] public Encounter scriptedEncounter = null;
 
         [Header("Enemy Properties")]
         public float enemySpeed;
@@ -19,6 +22,17 @@ namespace AI{
         [Header("Enemy Car Properties")]
         public int numberOfPassengers;
         public int numberOfTorrets;
+
+        public void CreateFromEncounter(Encounter enc){
+            //TODO: proper encounter instantiator
+            //This method is a HACK. Instantiatior tools should have mehtods to instantiate objects using outside reference (maybe :) )
+            this.prefabCar = enc.Vehicle;
+            var vehicle = createCar();
+            foreach(GameObject passenger in enc.Passangers){
+                this.prefabEnemy = enc.Passangers[0];
+                createEnemy(5f, EnemyContext.OtherCar, EnemyObjective.RangeAttack, vehicle);
+            }
+        }
 
         public GameObject createEnemy()
         {

@@ -9,9 +9,17 @@ namespace AI{
     [CanEditMultipleObjects]
     public class EnemyInstatiatorToolEditor: Editor
     {
+
+        SerializedProperty EncounterData;
+
+        private void OnEnable() {
+            EncounterData = serializedObject.FindProperty("scriptedEncounter");
+        }
+
         public override void OnInspectorGUI()
         {
 
+            serializedObject.Update();
             DrawDefaultInspector();
             EnemyInstantiatorTool tool = (EnemyInstantiatorTool) target;
             
@@ -29,6 +37,18 @@ namespace AI{
             {
                 tool.createTorret();
             }
+
+            EditorGUILayout.Space(20);
+            EditorGUILayout.LabelField("Spawn Encounter");
+            
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.PropertyField(EncounterData, new GUIContent(""));
+            if(GUILayout.Button("Create From Encounter") && EncounterData != null)
+            {
+                var enc = EncounterData.objectReferenceValue as System.Object as Encounter;
+                tool.CreateFromEncounter(enc);
+            }
+            EditorGUILayout.EndHorizontal();
 
             serializedObject.ApplyModifiedProperties();
         }
