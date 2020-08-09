@@ -31,9 +31,6 @@ public class PlayerController : MonoBehaviour
 
     private DamageTypes damageFrom = DamageTypes.ENM_DAMAGE;
 
-    [SerializeField] 
-    private GameObject testProjectile = null;
-
     [SerializeField]
     public struct PlayerStatus{
         public bool dead;
@@ -121,12 +118,16 @@ public class PlayerController : MonoBehaviour
 
         //Handle weapons
         if(EquipedWeapon!=null){
+            //Equip
+            //TODO: create and user a Wield() in weaponcontroller method instead
             var weapon = EquipedWeapon;
             weapon.wielderTransform = this.transform;
+            weapon.Wielder = WeaponController.wielder.player;
+
             if(InputController.mouseAction(ICActions.key, 1)){
                 weapon.Set(WeaponCommands.hold);
                 if(InputController.mouseAction(ICActions.keyDown, 0)){
-                    weapon.Attack(DamageTypes.PLY_MELEE);
+                    weapon.Attack(input.GetCursorDirection(this.transform));
                 }
             } else if (InputController.mouseAction(ICActions.key, 2)){
                 weapon.Set(WeaponCommands.point);
@@ -135,14 +136,6 @@ public class PlayerController : MonoBehaviour
             } else {
                 weapon.Set(WeaponCommands.sheath);
             }
-        }
-
-        if(input.Shoot && testProjectile != null && status.canShoot){
-            var proj = Instantiate(testProjectile);
-            proj.AddComponent<Damage>();
-            proj.GetComponent<Damage>().setDamage(DamageTypes.PLY_BULLET, 20);
-            proj.transform.position = this.transform.position;
-            proj.GetComponent<ProjectileController>().Setup( input.GetCursorDirection(this.transform), 19.8f  );
         }
 
     }
