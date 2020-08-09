@@ -9,34 +9,35 @@ public class WeaponController : MonoBehaviour
         hold,
         point
     }
-    [SerializeField] private aimStyle WeaponAimStyle = aimStyle.hold;
 
-    enum weaponType{
+    public enum weaponType{
         melee,
         ranged
     }
-    [SerializeField] private weaponType WeaponType = weaponType.melee;
 
     public enum wielder{
         enemy,
         player
     }
-    public wielder Wielder = wielder.player;
 
-    public DamageTypes DamageType { get => GetDamageType(); }
-
-    [Header("Config")]
+    //GENERAL CONFIG
     public int damage;
-    public GameObject hitbox;
     public int spriteOffset = 90;
-    private Transform gunpoint = null;
-    public GameObject projectile = null;
-
-    [Header("Info")]
-    public WeaponCommands currentCommand;
+    public DamageTypes DamageType { get => GetDamageType(); }
+    public wielder Wielder = wielder.player;
+    [SerializeField] private aimStyle WeaponAimStyle = aimStyle.hold;
+    [HideInInspector] public WeaponCommands currentCommand;
     [HideInInspector] public Transform wielderTransform;
-
     private GameObject currentAttack;
+
+    [HideInInspector] public weaponType WeaponType = weaponType.melee;
+
+    //MELEE CONFIG
+    [HideInInspector] public GameObject hitbox;
+    //RANGED CONFIG
+    private Transform gunpoint = null;
+    [HideInInspector] public GameObject projectile = null;
+    [HideInInspector] public float fireRate = 100f; //Test field, not in use
 
     //Components
     private SpriteRenderer sr;

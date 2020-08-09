@@ -752,6 +752,11 @@ PrefabInstance:
       propertyPath: hitbox
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 2017736812954544512, guid: 7ed33c33a63f2d34db4f4d876bd1d416,
+        type: 3}
+      propertyPath: fireRate
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 4205975020233238246, guid: 7ed33c33a63f2d34db4f4d876bd1d416,
         type: 3}
       propertyPath: m_LocalPosition.x
