@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 [ExecuteInEditMode]
 public class Health : MonoBehaviour
@@ -10,6 +11,8 @@ public class Health : MonoBehaviour
     [SerializeField]
     private int minHealthPoints;
     private bool alive;
+    private GameObject damageFeedback;
+    private IEnumerator coroutine;
 
     private void Awake() {
         this.healthPoints = 100;
@@ -55,10 +58,29 @@ public class Health : MonoBehaviour
     } 
 
     public void decrementHealthPoints(int points){
+        coroutine = activeDamageFeedback();
+        StartCoroutine(coroutine);
         this.HealthPoints = this.HealthPoints - points;
     }
 
     public void killEntity(){
         this.HealthPoints = 0;
+    }
+
+    public void setDamageFeedback(GameObject feedback){
+        this.damageFeedback = feedback;
+    }
+
+    public IEnumerator activeDamageFeedback(){
+        var df = this.damageFeedback.GetComponent<SpriteRenderer>();
+        df.enabled = false;
+        df.enabled = true;
+        for (float ft = 1f; ft >= 0; ft -= 0.09f) 
+        {
+            Color c = df.color;
+            c.a = ft;
+            df.color = c;
+            yield return new WaitForSeconds(.1f);
+        }
     }
 }
