@@ -29,8 +29,6 @@ public class PlayerController : MonoBehaviour
     //Weapon Settings
     public WeaponController EquipedWeapon = null;
 
-    public GameObject DamageFeedback;
-
     private DamageTypes damageFrom = DamageTypes.ENM_DAMAGE;
 
     [SerializeField] 
@@ -79,7 +77,6 @@ public class PlayerController : MonoBehaviour
         rb.freezeRotation = true;
         bc = gameObject.AddComponent<BoxCollider2D>();
         hc = gameObject.AddComponent<Health>();
-        hc.setDamageFeedback(DamageFeedback);
         input = gameObject.AddComponent<PlayerInput>();
 
         //Setup
