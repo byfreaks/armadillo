@@ -30,7 +30,7 @@ namespace AI{
             var vehicle = createCar();
             foreach(GameObject passenger in enc.Passangers){
                 this.prefabEnemy = enc.Passangers[0];
-                createEnemy(5f, EnemyContext.OtherCar, EnemyObjective.RangeAttack, vehicle);
+                createEnemy(5f, EnemyContext.OtherCar, EnemyType.Shooter, vehicle);
             }
         }
 
