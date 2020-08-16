@@ -17,7 +17,7 @@ namespace AI{
         [Header("Enemy Properties")]
         public float enemySpeed;
         public EnemyContext context;
-        public EnemyObjective objective;
+        public EnemyType enemyType;
 
         [Header("Enemy Car Properties")]
         public int numberOfPassengers;
@@ -38,16 +38,16 @@ namespace AI{
         {
             GameObject enemy = Instantiate(prefabEnemy);
             EnemyController ec = enemy.GetComponent<EnemyController>();
-            ec.enemyConstructor(transform.position,enemySpeed,context,objective);
+            ec.enemyConstructor(transform.position,enemySpeed,context,enemyType);
 
             return enemy;
         }
 
-        public GameObject createEnemy(float enemySpeed, EnemyContext context, EnemyObjective objective, GameObject vehicle = null)
+        public GameObject createEnemy(float enemySpeed, EnemyContext context, EnemyType enemyType, GameObject vehicle = null)
         {
             GameObject enemy = Instantiate(prefabEnemy);
             EnemyController ec = enemy.GetComponent<EnemyController>();
-            ec.enemyConstructor(transform.position,enemySpeed,context,objective,vehicle);
+            ec.enemyConstructor(transform.position,enemySpeed,context,enemyType,vehicle);
 
             return enemy;
         }
@@ -60,13 +60,13 @@ namespace AI{
             //Set values
             enemyCar.transform.position = transform.position;
             //Create Driver
-            createEnemy(5f,EnemyContext.OtherCar,EnemyObjective.Drive, enemyCar);
+            createEnemy(5f,EnemyContext.OtherCar,EnemyType.Driver, enemyCar);
             //Create Torrets
             for(int i=0; i<numberOfTorrets;i++)
                 cc.linkAsPassenger(createTorret());
             //Create Passengers
             for(int i=0; i<numberOfPassengers;i++)
-                createEnemy(5f,EnemyContext.OtherCar,EnemyObjective.MeleeAttack,enemyCar);
+                createEnemy(5f,EnemyContext.OtherCar,EnemyType.Fighter,enemyCar);
 
             return enemyCar;
         }

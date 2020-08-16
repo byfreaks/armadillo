@@ -9,15 +9,15 @@ public class PlayerController : MonoBehaviour
     private BoxCollider2D bc;
     private SpriteRenderer sr;
     private Health hc;
+    private Animator ani;
 
     //Weapon
     private WeaponController wc;
 
     //Movement Settings
-    [SerializeField]
-    private float moveSpeed = 10;
-    [SerializeField]
-    private float jumpForce = 260;
+    [SerializeField] private float moveSpeed = 10;
+    [SerializeField] private float jumpForce = 260;
+    [SerializeField] private LayerMask jumpable;
 
     //Sprite Settings
     [SerializeField]
@@ -29,6 +29,9 @@ public class PlayerController : MonoBehaviour
     //Weapon Settings
     public WeaponController EquipedWeapon = null;
 
+    //Animation
+    public RuntimeAnimatorController animationController;
+
     private DamageTypes damageFrom = DamageTypes.ENM_DAMAGE;
 
     [SerializeField]
@@ -36,11 +39,13 @@ public class PlayerController : MonoBehaviour
         public bool dead;
         public bool canMove;
         public bool canShoot;
+        public bool grounded;
 
         public void init(){
             dead = false;
             canMove = true;
             canShoot = false;
+            grounded = false;
         }
 
         public void set_dead(){
@@ -48,6 +53,7 @@ public class PlayerController : MonoBehaviour
             canMove = false;
             GameHelper.GameManager.PlayerIsDead();
         }
+
     }
     PlayerStatus status = new PlayerStatus();
     
@@ -60,6 +66,14 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+    }
+
+    bool GroundCollisions(){
+        var bottomPos = sr.bounds.min.y +0.16f;
+        var origin = new Vector2( sr.bounds.center.x, bottomPos );
+        var length = 0.32f;
+        Debug.DrawRay(origin, Vector2.down * length, Color.red);
+        return Physics2D.Raycast(origin, Vector2.down, length, jumpable);
     }
 
     void Start()
@@ -75,6 +89,7 @@ public class PlayerController : MonoBehaviour
         bc = gameObject.AddComponent<BoxCollider2D>();
         hc = gameObject.AddComponent<Health>();
         input = gameObject.AddComponent<PlayerInput>();
+        ani = gameObject.AddComponent<Animator>();
 
         //Setup
         //TODO: consider setting up component as they are created to declutter code
@@ -89,6 +104,10 @@ public class PlayerController : MonoBehaviour
             bc = gameObject.AddComponent<BoxCollider2D>();
             //Add old settings to new BC component
         }
+
+        //Animation
+        if(animationController != null)
+            ani.runtimeAnimatorController = animationController;
     }
 
     void PlayerDeath(){
@@ -101,6 +120,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
+        status.grounded = GroundCollisions();
+
         if(!status.dead && !hc.IsAlive){
             status.set_dead();
             this.gameObject.GetComponent<Rigidbody2D>().freezeRotation = false;
@@ -112,7 +133,7 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(input.AxisHorizontal * moveSpeed, rb.velocity.y);
 
         //Jump
-        if(input.Jump && status.canMove){
+        if(input.Jump && status.canMove && status.grounded){
             rb.AddForce( new Vector2(0, jumpForce) );
         }
 
@@ -138,5 +159,20 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if(input.Shoot && testProjectile != null && status.canShoot){
+            var proj = Instantiate(testProjectile);
+            proj.AddComponent<Damage>();
+            proj.GetComponent<Damage>().setDamage(DamageTypes.PLY_BULLET, 20);
+            proj.transform.position = this.transform.position;
+            proj.GetComponent<ProjectileController>().Setup( input.GetCursorDirection(this.transform), 19.8f  );
+        }
+
+        //ANIMATE
+        
+        ani.SetBool("walking", input.AxisHorizontal != 0 && status.grounded); //HACK
+        ani.SetBool("grounded", status.grounded);
+        ani.SetFloat("vertical_speed", rb.velocity.y);
+
+        sr.flipX = input.CursorWorldPos.x < this.transform.position.x;
     }
 }

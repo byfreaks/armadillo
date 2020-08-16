@@ -19,14 +19,13 @@ public class EnemyController : MonoBehaviour
     public CorpseController corpse;
 
     [Header("AI Properties")]
-    [SerializeField] private EnemyObjective currentObjective;
+    [SerializeField] private EnemyType enemyType;
     [SerializeField] private EnemyContext currentContext;
     [SerializeField] private GameObject currentVehicle;
     private EnemyBehaviour currentBehaviour;
     [SerializeField] private bool blockUpdate = false;
 
     #region Unity Engine Loop Methods 
-    // Start is called before the first frame update
     void Start()
     {
         //Create and save component references
@@ -39,22 +38,21 @@ public class EnemyController : MonoBehaviour
         //Calculate First Behaviour
         calculateNextBehaviour();
     }
-
-    //Fixed Update (Physics)
     void FixedUpdate()
     {
         getCurrentVehicle();
     }
-
-    // Update is called once per frame
     void Update()
     {
         if(blockUpdate) return;
         CurrentBehaviour.update();
+        
+        //[AI TRANSITION]: Dead
+        //[REVIEW]: Is it necessary to check each frame if the enemy is alive?
         if(!hc.IsAlive && CurrentBehaviour.getBehaviourName() != "Dead") 
             StartCoroutine(
                 BehaviourTransition(
-                    nextBehaviour: new Dead(this)
+                    nextBehaviour: new Dead(this, currentBehaviour.cc)
                 )
             );
     }
@@ -67,17 +65,17 @@ public class EnemyController : MonoBehaviour
         if(other.TryGetComponent<Damage>(out var dmg)){
             if(damageFrom.HasFlag(dmg.type)){
                 hc.decrementHealthPoints( dmg.damagePoints );
+                //[AI TRANSITION]: Dead
                 if(!hc.IsAlive && CurrentBehaviour.getBehaviourName() != "Dead"){
                     StartCoroutine(
                         BehaviourTransition(
-                            nextBehaviour: new Dead(this)
+                            nextBehaviour: new Dead(this, currentBehaviour.cc)
                         )
                     );
                 }
             }
         }
     }
-    
     //Current Vehicle detection
     void getCurrentVehicle()
     {
@@ -87,6 +85,7 @@ public class EnemyController : MonoBehaviour
         {
             Debug.DrawLine(transform.position,(Vector2) transform.position + (hits[1].distance * Vector2.down),Color.red);
             currentVehicle = hits[1].collider.gameObject;
+            if(currentVehicle.name == "Vehicle" && currentContext != EnemyContext.SameCar) CurrentContext = EnemyContext.SameCar; //[HARDCODE]
         }
         else
             currentVehicle = null;
@@ -94,42 +93,43 @@ public class EnemyController : MonoBehaviour
     #endregion
 
     #region AI Methods
-    //Method called when currentContext or currentObjective are modified
+    //Method called when currentContext or enemyType are modified
     void calculateNextBehaviour()
     {
-        if(CurrentContext == EnemyContext.SameCar && CurrentObjective == EnemyObjective.MeleeAttack) 
+        //[AI TRANSITION]: SameCar && Fighter => MoveToTarget
+        if(CurrentContext == EnemyContext.SameCar && EnemyType == EnemyType.Fighter) 
             StartCoroutine(
                 BehaviourTransition(
                     nextBehaviour: new MoveToTarget(this, GameObject.Find("Player")),
                     secondsBefore: 1f
                 )
             );
-        if(CurrentContext == EnemyContext.OtherCar && CurrentObjective == EnemyObjective.MeleeAttack && currentVehicle!= null) 
+        //[AI TRANSITION]: OtherCar && Fighter => Passenger
+        else if(CurrentContext == EnemyContext.OtherCar && EnemyType == EnemyType.Fighter && currentVehicle!=null) 
             StartCoroutine(
                 BehaviourTransition(
-                    nextBehaviour: new Passenger(this,currentVehicle.GetComponent<CarController>()),
-                    secondsBefore: 1f
+                    nextBehaviour: new Passenger(this,currentVehicle.GetComponent<CarController>())
                 )
             );
-        if(CurrentContext == EnemyContext.OtherCar && CurrentObjective == EnemyObjective.Drive) 
+        //[AI TRANSITION]: OtherCar && Driver => DriveInZone
+        else if(CurrentContext == EnemyContext.OtherCar && EnemyType == EnemyType.Driver) 
             StartCoroutine(
                 BehaviourTransition(
-                    nextBehaviour: new Driver(this,currentVehicle.GetComponent<CarController>()),
-                    secondsBefore: 1f
+                    nextBehaviour: new DriveInZone(this,currentVehicle.GetComponent<CarController>())
                 )
             );
+        //[AI TRANSITION]: Default => Idle
         else
             StartCoroutine(
                 BehaviourTransition(
-                    nextBehaviour: new Idle(this),
-                    secondsBefore: 1f
+                    nextBehaviour: new Idle(this)
                 )
             );
     }
-   
     public IEnumerator BehaviourTransition(EnemyBehaviour nextBehaviour, float secondsBefore = 0, float secondsDuring = 0,float secondsAfter = 0)
     {
         blockUpdate = true;
+        if(currentBehaviour != null) Debug.Log("Transition from: " + currentBehaviour.getBehaviourName() + " to " + nextBehaviour.getBehaviourName()); //[DEBUG]
         if(secondsBefore > 0) yield return new WaitForSeconds(secondsBefore);
         if(currentBehaviour!=null) currentBehaviour.final(); //END CURRENT BEHAVIOUR
         if(secondsDuring > 0) yield return new WaitForSeconds(secondsDuring);
@@ -141,25 +141,25 @@ public class EnemyController : MonoBehaviour
     #endregion
     
     #region Setters&Getters
-    public void enemyConstructor(Vector3 position, float moveSpeed, EnemyContext context, EnemyObjective objective, GameObject vehicle = null)
+    public void enemyConstructor(Vector3 position, float moveSpeed, EnemyContext context, EnemyType enemyType, GameObject vehicle = null)
     {
         transform.position = position;
         this.MoveSpeed = moveSpeed;
         this.currentContext = context;
-        this.currentObjective = objective;
-        this.currentVehicle = vehicle;
+        this.enemyType = enemyType;
+        this.currentVehicle = vehicle;            
     }
     public float ContactDistance {set { contactDistance = value; } get { return contactDistance; }}
     public float MoveSpeed {set { moveSpeed = value; } get { return moveSpeed; }}
     public bool BlockUpdate {set { blockUpdate = value; } }
-    public EnemyObjective CurrentObjective
+    public EnemyType EnemyType
     {
         set
         {
-            currentObjective = value;
+            enemyType = value;
             calculateNextBehaviour();
         }
-        get { return currentObjective; }
+        get { return enemyType; }
     }
     public EnemyContext CurrentContext
     {
