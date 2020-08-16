@@ -5,51 +5,38 @@ using UnityEngine;
 namespace AI
 {
     [System.Serializable]
-    public class Dead : EnemyBehaviour
+    public sealed class  Dead : EnemyBehaviour
     {
+        #region Properties
+        #endregion
 
-        //Entity Data with this Behaviour
-        private EnemyController ec;
+        #region Methods
+        public Dead(EnemyController ec, CarController cc = null) : base(ec, cc){}
+        #endregion Methods
         
-
-        public Dead(EnemyController ec)
-        {
-            this.ec = ec;
-        }
-
-        /* Behaviour flow */
+        #region Behaviour flow
         public override void init()
         {  
-            
+            if(cc != null) cc.unlinkDriver();
             ec.corpse = ec.gameObject.AddComponent<CorpseController>();
             ec.bc.isTrigger = true;
             ec.BlockUpdate = true;
-            //Debug
-            Debug.Log("Start: Dead");
-            ec.sr.color = new Color32(84,79,79,255);
-            //
+            
+            Debug.Log("Start: Dead"); //[DEBUG]
+            ec.sr.color = new Color32(84,79,79,255); //[DEBUG] Sprite Color: Gray
         }
-
-        public override void update()
-        { 
-            //Do Nothing...
-        }
+        public override void update(){}
         public override void final()
         {
-            //Debug
-            Debug.Log("End: Dead");
-            //
+            Debug.Log("End: Dead"); //[DEBUG]
         }
-    
-        /* Helpers */
-        public override bool checkBehaviourConditions()
-        {
-            return true;
-        }
-
+        #endregion
+        
+        #region Helpers
+        public override void checkBehaviourEnd(){}
         public override string getBehaviourName(){
             return "Dead";
         }
-
+        #endregion
     } 
 }

@@ -16,12 +16,13 @@ public class CarController : MonoBehaviour
     public List<GameObject> weapons;
     public GameObject passengerSeat;
     public float distanceBetweenSeats;
+    public bool boardingPosition = false;
 
     [Header("Driver")]
     public GameObject driver;
     public GameObject driverSeat;
 
-    // Start is called before the first frame update
+    #region Unity Engine Loop Methods 
     void Start()
     {
         //Create and save component references
@@ -33,8 +34,6 @@ public class CarController : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
         //
     }
-
-    // Update is called once per frame
     void Update()
     {
         //Update entities positions
@@ -52,44 +51,61 @@ public class CarController : MonoBehaviour
         if(driver == null)
             moveTo(Vector2.left,10f);
     }
+    #endregion
 
-    //Driver methods
-    public void linkAsDriver(GameObject driver){
-        this.driver = driver;
+    #region Methods to operate the entity
+    public bool linkAsDriver(GameObject driver)
+    {
+        if(this.driver == null)
+        {
+            this.driver = driver;
+            return true;
+        }
+        return false;
     }
-    public void unlinkDriver(){
+    public void unlinkDriver()
+    {
+        //[TODO]: Validate that the entity which ask for unlink is the current driver
         this.driver = null;
-        if(getNumberOfPassangers() > 0)
-            passengers[0].GetComponent<EnemyController>().CurrentObjective = EnemyObjective.Drive;
+        //[REVIEW]: This isn't the right place to do this operation
+        if(passengers.Count > 0)
+            passengers[0].GetComponent<EnemyController>().EnemyType = EnemyType.Driver;
     }
-    public void moveTo(Vector2 direction, float speed){
+    public void linkAsPassenger(GameObject passenger)
+    {
+        //[TODO] Limit passengers seats
+        this.passengers.Add(passenger);
+    }
+    public void unlinkPassenger(GameObject passenger)
+    {
+        this.passengers.Remove(passenger);
+    }
+    public void linkAsWeapon(GameObject weapon)
+    {
+        this.weapons.Add(weapon);
+    }
+    public void moveTo(Vector2 direction, float speed)
+    {
         rb.velocity = speed * direction;
     }
+    #endregion
+
+    #region Methods to query the state of the entity
     public bool hasDriver()
     {
         return (driver != null);
     }
-    //Passengers methods
-    public void linkAsPassenger(GameObject passenger){
-        this.passengers.Add(passenger);
-    }
-    public void unlinkPassenger(GameObject passenger){
-        this.passengers.Remove(passenger);
-    }
-    public int getNumberOfPassangers(){
+    public int getNumberOfPassangers()
+    {
         return this.passengers.Count;
-    }
-
-    //Weapon methods
-    public void linkAsWeapon(GameObject weapon){
-        this.weapons.Add(weapon);
     }
     public int getNumberOfActiveWeapons()
     {
+        //[REVIEW]: Find another way to do this query
         int count = 0;
         for (int i=0;i<weapons.Count;i++)
             if(weapons[i].GetComponent<TorretController>().isActive()) count++;
         return count;
     }
-
+    #endregion
 }

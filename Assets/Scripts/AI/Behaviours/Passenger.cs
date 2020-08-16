@@ -5,17 +5,15 @@ using UnityEngine;
 namespace AI
 {
     [System.Serializable]
-    public class Passenger : EnemyBehaviour
+    public sealed class Passenger : EnemyBehaviour
     {
-        //Entities controllers
-        private EnemyController ec;
-        private CarController cc;
-        
-        public Passenger(EnemyController ec, CarController cc)
-        {
-            this.ec = ec;
-            this.cc = cc;
-        }
+        #region Properties
+        private GameObject playerVehicle;
+        #endregion
+
+        #region Methods
+        public Passenger(EnemyController ec, CarController cc) : base(ec, cc){}
+        #endregion
 
         #region Behaviour Flow
         public override void init()
@@ -23,30 +21,36 @@ namespace AI
             cc.linkAsPassenger(ec.gameObject);
 
             Debug.Log("Start: Passenger");  //[DEBUG]
-            ec.sr.color = new Color32(80,97,31,90); //[DEBUG]
+            ec.sr.color = new Color32(1,89,13,250); //[DEBUG] Sprite Color: Green
         }
         public override void update()
         {   
-            //Check conditions to keep at this behaviour
-            if(checkBehaviourConditions())
-            {
-                
-            }
+            //[TODO] Passenger Behaviour
+            checkBehaviourEnd();    
         }
         public override void final()
         {
             cc.unlinkPassenger(ec.gameObject);
+            ec.bc.isTrigger = true; //[HARDCODE]
+            ec.rb.AddForce(new Vector2(5f,700f)); //[HARDCODE]
             Debug.Log("End: Passenger"); //[DEBUG]
         }
         #endregion
         
         #region Behaviour Helpers
-        public override bool checkBehaviourConditions()
+        public override void checkBehaviourEnd()
         {
-            return true;
+            //[AI TRANSITION]: Idle
+            if(cc.boardingPosition)
+                ec.StartCoroutine(
+                    ec.BehaviourTransition(
+                        nextBehaviour: new Idle(ec),
+                        secondsDuring: 1f
+                    )
+                );
         }
-
-        public override string getBehaviourName(){
+        public override string getBehaviourName()
+        {
             return "Passenger";
         }
         #endregion

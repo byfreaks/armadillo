@@ -5,56 +5,43 @@ using UnityEngine;
 namespace AI
 {
     [System.Serializable]
-    public class MeleeAttack : EnemyBehaviour
+    public sealed class MeleeAttack : EnemyBehaviour
     {
-
-        //Attributes
-        private int moveDirection;
-
-        //Target
+        #region Properties
         private GameObject target;
         private Vector2 targetPosition;
-
-        //Entity Data with this Behaviour
-        private EnemyController ec;
+        #endregion
         
-
-        public MeleeAttack(EnemyController ec, GameObject target)
+        #region Methods
+        public MeleeAttack(EnemyController ec, GameObject target) : base(ec)
         {
-            this.ec = ec;
             this.target = target;
+            this.targetPosition = target.transform.position;
         }
+        #endregion
 
-         /* Behaviour flow */
+        #region Behaviour flow
         public override void init()
         {  
-            //Debug
-            Debug.Log("Start: Attack");
-            ec.sr.color = new Color32(230,83,83,90);
-            //
+            Debug.Log("Start: Attack"); //[DEBUG]
+            ec.sr.color = new Color32(230,83,83,90); //[DEBUG]
         }
         public override void update()
         {
-            //Update target position
-            targetPosition = target.GetComponent<Rigidbody2D>().position;
-            
-            //Check conditions to keep at this behaviour
-            if(checkBehaviourConditions())
-            {
-                //Do Nothing...
-            }
+            targetPosition = target.transform.position;
+            //[TODO] Attack 
+            checkBehaviourEnd();
         }
         public override void final()
         {
-            //Debug
-            Debug.Log("End: Attack");
-            //
+            Debug.Log("End: Attack"); //[DEBUG]
         }
-    
-        /* Helpers */
-        public override bool checkBehaviourConditions()
+        #endregion
+
+        #region Helpers
+        public override void checkBehaviourEnd()
         {
-            //Far from his target
+            //[AI TRANSITION]: MoveToTarget(Player)
             if(Mathf.Abs(targetPosition.x - ec.rb.position.x) > ec.ContactDistance)
             {
                 ec.StartCoroutine(
@@ -62,16 +49,12 @@ namespace AI
                         nextBehaviour: new MoveToTarget(ec,target)
                     )
                 );
-                return false;
-            } 
-                
-            //Close to his target
-            else return true;
+            }
         }
-
-        public override string getBehaviourName(){
+        public override string getBehaviourName()
+        {
             return "MeleeAttack";
         }
-
+        #endregion
     } 
 }

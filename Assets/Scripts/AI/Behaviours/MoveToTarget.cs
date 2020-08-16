@@ -5,75 +5,63 @@ using UnityEngine;
 namespace AI
 {
     [System.Serializable]
-    public class MoveToTarget : EnemyBehaviour
+    public sealed class MoveToTarget : EnemyBehaviour
     {
-
-        //Attributes
+        #region Properties
         private int moveDirection;
-
-        //Target
         private GameObject target;
         private Vector2 targetPosition;
+        #endregion
 
-        //Entity Data with this Behaviour
-        private EnemyController ec;
-        
-
-        public MoveToTarget(EnemyController ec, GameObject target)
+        #region Methods
+        public MoveToTarget(EnemyController ec, GameObject target) : base(ec)
         {
-            this.ec = ec;
             this.target = target;
+            this.targetPosition = target.transform.position;
         }
+        #endregion
 
-        /* Behaviour flow */
+        #region Behaviour flow
         public override void init()
         {  
-            //Debug
-            Debug.Log("Start: MoveToTarget");
-            ec.sr.color = new Color32(239,105,9,200);
-            //
+            Debug.Log("Start: MoveToTarget"); //[DEBUG]
+            ec.sr.color = new Color32(239,105,9,200); //[DEBUG]
         }
-
         public override void update()
         {
             //Update target position
-            targetPosition = target.GetComponent<Rigidbody2D>().position;
+            this.targetPosition = target.transform.position;
 
-            //Check conditions to keep at this behaviour
-            if(checkBehaviourConditions())
-            {
-                //Update
-                moveDirection = (targetPosition.x - ec.rb.position.x > 0) ? 1 : -1;               
-                ec.rb.velocity = new Vector2(ec.MoveSpeed * moveDirection, ec.rb.velocity.y);
-            }
+            //Update
+            moveDirection = (targetPosition.x - ec.rb.position.x > 0) ? 1 : -1;               
+            ec.rb.velocity = new Vector2(ec.MoveSpeed * moveDirection, ec.rb.velocity.y);
+
+            checkBehaviourEnd();
         }
         public override void final()
         {
             ec.rb.velocity = Vector2.zero;
-            //Debug
-            Debug.Log("End: MoveToTarget");
-            //
+            
+            Debug.Log("End: MoveToTarget"); //[DEBUG]
         }
-    
-        /* Helpers */
-        public override bool checkBehaviourConditions()
+        #endregion
+
+        #region Helpers
+        public override void checkBehaviourEnd()
         {
-            //Far from his target
-            if(Mathf.Abs(targetPosition.x - ec.rb.position.x) > ec.ContactDistance) return true;
+            //[AI TRANSITION]: MeleeAttack
             //Close to his target
-            else{
+            if(Mathf.Abs(targetPosition.x - ec.rb.position.x) <= ec.ContactDistance)
                 ec.StartCoroutine(
                     ec.BehaviourTransition(
                         nextBehaviour: new MeleeAttack(ec,target)
                     )
                 );
-                return false;
-            } 
         }
-
-        public override string getBehaviourName(){
+        public override string getBehaviourName()
+        {
             return "MoveToTarget";
         }
-
+        #endregion
     } 
 }
