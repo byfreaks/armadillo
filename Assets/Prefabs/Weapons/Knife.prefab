@@ -25,8 +25,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1913875081881486453}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: -0.86602545, w: 0.49999997}
+  m_LocalPosition: {x: 0, y: -0.25, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -44,9 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ba117d401c5b0d48a637f5d7058c817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentCommand: 0
-  wielderTransform: {fileID: 0}
+  damage: 0
   hitbox: {fileID: 7334158385443366072, guid: 32f4a321c3088724fb31af27bce24017, type: 3}
+  currentCommand: 8
+  wielderTransform: {fileID: 0}
 --- !u!212 &5070138074595310629
 SpriteRenderer:
   m_ObjectHideFlags: 0
