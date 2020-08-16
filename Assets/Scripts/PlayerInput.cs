@@ -8,8 +8,10 @@ public class PlayerInput : MonoBehaviour
     public bool Shoot { get => InputController.Shot(ICActions.keyDown); }
     public bool Jump { get=> InputController.Jump(ICActions.keyDown); }
     public float AxisHorizontal { get => InputController.HorizontalMovement(); }
+    public Vector3 CursorWorldPos{ get=> Camera.main.ScreenToWorldPoint(InputController.MousePosition()); }
 
     public Vector3 GetCursorDirection(Transform originTransform){
-        return Camera.main.ScreenToWorldPoint(InputController.MousePosition()) - originTransform.position;
+        return CursorWorldPos - originTransform.position;
     }
+
 }
