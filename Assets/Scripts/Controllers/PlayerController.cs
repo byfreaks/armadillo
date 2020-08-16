@@ -159,14 +159,6 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if(input.Shoot && testProjectile != null && status.canShoot){
-            var proj = Instantiate(testProjectile);
-            proj.AddComponent<Damage>();
-            proj.GetComponent<Damage>().setDamage(DamageTypes.PLY_BULLET, 20);
-            proj.transform.position = this.transform.position;
-            proj.GetComponent<ProjectileController>().Setup( input.GetCursorDirection(this.transform), 19.8f  );
-        }
-
         //ANIMATE
         
         ani.SetBool("walking", input.AxisHorizontal != 0 && status.grounded); //HACK
