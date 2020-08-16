@@ -642,6 +642,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1170351820940286260, guid: d31535a0f07f5dd4ca24dd23483e38c7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 7.14
+      objectReference: {fileID: 0}
     - target: {fileID: 7103813799937733463, guid: c7150001ae4f0bf43ba2d11fd2f71866,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -706,11 +711,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1170351820940286260, guid: d31535a0f07f5dd4ca24dd23483e38c7,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 7.14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7150001ae4f0bf43ba2d11fd2f71866, type: 3}
@@ -915,6 +915,16 @@ PrefabInstance:
       propertyPath: EquipedWeapon
       value: 
       objectReference: {fileID: 606104174}
+    - target: {fileID: 2048454768646577345, guid: 44caf857d2f69e046b047eb430874518,
+        type: 3}
+      propertyPath: animationController
+      value: 
+      objectReference: {fileID: 9100000, guid: 0be205027025cc64298f2b1545f96dc8, type: 2}
+    - target: {fileID: 2048454768646577345, guid: 44caf857d2f69e046b047eb430874518,
+        type: 3}
+      propertyPath: jumpable.m_Bits
+      value: 1025
+      objectReference: {fileID: 0}
     - target: {fileID: 3565173152638740736, guid: 44caf857d2f69e046b047eb430874518,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -974,6 +984,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3565173152638740738, guid: 44caf857d2f69e046b047eb430874518,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44caf857d2f69e046b047eb430874518, type: 3}
