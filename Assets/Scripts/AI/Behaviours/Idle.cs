@@ -5,48 +5,36 @@ using UnityEngine;
 namespace AI
 {
     [System.Serializable]
-    public class Idle : EnemyBehaviour
+    public sealed class Idle : EnemyBehaviour
     {
-
-        //Entity Data with this Behaviour
-        private EnemyController ec;
+        #region Properties
+        #endregion
         
+        #region Methods
+        public Idle(EnemyController ec) : base(ec) {}
+        #endregion
 
-        public Idle(EnemyController ec)
-        {
-            this.ec = ec;
-        }
-
-        /* Behaviour flow */
+        #region Behaviour flow
         public override void init()
         {  
-            ec.rb.velocity = Vector2.zero;
-            //Debug
-            Debug.Log("Start: Idle");
-            ec.sr.color = new Color32(255,255,255,255);
-            //
-        }
+            ec.bc.isTrigger = false; //[HARDCODE] Passenger jump
 
-        public override void update()
-        { 
-            //Do nothing...
+            Debug.Log("Start: Idle"); //[DEBUG]
+            ec.sr.color = new Color32(255,255,255,255); //[DEBUG] Sprite Color: White
         }
+        public override void update(){} 
         public override void final()
         {
-            //Debug
-            Debug.Log("End: Idle");
-            //
+            Debug.Log("End: Idle"); //[DEBUG]   
         }
-    
-        /* Helpers */
-        public override bool checkBehaviourConditions()
+        #endregion
+        
+        #region Helpers
+        public override void checkBehaviourEnd(){}
+        public override string getBehaviourName()
         {
-            return true;
-        }
-
-        public override string getBehaviourName(){
             return "Idle";
         }
-
+        #endregion
     } 
 }

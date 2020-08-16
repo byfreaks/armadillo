@@ -7,15 +7,28 @@ namespace AI
     [System.Serializable]
     public abstract class EnemyBehaviour
     {
-
-        /* Behaviour flow */
+        #region Properties
+        protected EnemyController ec;
+        public CarController cc {get; set;} //[REVIEW]: The accesor must be protected (Temporal Solution: unlink when the enemy dead and it is a Driver)
+        #endregion
+        
+        #region Methods
+        public EnemyBehaviour(EnemyController ec, CarController cc = null)
+        {
+            this.ec = ec;
+            this.cc = cc;
+        }
+        #endregion
+        
+        #region Behaviour flow
         public abstract void init();
         public abstract void update();
         public abstract void final();
+        #endregion
         
-        /* Helpers */
-        public abstract bool checkBehaviourConditions();
+        #region Behaviour Helpers
+        public abstract void checkBehaviourEnd();
         public abstract string getBehaviourName();
-
+        #endregion
     }
 } 
