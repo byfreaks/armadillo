@@ -91,6 +91,9 @@ public class Health : MonoBehaviour
     }
 
     private void showFeedback(Color color){
+        if(coroutine != null){
+            StopCoroutine(coroutine);
+        }
         var sr = this.damageFeedback.GetComponent<SpriteRenderer>();
         sr.sprite = GetComponent<SpriteRenderer>().sprite;
         sr.color = color;
