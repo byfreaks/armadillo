@@ -33,8 +33,11 @@ namespace AI
             this.targetPosition = target.transform.position;
 
             //Update
-            moveDirection = (targetPosition.x - ec.rb.position.x > 0) ? 1 : -1;               
-            ec.rb.velocity = new Vector2(ec.MoveSpeed * moveDirection, ec.rb.velocity.y);
+            if(ec.OnGround)
+            {
+                moveDirection = (targetPosition.x - ec.rb.position.x > 0) ? 1 : -1;               
+                ec.rb.velocity = new Vector2(ec.MoveSpeed * moveDirection, ec.rb.velocity.y);
+            }
 
             checkBehaviourEnd();
         }

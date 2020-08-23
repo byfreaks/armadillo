@@ -8,6 +8,7 @@ public class EnemyController : MonoBehaviour
     [Header("Properties")]
     [SerializeField] private float contactDistance;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private bool onGround;
     [SerializeField] private Sprite sprite = null;
     [SerializeField] private DamageTypes damageFrom = DamageTypes.PLAYER_DAMAGE;
 
@@ -19,10 +20,10 @@ public class EnemyController : MonoBehaviour
     public CorpseController corpse;
 
     [Header("AI Properties")]
+    private EnemyBehaviour currentBehaviour;
     [SerializeField] private EnemyType enemyType;
     [SerializeField] private EnemyContext currentContext;
     [SerializeField] private GameObject currentVehicle;
-    private EnemyBehaviour currentBehaviour;
     [SerializeField] private bool blockUpdate = false;
 
     #region Unity Engine Loop Methods 
@@ -76,10 +77,14 @@ public class EnemyController : MonoBehaviour
         {
             Debug.DrawLine(transform.position,(Vector2) transform.position + (hits[1].distance * Vector2.down),Color.red);
             currentVehicle = hits[1].collider.gameObject;
+            onGround = true;
             if(currentVehicle.name == "Vehicle" && currentContext != EnemyContext.SameCar) CurrentContext = EnemyContext.SameCar; //[HARDCODE]
         }
         else
+        {
             currentVehicle = null;
+            onGround = false;
+        }
     }
     #endregion
 
@@ -143,6 +148,7 @@ public class EnemyController : MonoBehaviour
     public float ContactDistance {set { contactDistance = value; } get { return contactDistance; }}
     public float MoveSpeed {set { moveSpeed = value; } get { return moveSpeed; }}
     public bool BlockUpdate {set { blockUpdate = value; } }
+    public bool OnGround {get { return onGround; } }
     public EnemyType EnemyType
     {
         set

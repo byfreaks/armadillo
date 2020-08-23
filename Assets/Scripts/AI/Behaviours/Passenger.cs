@@ -32,7 +32,8 @@ namespace AI
         {
             cc.unlinkPassenger(ec.gameObject);
             ec.bc.isTrigger = true; //[HARDCODE]
-            ec.rb.AddForce(new Vector2(5f,700f)); //[HARDCODE]
+            ec.rb.velocity = new Vector2(0f,0f); //[HARDCODE]
+            ec.rb.AddForce(new Vector2(0f,700f)); //[HARDCODE]
             Debug.Log("End: Passenger"); //[DEBUG]
         }
         #endregion

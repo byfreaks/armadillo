@@ -22,12 +22,12 @@ namespace AI
             if(Random.Range(0,2) == 0)
             {
                 this.anchorPoint = new Vector2(20,-14);
-                this.boardPoint = new Vector2(2,-14);
+                this.boardPoint = new Vector2(0,-15);
             }
             else
             {
                 this.anchorPoint = new Vector2(-20,-14);
-                this.boardPoint = new Vector2(-2,-14); 
+                this.boardPoint = new Vector2(0,-15); 
             }
         }
         #endregion
