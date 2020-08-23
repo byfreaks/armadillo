@@ -46,15 +46,6 @@ public class EnemyController : MonoBehaviour
     {
         if(blockUpdate) return;
         CurrentBehaviour.update();
-        
-        //[AI TRANSITION]: Dead
-        //[REVIEW]: Is it necessary to check each frame if the enemy is alive?
-        if(!hc.IsAlive && CurrentBehaviour.getBehaviourName() != "Dead") 
-            StartCoroutine(
-                BehaviourTransition(
-                    nextBehaviour: new Dead(this, currentBehaviour.cc)
-                )
-            );
     }
     #endregion
     
