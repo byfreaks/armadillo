@@ -24,6 +24,7 @@ namespace AI
         #region Behaviour flow
         public override void init()
         {  
+            ec.EquipedWeapon.Set(WeaponCommands.hold);
             Debug.Log("Start: MoveToTarget"); //[DEBUG]
             ec.sr.color = new Color32(239,105,9,200); //[DEBUG]
         }

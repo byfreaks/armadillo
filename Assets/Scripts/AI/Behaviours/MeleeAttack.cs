@@ -22,14 +22,14 @@ namespace AI
 
         #region Behaviour flow
         public override void init()
-        {  
+        {             
             Debug.Log("Start: Attack"); //[DEBUG]
             ec.sr.color = new Color32(230,83,83,90); //[DEBUG]
         }
         public override void update()
         {
             targetPosition = target.transform.position;
-            //[TODO] Attack 
+            ec.EquipedWeapon.Attack((targetPosition - ec.rb.position).normalized);
             checkBehaviourEnd();
         }
         public override void final()
@@ -50,6 +50,14 @@ namespace AI
                     )
                 );
             }
+            //[AI TRANSITION]: MeleeAttack
+            else
+                ec.StartCoroutine(
+                    ec.BehaviourTransition(
+                        nextBehaviour: new MeleeAttack(ec,target),
+                        secondsDuring: 2f
+                    )
+                );
         }
         public override string getBehaviourName()
         {

@@ -18,13 +18,14 @@ public class EnemyController : MonoBehaviour
     public SpriteRenderer sr;
     public Health hc;
     public CorpseController corpse;
+    public WeaponController EquipedWeapon = null;
 
     [Header("AI Properties")]
-    private EnemyBehaviour currentBehaviour;
     [SerializeField] private EnemyType enemyType;
     [SerializeField] private EnemyContext currentContext;
     [SerializeField] private GameObject currentVehicle;
     [SerializeField] private bool blockUpdate = false;
+    private EnemyBehaviour currentBehaviour;
 
     #region Unity Engine Loop Methods 
     void Start()
@@ -35,6 +36,9 @@ public class EnemyController : MonoBehaviour
         rb = gameObject.AddComponent<Rigidbody2D>();
         bc = gameObject.AddComponent<BoxCollider2D>();
         hc = gameObject.AddComponent<Health>();
+        //Weapon [REVIEW] 
+        EquipedWeapon.wielderTransform = this.transform;
+        EquipedWeapon.Set(WeaponCommands.store);
 
         //Calculate First Behaviour
         calculateNextBehaviour();
