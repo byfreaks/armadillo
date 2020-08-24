@@ -24,6 +24,7 @@ namespace AI
         #region Behaviour flow
         public override void init()
         {  
+            ec.EquipedWeapon.Set(WeaponCommands.hold);
             Debug.Log("Start: MoveToTarget"); //[DEBUG]
             ec.sr.color = new Color32(239,105,9,200); //[DEBUG]
         }
@@ -33,8 +34,11 @@ namespace AI
             this.targetPosition = target.transform.position;
 
             //Update
-            moveDirection = (targetPosition.x - ec.rb.position.x > 0) ? 1 : -1;               
-            ec.rb.velocity = new Vector2(ec.MoveSpeed * moveDirection, ec.rb.velocity.y);
+            if(ec.OnGround)
+            {
+                moveDirection = (targetPosition.x - ec.rb.position.x > 0) ? 1 : -1;               
+                ec.rb.velocity = new Vector2(ec.MoveSpeed * moveDirection, ec.rb.velocity.y);
+            }
 
             checkBehaviourEnd();
         }

@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 7334158385443366078}
   - component: {fileID: 7334158385443366073}
   - component: {fileID: 7334158385443366076}
-  - component: {fileID: -4743217102218382644}
   m_Layer: 0
   m_Name: KnifeHB
   m_TagString: Untagged
@@ -63,6 +62,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -134,7 +134,7 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0, y: 0.5}
     oldSize: {x: 2, y: 2}
     newSize: {x: 2, y: 2}
     adaptiveTilingThreshold: 0.5
@@ -144,17 +144,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
---- !u!114 &-4743217102218382644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7334158385443366072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f351fdeba34875948bc0a6821a7200bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 1
-  points: 3

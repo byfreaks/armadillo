@@ -8,6 +8,7 @@ public class EnemyController : MonoBehaviour
     [Header("Properties")]
     [SerializeField] private float contactDistance;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private bool onGround;
     [SerializeField] private Sprite sprite = null;
     [SerializeField] private DamageTypes damageFrom = DamageTypes.PLAYER_DAMAGE;
 
@@ -17,13 +18,14 @@ public class EnemyController : MonoBehaviour
     public SpriteRenderer sr;
     public Health hc;
     public CorpseController corpse;
+    public WeaponController EquipedWeapon = null;
 
     [Header("AI Properties")]
     [SerializeField] private EnemyType enemyType;
     [SerializeField] private EnemyContext currentContext;
     [SerializeField] private GameObject currentVehicle;
-    private EnemyBehaviour currentBehaviour;
     [SerializeField] private bool blockUpdate = false;
+    private EnemyBehaviour currentBehaviour;
 
     #region Unity Engine Loop Methods 
     void Start()
@@ -34,6 +36,9 @@ public class EnemyController : MonoBehaviour
         rb = gameObject.AddComponent<Rigidbody2D>();
         bc = gameObject.AddComponent<BoxCollider2D>();
         hc = gameObject.AddComponent<Health>();
+        //Weapon [REVIEW] 
+        EquipedWeapon.wielderTransform = this.transform;
+        EquipedWeapon.Set(WeaponCommands.store);
 
         //Calculate First Behaviour
         calculateNextBehaviour();
@@ -46,15 +51,6 @@ public class EnemyController : MonoBehaviour
     {
         if(blockUpdate) return;
         CurrentBehaviour.update();
-        
-        //[AI TRANSITION]: Dead
-        //[REVIEW]: Is it necessary to check each frame if the enemy is alive?
-        if(!hc.IsAlive && CurrentBehaviour.getBehaviourName() != "Dead") 
-            StartCoroutine(
-                BehaviourTransition(
-                    nextBehaviour: new Dead(this, currentBehaviour.cc)
-                )
-            );
     }
     #endregion
     
@@ -85,10 +81,14 @@ public class EnemyController : MonoBehaviour
         {
             Debug.DrawLine(transform.position,(Vector2) transform.position + (hits[1].distance * Vector2.down),Color.red);
             currentVehicle = hits[1].collider.gameObject;
+            onGround = true;
             if(currentVehicle.name == "Vehicle" && currentContext != EnemyContext.SameCar) CurrentContext = EnemyContext.SameCar; //[HARDCODE]
         }
         else
+        {
             currentVehicle = null;
+            onGround = false;
+        }
     }
     #endregion
 
@@ -152,6 +152,7 @@ public class EnemyController : MonoBehaviour
     public float ContactDistance {set { contactDistance = value; } get { return contactDistance; }}
     public float MoveSpeed {set { moveSpeed = value; } get { return moveSpeed; }}
     public bool BlockUpdate {set { blockUpdate = value; } }
+    public bool OnGround {get { return onGround; } }
     public EnemyType EnemyType
     {
         set

@@ -40,7 +40,7 @@ namespace AI
         public override void checkBehaviourEnd()
         {
             //[AI TRANSITION]: DriveInZone
-            if(distanceToPoint.magnitude < 3f) //[HARDCODE]
+            if(distanceToPoint.magnitude < 1f) //[HARDCODE]
                 ec.StartCoroutine(
                     ec.BehaviourTransition(
                         nextBehaviour: new DriveInZone(ec,cc),
