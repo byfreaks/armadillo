@@ -48,16 +48,16 @@ public class WeaponController : MonoBehaviour
 
     }
 
-    public void Set(WeaponCommands command){
+    public void Set(WeaponCommands command, Vector2 direction ){
 
         if(!WeaponCommands.aim.HasFlag(command) && currentCommand == command) return;
 
         switch(command){
             case WeaponCommands.hold:
                 if(WeaponAimStyle == aimStyle.hold)
-                    AimWeapon(wielderTransform.position);
+                    AimWeapon(wielderTransform.position, direction);
                 else 
-                    PointWeapon(wielderTransform.position);
+                    PointWeapon(wielderTransform.position, direction);
                 break;
 
             case WeaponCommands.sheath:
@@ -95,7 +95,7 @@ public class WeaponController : MonoBehaviour
         atk.AddComponent<Damage>().setDamage(DamageType, damage);
         atk.GetComponent<ProjectileController>().Setup( dir, 19.8f  );
         atk.transform.position = this.transform.position;  
-        atk.transform.rotation = Quaternion.LookRotation(Vector3.forward, CursorDirection(origin));
+        atk.transform.rotation = Quaternion.LookRotation(Vector3.forward, dir);
         return currentAttack = atk;
     }
 
@@ -106,7 +106,7 @@ public class WeaponController : MonoBehaviour
         var atk = Instantiate(hitbox);
         atk.AddComponent<Damage>().setDamage(DamageType, damage);
         atk.transform.position = this.transform.position;  
-        atk.transform.rotation = Quaternion.LookRotation(Vector3.forward, CursorDirection(origin));
+        atk.transform.rotation = Quaternion.LookRotation(Vector3.forward, dir);
         atk.transform.rotation *= Quaternion.Euler(0,0,90);
         return currentAttack = atk;
     }
@@ -123,14 +123,14 @@ public class WeaponController : MonoBehaviour
 #endregion
 
 #region status
-    private void AimWeapon(Vector2 origin){
+    private void AimWeapon(Vector2 origin, Vector2 direction){
         this.transform.rotation = Quaternion.Euler(0,0,0);
-        this.transform.localPosition = CursorDirection(origin);
+        this.transform.localPosition = direction;
         currentCommand = WeaponCommands.hold;
     }
 
-    private void PointWeapon(Vector2 origin){
-        var rot = this.transform.rotation = Quaternion.LookRotation(Vector3.forward, CursorDirection(origin));
+    private void PointWeapon(Vector2 origin, Vector2 direction){
+        var rot = this.transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
         var plyPos = GameHelper.Player.transform.position;
         // print($"PLYPOS={plyPos.x}  WEAPONPOS={transform.position.x}");
         if(plyPos.x>transform.position.x){
@@ -142,7 +142,7 @@ public class WeaponController : MonoBehaviour
             // this.transform.rotation *= Quaternion.Euler(0,0, -spriteOffset);
             
         }
-        this.transform.localPosition = CursorDirection(origin);
+        this.transform.localPosition = direction;
         currentCommand = WeaponCommands.point;
     }
 
@@ -168,9 +168,8 @@ public class WeaponController : MonoBehaviour
         throw new System.NotImplementedException();
     }
 
-    //TODO: replace with inputcontroller method
-    private Vector3 CursorDirection(Vector2 origin){
-        var dir = Camera.main.ScreenToWorldPoint(InputController.MousePosition()) - (Vector3)origin;
+    public static Vector3 CalcDirection(Vector2 origin, Vector2 objective){
+        var dir = (Vector3)objective - (Vector3)origin;
         var distance = 1.5f;
         dir += new Vector3(0,0,-1);
         return dir.normalized * distance;

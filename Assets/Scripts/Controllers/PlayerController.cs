@@ -146,16 +146,16 @@ public class PlayerController : MonoBehaviour
             weapon.Wielder = WeaponController.wielder.player;
 
             if(InputController.mouseAction(ICActions.key, 1)){
-                weapon.Set(WeaponCommands.hold);
+                weapon.Set(WeaponCommands.hold, CursorDirection(this.transform.position));
                 if(InputController.mouseAction(ICActions.keyDown, 0)){
                     weapon.Attack(input.GetCursorDirection(this.transform));
                 }
             } else if (InputController.mouseAction(ICActions.key, 2)){
-                weapon.Set(WeaponCommands.point);
+                weapon.Set(WeaponCommands.point, CursorDirection(this.transform.position));
             } else if(Input.GetKey(KeyCode.Alpha2)) {
-                weapon.Set(WeaponCommands.store);
+                weapon.Set(WeaponCommands.store, Vector2.zero);
             } else {
-                weapon.Set(WeaponCommands.sheath);
+                weapon.Set(WeaponCommands.sheath, Vector2.zero);
             }
         }
 
@@ -166,5 +166,13 @@ public class PlayerController : MonoBehaviour
         ani.SetFloat("vertical_speed", rb.velocity.y);
 
         sr.flipX = input.CursorWorldPos.x < this.transform.position.x;
+    }
+
+    //TODO: replace with inputcontroller method
+    private Vector3 CursorDirection(Vector2 origin){
+        var dir = Camera.main.ScreenToWorldPoint(InputController.MousePosition()) - (Vector3)origin;
+        var distance = 1.5f;
+        dir += new Vector3(0,0,-1);
+        return dir.normalized * distance;
     }
 }
