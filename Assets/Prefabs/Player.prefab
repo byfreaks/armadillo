@@ -13,7 +13,7 @@ GameObject:
   m_Layer: 2
   m_Name: Player
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -95,6 +95,11 @@ PrefabInstance:
       propertyPath: fireRate
       value: 200
       objectReference: {fileID: 0}
+    - target: {fileID: 2017736812954544512, guid: 7ed33c33a63f2d34db4f4d876bd1d416,
+        type: 3}
+      propertyPath: damage
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4205975020233238246, guid: 7ed33c33a63f2d34db4f4d876bd1d416,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -108,7 +113,7 @@ PrefabInstance:
     - target: {fileID: 4205975020233238246, guid: 7ed33c33a63f2d34db4f4d876bd1d416,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4205975020233238246, guid: 7ed33c33a63f2d34db4f4d876bd1d416,
         type: 3}
@@ -149,6 +154,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5070138074595310629, guid: 7ed33c33a63f2d34db4f4d876bd1d416,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ed33c33a63f2d34db4f4d876bd1d416, type: 3}

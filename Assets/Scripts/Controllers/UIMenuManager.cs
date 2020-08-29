@@ -1,5 +1,6 @@
 ﻿using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIMenuManager : MonoBehaviour
 {
@@ -10,8 +11,8 @@ public class UIMenuManager : MonoBehaviour
 
     void Awake()
     {
-        this.optionsPanel.SetActive(true);
-        this.controlsPanel.SetActive(false);        
+        // this.optionsPanel.SetActive(true);
+        // this.controlsPanel.SetActive(false);        
     }
 
     public void moveTo(GameObject panel){
@@ -25,6 +26,11 @@ public class UIMenuManager : MonoBehaviour
 
     public void startGame(){
         SceneManager.LoadScene(firstScene);
+    }
+
+    public void LoadScene(string sceneName){
+        if(GameScenes.TryParse(sceneName, true, out GameScenes scene))
+            SceneHelper.LoadScene(scene);
     }
 
     private void closeAllPanels(){
