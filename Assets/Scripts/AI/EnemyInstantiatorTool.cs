@@ -49,7 +49,7 @@ namespace AI{
             //Create Car
             GameObject enemyCar = Instantiate(prefabCar);
             CarController cc = enemyCar.GetComponent<CarController>();
-            enemyCar.transform.position = transform.position;
+            cc.constructor(transform.position,numberOfPassengers,numberOfTurrets);
             //Create Driver
             createEnemy(transform.position,enemySpeed,EnemyContext.OtherCar,EnemyType.Driver, enemyCar);
             //Create Torrets

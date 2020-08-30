@@ -5,39 +5,37 @@ using AI;
 
 public class CarController : MonoBehaviour
 {
+    [Header("Properties")]
+    [SerializeField] private int numberOfPassengerSeats;
+    [SerializeField] private int numberOfWeaponSeats;
+    [SerializeField] private bool inBoardingPosition = false;
+    [SerializeField] private GameObject driverSeat = null;
+    [SerializeField] private GameObject passengerSeat = null;
+    [SerializeField] private float distanceBetweenSeats = 0;
     
     //Components
     private Rigidbody2D rb;
     private BoxCollider2D bc;
     private SpriteRenderer sr;
 
-    [Header("Passenger")]
-    public List<GameObject> passengers;
-    public List<GameObject> weapons;
-    public GameObject passengerSeat;
-    public float distanceBetweenSeats;
-    public bool boardingPosition = false;
-
-    [Header("Driver")]
-    public GameObject driver;
-    public GameObject driverSeat;
-
+    [Header("Entities related")]
+    [SerializeField] private GameObject driver;
+    [SerializeField] private List<GameObject> weapons = null;
+    [SerializeField] private List<GameObject> passengers = null;
+    
     #region Unity Engine Loop Methods 
     void Start()
     {
         //Create and save component references
-        //sr = gameObject.AddComponent<SpriteRenderer>();
+        //sr = gameObject.AddComponent<SpriteRenderer>(); //[TODO] Replace Prefab SpriteRenderer with this SpriteRenderer
         rb = gameObject.AddComponent<Rigidbody2D>();
-        bc = gameObject.AddComponent<BoxCollider2D>();
-
-        //TEST: These attributes will be set differently
         rb.bodyType = RigidbodyType2D.Kinematic;
-        //
+        bc = gameObject.AddComponent<BoxCollider2D>();
     }
     void Update()
     {
         //Update entities positions
-        if(passengers.Count > 0)
+        if(NumberOfWeapons > 0 || NumberOfCurrentPassengers > 0)
         {
             int i=0;
             for(;i<weapons.Count;i++)
@@ -53,10 +51,10 @@ public class CarController : MonoBehaviour
     }
     #endregion
 
-    #region Methods to operate the entity
+    #region Car Usage Methods
     public bool linkAsDriver(GameObject driver)
     {
-        if(this.driver == null)
+        if(!HasDriver)
         {
             this.driver = driver;
             return true;
@@ -67,22 +65,28 @@ public class CarController : MonoBehaviour
     {
         //[TODO]: Validate that the entity which ask for unlink is the current driver
         this.driver = null;
-        //[REVIEW]: This isn't the right place to do this operation
-        if(passengers.Count > 0)
-            passengers[0].GetComponent<EnemyController>().EnemyType = EnemyType.Driver;
     }
-    public void linkAsPassenger(GameObject passenger)
+    public bool linkAsPassenger(GameObject passenger)
     {
-        //[TODO] Limit passengers seats
-        this.passengers.Add(passenger);
+        if(NumberOfCurrentPassengers < numberOfPassengerSeats)
+        {
+            passengers.Add(passenger);
+            return true;
+        }
+        return false;
     }
     public void unlinkPassenger(GameObject passenger)
     {
         this.passengers.Remove(passenger);
     }
-    public void linkAsWeapon(GameObject weapon)
+    public bool linkAsWeapon(GameObject weapon)
     {
-        this.weapons.Add(weapon);
+        if(NumberOfWeapons < numberOfWeaponSeats)
+        {
+            weapons.Add(weapon);
+            return true;
+        }
+        return false;
     }
     public void moveTo(Vector2 direction, float speed)
     {
@@ -90,22 +94,39 @@ public class CarController : MonoBehaviour
     }
     #endregion
 
-    #region Methods to query the state of the entity
-    public bool hasDriver()
+    #region Setters&Getters
+    public void constructor(Vector3 position, int numberOfPassengerSeats, int numberOfWeaponSeats)
     {
-        return (driver != null);
+        transform.position = position;
+        this.numberOfPassengerSeats = numberOfPassengerSeats;
+        this.numberOfWeaponSeats = numberOfWeaponSeats;
     }
-    public int getNumberOfPassangers()
+    public bool HasDriver { get { return (driver != null); } }
+    public bool InBoardingPosition { set { inBoardingPosition = value; } get { return inBoardingPosition; } }
+    public int NumberOfCurrentPassengers { get {return passengers.Count; } }
+    public int NumberOfWeapons { get {return weapons.Count; } }
+    public int NumberOfActiveWeapons
     {
-        return this.passengers.Count;
+        get
+        {
+            int count = 0;
+            for (int i=0;i<weapons.Count;i++)
+                if(weapons[i].GetComponent<TurretController>().IsActive) count++;
+            return count;
+        }
     }
-    public int getNumberOfActiveWeapons()
+    public TurretController NextAvailableWeaponController
     {
-        //[REVIEW]: Find another way to do this query
-        int count = 0;
-        for (int i=0;i<weapons.Count;i++)
-            if(weapons[i].GetComponent<TurretController>().IsActive) count++;
-        return count;
+        get
+        {
+            TurretController nextTurret;
+            for (int i=0;i<weapons.Count;i++)
+            {
+                nextTurret = weapons[i].GetComponent<TurretController>();
+                if(!nextTurret.IsActive) return nextTurret;
+            }
+            return null;
+        }
     }
     #endregion
 }

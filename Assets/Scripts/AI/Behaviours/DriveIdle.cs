@@ -44,7 +44,7 @@ namespace AI
         public override void checkBehaviourEnd()
         {
             //[AI TRANSITION]: DriveEscape
-            if(cc.getNumberOfPassangers() == 0 && cc.getNumberOfActiveWeapons() == 0)
+            if(cc.NumberOfCurrentPassengers == 0 && cc.NumberOfActiveWeapons == 0)
                 ec.StartCoroutine(
                     ec.BehaviourTransition(
                         nextBehaviour: new DriveEscape(ec,cc)
@@ -62,7 +62,7 @@ namespace AI
                         )
                     );
                 //[AI TRANSITION]: DriveToBoard
-                else if(nextAction < boardProb)
+                else if(cc.NumberOfCurrentPassengers > 0 && nextAction < boardProb)
                     ec.StartCoroutine(
                         ec.BehaviourTransition(
                             nextBehaviour: new DriveToBoard(ec,cc),

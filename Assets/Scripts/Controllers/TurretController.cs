@@ -65,7 +65,8 @@ public class TurretController : MonoBehaviour
         projectile.GetComponent<Damage>().setDamage(DamageTypes.ENM_BULLET, projectileDamage);
         projectile.transform.position = transform.position;
         projectile.GetComponent<ProjectileController>().Setup(direction, projectileSpeed);
-
+        //
+        StartCoroutine(Cooldown());
     }
     #endregion
 

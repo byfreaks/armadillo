@@ -31,7 +31,7 @@ namespace AI
         public override void final()
         {
             cc.moveTo(Vector2.zero,0f);
-            cc.boardingPosition = true;
+            cc.InBoardingPosition = true;
             Debug.Log("End: DriveToBoard"); //[DEBUG]
         }
         #endregion
