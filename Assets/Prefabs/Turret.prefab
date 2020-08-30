@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 3772896858749389957}
   - component: {fileID: 1027283183677505409}
   m_Layer: 0
-  m_Name: Torret
+  m_Name: Turret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,14 +72,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 3772896858749389954}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52f9a12c6021724408b5665087437247, type: 3}
+  m_Script: {fileID: 11500000, guid: 4024bcd9ee100314fa9c57f16ba23cad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shooter: {fileID: 0}
-  shooterSeat: {fileID: 2136868494250533647}
+  direction: {x: 0, y: 0}
+  firingRate: 0
+  canShoot: 0
   projectileSpeed: 0
+  projectileDamage: 0
   projectileTemplate: {fileID: 3972398175323087079, guid: 2d374047b5171bd43ab159dccb846677,
     type: 3}
+  shooter: {fileID: 0}
+  shooterSeat: {fileID: 2136868494250533647}
 --- !u!212 &1027283183677505409
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -95,6 +99,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
