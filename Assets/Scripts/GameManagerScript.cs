@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour
 {
@@ -19,21 +20,39 @@ public class GameManagerScript : MonoBehaviour
     void Start()
     {
         gameInstance = new Game(playerPrefab, vehiclePrefab);
-        gameInstance.gameState = GameState.RUN_Running;
+        SetGameState(GameState.RUN_Running);
     }
 
     public void PlayerIsDead(){
-        gameInstance.gameState = GameState.GOV_DeadPlayer;
+       SetGameState(GameState.GOV_DeadPlayer);
     }
 
     public void EngineDestroyed(){
-        gameInstance.gameState = GameState.GOV_VehicleDestroyed;
+        SetGameState(GameState.GOV_VehicleDestroyed);
     }
     
     void Update() {
         if (InputController.Pause(ICActions.keyDown)) {
             pauseMenu();
         }
+    }
+
+    void EvaluateState(){
+        if(GameState.GAMEOVER.HasFlag(gameInstance.gameState)){
+            //game is over
+            BackToMenu();
+        }
+    }
+
+    GameState SetGameState(GameState state, bool evaluate = true){
+        gameInstance.gameState = state;
+        if(evaluate)
+            EvaluateState();
+        return gameInstance.gameState;
+    }
+
+    void BackToMenu(){
+        SceneHelper.LoadScene(GameScenes.main_menu);
     }
 
     public void pauseMenu(){
