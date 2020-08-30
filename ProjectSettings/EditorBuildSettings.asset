@@ -6,14 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Test/Test_Miguel.unity
-    guid: 918324892ee275d44adf75d2d8d8bb06
+    path: Assets/Scenes/Game/SC_MAIN_MENU.unity
+    guid: d1585ee4c4cc677449e5b45d1f696c59
   - enabled: 1
     path: Assets/Scenes/Test/Test_Jesus.unity
     guid: eed387d448d63ea44ab3d821e4db70ed
   - enabled: 1
     path: Assets/Scenes/Test/Test_Diego.unity
     guid: 00d15b4b51110f3498a065de805017ee
+  - enabled: 1
+    path: Assets/Scenes/Test/Test_Miguel.unity
+    guid: 918324892ee275d44adf75d2d8d8bb06
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
