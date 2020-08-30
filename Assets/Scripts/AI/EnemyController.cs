@@ -141,7 +141,7 @@ public class EnemyController : MonoBehaviour
     #endregion
     
     #region Setters&Getters
-    public void enemyConstructor(Vector3 position, float moveSpeed, EnemyContext context, EnemyType enemyType, GameObject vehicle = null)
+    public void constructor(Vector3 position, float moveSpeed, EnemyContext context, EnemyType enemyType, GameObject vehicle = null)
     {
         transform.position = position;
         this.MoveSpeed = moveSpeed;
