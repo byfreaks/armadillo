@@ -104,7 +104,7 @@ public class CarController : MonoBehaviour
         //[REVIEW]: Find another way to do this query
         int count = 0;
         for (int i=0;i<weapons.Count;i++)
-            if(weapons[i].GetComponent<TorretController>().isActive()) count++;
+            if(weapons[i].GetComponent<TurretController>().IsActive) count++;
         return count;
     }
     #endregion

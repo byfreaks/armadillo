@@ -35,7 +35,7 @@ namespace AI{
             }
             if(GUILayout.Button("Create Torret"))
             {
-                tool.createTorret();
+                tool.createTurret();
             }
 
             EditorGUILayout.Space(20);
