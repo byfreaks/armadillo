@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer sr;
     private Health hc;
     private Animator ani;
+    private InteractableController interactable;
 
     //Weapon
     private WeaponController wc;
@@ -90,6 +91,7 @@ public class PlayerController : MonoBehaviour
         hc = gameObject.AddComponent<Health>();
         input = gameObject.AddComponent<PlayerInput>();
         ani = gameObject.AddComponent<Animator>();
+        interactable = gameObject.AddComponent<InteractableController>();
 
         //Setup
         //TODO: consider setting up component as they are created to declutter code
@@ -104,6 +106,10 @@ public class PlayerController : MonoBehaviour
             bc = gameObject.AddComponent<BoxCollider2D>();
             //Add old settings to new BC component
         }
+
+        //Interaction
+        interactable.interactableType = InteractableType.Actor;
+        interactable.areaSize = new Vector2(4, 4);
 
         //Animation
         if(animationController != null)
@@ -143,7 +149,7 @@ public class PlayerController : MonoBehaviour
             //TODO: create and user a Wield() in weaponcontroller method instead
             var weapon = EquipedWeapon;
             weapon.wielderTransform = this.transform;
-            weapon.Wielder = WeaponController.wielder.player;
+            weapon.wielderType = WeaponController.WielderType.player;
 
             if(InputController.mouseAction(ICActions.key, 1)){
                 weapon.Set(WeaponCommands.hold, CursorDirection(this.transform.position));

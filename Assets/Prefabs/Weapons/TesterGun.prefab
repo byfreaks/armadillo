@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 4205975020233238246}
   - component: {fileID: 2017736812954544512}
   - component: {fileID: 5070138074595310629}
-  m_Layer: 0
+  - component: {fileID: 7809275965709361842}
+  m_Layer: 12
   m_Name: TesterGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,14 +47,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0
-  spriteOffset: 0
-  Wielder: 1
-  WeaponAimStyle: 0
+  spriteOffset: 90
+  wielderType: 1
+  WeaponAimStyle: 1
   currentCommand: 0
   wielderTransform: {fileID: 0}
-  WeaponType: 0
+  WeaponType: 1
   hitbox: {fileID: 7334158385443366072, guid: 32f4a321c3088724fb31af27bce24017, type: 3}
-  projectile: {fileID: 0}
+  projectile: {fileID: 3972398175323087079, guid: 2d374047b5171bd43ab159dccb846677,
+    type: 3}
   fireRate: 100
 --- !u!212 &5070138074595310629
 SpriteRenderer:
@@ -107,6 +109,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7809275965709361842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1913875081881486453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6525a253b438ac4469dd00bdc918f76d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactableType: 1
+  areaSize: {x: 0.2, y: 0.2}
+  areaOffset: {x: 0, y: 0}
 --- !u!1 &2721521390555712478
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +133,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5741157933862159011}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: gunpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(InteractableObject))]
 public class WeaponController : MonoBehaviour
 {
 
@@ -15,7 +16,8 @@ public class WeaponController : MonoBehaviour
         ranged
     }
 
-    public enum wielder{
+    //TODO: Check if this is at all necessary
+    public enum WielderType{
         enemy,
         player
     }
@@ -24,7 +26,7 @@ public class WeaponController : MonoBehaviour
     public int damage;
     public int spriteOffset = 90;
     public DamageTypes DamageType { get => GetDamageType(); }
-    public wielder Wielder = wielder.player;
+    public WielderType wielderType = WielderType.player;
     [SerializeField] private aimStyle WeaponAimStyle = aimStyle.hold;
     [HideInInspector] public WeaponCommands currentCommand;
     [HideInInspector] public Transform wielderTransform;
@@ -41,11 +43,20 @@ public class WeaponController : MonoBehaviour
 
     //Components
     private SpriteRenderer sr;
+    private Rigidbody2D rb;
+    private BoxCollider2D bc;
 
     private void Awake() {
-        sr = GetComponent<SpriteRenderer>();
+        sr = this.GetComponent<SpriteRenderer>();
         gunpoint = transform.Find("gunpoint");
+        bc = this.gameObject.AddComponent<BoxCollider2D>();
+        rb = this.gameObject.AddComponent<Rigidbody2D>();
 
+        bc.size = sr.sprite.bounds.size;
+    }
+
+    private void Start() {
+        this.GetComponent<InteractableController>().GetObject().interaction = new PickUpWeapon(this.gameObject);
     }
 
     public void Set(WeaponCommands command, Vector2 direction ){
@@ -70,6 +81,23 @@ public class WeaponController : MonoBehaviour
 
         }
     }
+
+    public void Wield(InteractableActor actor){
+        wielderTransform = actor.actorObject.transform;
+        this.transform.position = wielderTransform.position;
+        this.transform.SetParent(wielderTransform);
+        switch(actor.actorType){
+            case InteractableActor.ActorType.Player:
+                wielderType = WielderType.player;
+                actor.actorObject.GetComponent<PlayerController>().EquipedWeapon = this;
+                break;
+            case InteractableActor.ActorType.NPC:
+                wielderType = WielderType.enemy;
+                break;
+        }
+        rb.simulated = false;
+    }
+
 #region Attack
     public GameObject Attack(Vector2 direction){
         //TODO: handle ranged weapons
@@ -114,8 +142,8 @@ public class WeaponController : MonoBehaviour
     private DamageTypes GetDamageType(){
         switch (WeaponType)
         {
-            case weaponType.ranged: return Wielder==wielder.player?DamageTypes.PLY_BULLET:DamageTypes.ENM_BULLET;
-            case weaponType.melee: return Wielder==wielder.enemy?DamageTypes.ENM_BULLET:DamageTypes.ENM_MELEE;
+            case weaponType.ranged: return wielderType==WielderType.player?DamageTypes.PLY_BULLET:DamageTypes.ENM_BULLET;
+            case weaponType.melee: return wielderType==WielderType.enemy?DamageTypes.ENM_BULLET:DamageTypes.ENM_MELEE;
             default: throw new System.Exception("Invalid Damage Type");
         }
     }
