@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Controller2D))]
 public class PlayerController : MonoBehaviour
 {
+    #region SETUP
     //Components
     private Rigidbody2D rb;
     private BoxCollider2D bc;
@@ -14,27 +16,47 @@ public class PlayerController : MonoBehaviour
     //Weapon
     private WeaponController wc;
 
-    //Movement Settings
-    [SerializeField] private float moveSpeed = 10;
-    [SerializeField] private float jumpForce = 260;
-    [SerializeField] private LayerMask jumpable;
-
+    [Header("Graphics")]
     //Sprite Settings
     [SerializeField]
     private Sprite sprite = null;
+    //Animation
+    public RuntimeAnimatorController animationController;
+
+    [Header("Temporal")]
+    //Weapon Settings
+    public WeaponController EquipedWeapon = null;
+
+    [SerializeField]
+    private DamageTypes damageFrom = DamageTypes.ENM_DAMAGE;
+
+    Controller2D controller;
+    [Header("Movement")]
+    [Tooltip("Max height of a jump")]
+    public float jumpHeight = 4f;
+    [Tooltip("Time to reach jump's highest point")]
+    public float timeToJumpApex = .4f;
+    private float jumpForce;
+
+    [Tooltip("Max player speed")]
+    [SerializeField] private float moveSpeed = 10; 
 
     //Player Controllers
     private PlayerInput input;
 
-    //Weapon Settings
-    public WeaponController EquipedWeapon = null;
+    [Tooltip("Movement acceleration while in mid-air")]
+    [SerializeField] float accelerationTimeAirborne = .2f;
 
-    //Animation
-    public RuntimeAnimatorController animationController;
+    [Tooltip("Movement acceleration while grounded")]
+    [SerializeField] float accelerationTimeGrounded = .1f; 
 
-    private DamageTypes damageFrom = DamageTypes.ENM_DAMAGE;
+    [Tooltip("Constant downward acceleration")]
+    public float gravity = 0;
+    Vector3 velocity; //TODO: expose as label
 
-    [SerializeField]
+    private float velocityXSmoothing; //never set
+
+    [System.Serializable]
     public struct PlayerStatus{
         public bool dead;
         public bool canMove;
@@ -55,6 +77,7 @@ public class PlayerController : MonoBehaviour
         }
 
     }
+    [SerializeField]
     PlayerStatus status = new PlayerStatus();
     
     private void OnTriggerEnter2D(Collider2D other) {
@@ -62,34 +85,26 @@ public class PlayerController : MonoBehaviour
             if(damageFrom.HasFlag(dmg.type)){
                 hc.decrementHealthPoints( dmg.damagePoints );
                 if(!hc.IsAlive && !status.dead){
-                    PlayerDeath();
+                    HandlePlayerDeath();
                 }
             }
         }
     }
 
-    bool GroundCollisions(){
-        var bottomPos = sr.bounds.min.y +0.16f;
-        var origin = new Vector2( sr.bounds.center.x, bottomPos );
-        var length = 0.32f;
-        Debug.DrawRay(origin, Vector2.down * length, Color.red);
-        return Physics2D.Raycast(origin, Vector2.down, length, jumpable);
-    }
 
-    void Start()
+    void Awake()
     {
-
         //PlayerStatus setup
         status.init();
 
         //Create and save component references
         sr = gameObject.AddComponent<SpriteRenderer>();
-        rb = gameObject.AddComponent<Rigidbody2D>();
-        rb.freezeRotation = true;
         bc = gameObject.AddComponent<BoxCollider2D>();
         hc = gameObject.AddComponent<Health>();
         input = gameObject.AddComponent<PlayerInput>();
         ani = gameObject.AddComponent<Animator>();
+
+        controller = gameObject.GetComponent<Controller2D>();
 
         //Setup
         //TODO: consider setting up component as they are created to declutter code
@@ -110,69 +125,78 @@ public class PlayerController : MonoBehaviour
             ani.runtimeAnimatorController = animationController;
     }
 
-    void PlayerDeath(){
-        status.set_dead();
-        this.gameObject.GetComponent<Rigidbody2D>().freezeRotation = false;
-        CorpseController corpse = gameObject.AddComponent<CorpseController>();
-        bc.isTrigger = true;
+    private void Start() {
+        //calculate gravity and jumpforce
+        //EQ:   jumpHeight = (gravity * timeToJumpApex^2) / 2
+        //SOL:  gravity = (2 * jumpHeight) / timeToJumpApex^2
+        gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
+        //EQ:   jumpVelocity = gravity * timeToJumpApex
+        jumpForce = Mathf.Abs(gravity) * timeToJumpApex;
+
     }
+    #endregion
 
-    void Update()
-    {
+    private void Update() {
+        #region STATUS CHECK
+        //STATUS UPDATE
+        if(!status.dead && !hc.IsAlive){ HandlePlayerDeath(); }
+        #endregion
 
-        status.grounded = GroundCollisions();
-
-        if(!status.dead && !hc.IsAlive){
-            status.set_dead();
-            this.gameObject.GetComponent<Rigidbody2D>().freezeRotation = false;
-            CorpseController corpse = gameObject.AddComponent<CorpseController>();
-            bc.isTrigger = true;
+        #region MOVEMENT
+        //MOVEMENT
+        if(controller.collisions.above || controller.collisions.below){
+            velocity.y = 0;
         }
 
-        if(status.canMove)
-            rb.velocity = new Vector2(input.AxisHorizontal * moveSpeed, rb.velocity.y);
-
-        //Jump
-        if(input.Jump && status.canMove && status.grounded){
-            rb.AddForce( new Vector2(0, jumpForce) );
+        if(input.Jump && controller.collisions.below){
+            velocity.y = jumpForce;
+            
         }
 
-        //Handle weapons
-        if(EquipedWeapon!=null){
-            //Equip
-            //TODO: create and user a Wield() in weaponcontroller method instead
+        Vector2 rawInput = new Vector2 (input.AxisHorizontal, 0);
+        float targetVelocityX = rawInput.x * moveSpeed;
+
+        velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
+        velocity.y += gravity * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
+        #endregion
+
+        #region TEMPORAL CODE
+        //Handle weapons //TODO: create weapon inventory component
+        if(EquipedWeapon){
+            //TODO: REMOVE ONCE WEAPON EQUIP HAS BEEN IMPLEMENTED
             var weapon = EquipedWeapon;
             weapon.wielderTransform = this.transform;
             weapon.Wielder = WeaponController.wielder.player;
 
             if(InputController.mouseAction(ICActions.key, 1)){
-                weapon.Set(WeaponCommands.hold, CursorDirection(this.transform.position));
+                EquipedWeapon.Set(WeaponCommands.hold, input.CursorDirection(this.transform.position));
                 if(InputController.mouseAction(ICActions.keyDown, 0)){
-                    weapon.Attack(input.GetCursorDirection(this.transform));
+                    EquipedWeapon.Attack(input.GetCursorDirection(this.transform));
                 }
             } else if (InputController.mouseAction(ICActions.key, 2)){
-                weapon.Set(WeaponCommands.point, CursorDirection(this.transform.position));
+                EquipedWeapon.Set(WeaponCommands.point, input.CursorDirection(this.transform.position));
             } else if(Input.GetKey(KeyCode.Alpha2)) {
-                weapon.Set(WeaponCommands.store, Vector2.zero);
+                EquipedWeapon.Set(WeaponCommands.store, Vector2.zero);
             } else {
-                weapon.Set(WeaponCommands.sheath, Vector2.zero);
+                EquipedWeapon.Set(WeaponCommands.sheath, Vector2.zero);
             }
         }
 
         //ANIMATE
-        
-        ani.SetBool("walking", input.AxisHorizontal != 0 && status.grounded); //HACK
-        ani.SetBool("grounded", status.grounded);
-        ani.SetFloat("vertical_speed", rb.velocity.y);
+        ani.SetBool("walking", input.AxisHorizontal != 0); 
+        ani.SetBool("grounded", controller.collisions.below);
+        ani.SetFloat("vertical_speed", velocity.y);
 
         sr.flipX = input.CursorWorldPos.x < this.transform.position.x;
+        #endregion
     }
 
-    //TODO: replace with inputcontroller method
-    private Vector3 CursorDirection(Vector2 origin){
-        var dir = Camera.main.ScreenToWorldPoint(InputController.MousePosition()) - (Vector3)origin;
-        var distance = 1.5f;
-        dir += new Vector3(0,0,-1);
-        return dir.normalized * distance;
+    void HandlePlayerDeath(){
+        status.set_dead();
+        // this.gameObject.GetComponent<Rigidbody2D>().freezeRotation = false;
+        CorpseController corpse = gameObject.AddComponent<CorpseController>();
+        bc.isTrigger = true;
     }
+
 }

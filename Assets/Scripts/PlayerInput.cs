@@ -14,4 +14,12 @@ public class PlayerInput : MonoBehaviour
         return CursorWorldPos - originTransform.position;
     }
 
+    public Vector3 CursorDirection(Vector2 origin){
+        //TODO: remove this legacy method (still in use)
+        var dir = Camera.main.ScreenToWorldPoint(InputController.MousePosition()) - (Vector3)origin;
+        var distance = 1.5f;
+        dir += new Vector3(0,0,-1);
+        return dir.normalized * distance;
+    }
+
 }
