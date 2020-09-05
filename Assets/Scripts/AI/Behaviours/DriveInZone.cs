@@ -17,9 +17,9 @@ namespace AI
         #region Behaviour flow
         public override void init()
         {  
-            if(!cc.hasDriver()) cc.linkAsDriver(ec.gameObject); //[REVIEW]: Is it the right place??
+            if(!cc.HasDriver) cc.linkAsDriver(ec.gameObject); //[REVIEW]: Is it the right place??
             currentPoint = anchorPoint + new Vector2(Random.Range(-3f,3f), Random.Range(-5f,5f));
-            cc.boardingPosition = false;
+            cc.InBoardingPosition = false;
             
             Debug.Log("Start: DriveInZone"); //[DEBUG]
             ec.sr.color = new Color32(159,33,184,255); //[DEBUG] Sprite Color: Purple

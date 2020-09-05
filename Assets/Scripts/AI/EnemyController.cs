@@ -38,7 +38,7 @@ public class EnemyController : MonoBehaviour
         hc = gameObject.AddComponent<Health>();
         //Weapon [REVIEW] 
         EquipedWeapon.wielderTransform = this.transform;
-        EquipedWeapon.Set(WeaponCommands.store);
+        EquipedWeapon.Set(WeaponCommands.store,Vector2.zero);
 
         //Calculate First Behaviour
         calculateNextBehaviour();
@@ -118,6 +118,13 @@ public class EnemyController : MonoBehaviour
                     nextBehaviour: new DriveInZone(this,currentVehicle.GetComponent<CarController>())
                 )
             );
+        //[AI TRANSITION]: OtherCar && Shooter => MountTorret
+        else if(CurrentContext == EnemyContext.OtherCar && EnemyType == EnemyType.Shooter && currentVehicle!=null)
+            StartCoroutine(
+                BehaviourTransition(
+                    nextBehaviour: new MountTorret(this,currentVehicle.GetComponent<CarController>(),GameObject.Find("Player"))
+                )
+            );
         //[AI TRANSITION]: Default => Idle
         else
             StartCoroutine(
@@ -141,7 +148,7 @@ public class EnemyController : MonoBehaviour
     #endregion
     
     #region Setters&Getters
-    public void enemyConstructor(Vector3 position, float moveSpeed, EnemyContext context, EnemyType enemyType, GameObject vehicle = null)
+    public void constructor(Vector3 position, float moveSpeed, EnemyContext context, EnemyType enemyType, GameObject vehicle = null)
     {
         transform.position = position;
         this.MoveSpeed = moveSpeed;
