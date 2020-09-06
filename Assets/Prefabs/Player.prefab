@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3565173152638740736}
   - component: {fileID: 2048454768646577345}
-  m_Layer: 2
+  - component: {fileID: 41414535}
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
@@ -43,11 +44,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecf14f85179c54845b62891c1da44467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
-  jumpForce: 260
-  jumpable:
-    serializedVersion: 2
-    m_Bits: 1025
   sprite: {fileID: 5864988276522048943, guid: ae8f56aeabdaad143abf6352d432a1ce, type: 3}
-  EquipedWeapon: {fileID: 0}
   animationController: {fileID: 9100000, guid: 0be205027025cc64298f2b1545f96dc8, type: 2}
+  EquipedWeapon: {fileID: 0}
+  damageFrom: 24
+  jumpHeight: 4
+  timeToJumpApex: 0.32
+  moveSpeed: 10
+  accelerationTimeAirborne: 0.15
+  accelerationTimeGrounded: 0.05
+  gravity: -9.8
+  status:
+    dead: 0
+    canMove: 0
+    canShoot: 0
+    grounded: 0
+--- !u!114 &41414535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3565173152638740738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b6d037deba17e44f85a98cd695dd592, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collisionMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  horizontalRayCount: 4
+  verticalRayCount: 4
+  collisions:
+    above: 0
+    below: 0
+    left: 0
+    right: 0
