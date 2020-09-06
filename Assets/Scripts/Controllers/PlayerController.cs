@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer sr;
     private Health hc;
     private Animator ani;
+    private InteractableController interactable;
 
     //Weapon
     private WeaponController wc;
@@ -103,6 +104,7 @@ public class PlayerController : MonoBehaviour
         hc = gameObject.AddComponent<Health>();
         input = gameObject.AddComponent<PlayerInput>();
         ani = gameObject.AddComponent<Animator>();
+        interactable = gameObject.AddComponent<InteractableController>();
 
         controller = gameObject.GetComponent<Controller2D>();
 
@@ -119,6 +121,10 @@ public class PlayerController : MonoBehaviour
             bc = gameObject.AddComponent<BoxCollider2D>();
             //Add old settings to new BC component
         }
+
+        //Interaction
+        interactable.interactableType = InteractableType.Actor;
+        interactable.areaSize = new Vector2(4, 4);
 
         //Animation
         if(animationController != null)
@@ -167,7 +173,7 @@ public class PlayerController : MonoBehaviour
             //TODO: REMOVE ONCE WEAPON EQUIP HAS BEEN IMPLEMENTED
             var weapon = EquipedWeapon;
             weapon.wielderTransform = this.transform;
-            weapon.Wielder = WeaponController.wielder.player;
+            weapon.wielderType = WeaponController.WielderType.player;
 
             if(InputController.mouseAction(ICActions.key, 1)){
                 EquipedWeapon.Set(WeaponCommands.hold, input.CursorDirection(this.transform.position));

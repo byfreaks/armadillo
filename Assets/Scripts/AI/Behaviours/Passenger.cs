@@ -25,15 +25,20 @@ namespace AI
         }
         public override void update()
         {   
-            //[TODO] Passenger Behaviour
+            if(!cc.HasDriver) ec.EnemyType = EnemyType.Driver; //[MODIFIED ENEMY TYPE] Figther -> Driver
+            else if(cc.NextAvailableWeaponController != null) ec.EnemyType = EnemyType.Shooter; //[MODIFIED ENEMY TYPE] Figther -> Shooter
             checkBehaviourEnd();    
         }
         public override void final()
         {
             cc.unlinkPassenger(ec.gameObject);
-            ec.bc.isTrigger = true; //[HARDCODE]
-            ec.rb.velocity = new Vector2(0f,0f); //[HARDCODE]
-            ec.rb.AddForce(new Vector2(0f,700f)); //[HARDCODE]
+            //Final steps just to board the player's vehicle
+            if(ec.EnemyType == EnemyType.Fighter) 
+            {
+                ec.bc.isTrigger = true; //[HARDCODE]
+                ec.rb.velocity = new Vector2(0f,0f); //[HARDCODE]
+                ec.rb.AddForce(new Vector2(0f,700f)); //[HARDCODE]
+            }
             Debug.Log("End: Passenger"); //[DEBUG]
         }
         #endregion
@@ -42,7 +47,7 @@ namespace AI
         public override void checkBehaviourEnd()
         {
             //[AI TRANSITION]: Idle
-            if(cc.boardingPosition)
+            if(cc.InBoardingPosition)
                 ec.StartCoroutine(
                     ec.BehaviourTransition(
                         nextBehaviour: new Idle(ec),

@@ -176,7 +176,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 19.373602
+  orthographic size: 22.167206
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -436,6 +436,31 @@ PrefabInstance:
     - target: {fileID: 5573401511949338840, guid: 5318772798dbe084aafb30ffcacb73c8,
         type: 3}
       propertyPath: numberOfPassengers
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5573401511949338840, guid: 5318772798dbe084aafb30ffcacb73c8,
+        type: 3}
+      propertyPath: enemySpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5573401511949338840, guid: 5318772798dbe084aafb30ffcacb73c8,
+        type: 3}
+      propertyPath: firingRate
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5573401511949338840, guid: 5318772798dbe084aafb30ffcacb73c8,
+        type: 3}
+      propertyPath: projectileDamage
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5573401511949338840, guid: 5318772798dbe084aafb30ffcacb73c8,
+        type: 3}
+      propertyPath: projectileSpeed
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5573401511949338840, guid: 5318772798dbe084aafb30ffcacb73c8,
+        type: 3}
+      propertyPath: numberOfTurrets
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9173477662674760818, guid: 5318772798dbe084aafb30ffcacb73c8,
