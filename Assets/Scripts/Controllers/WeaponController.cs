@@ -37,7 +37,7 @@ public class WeaponController : MonoBehaviour
     //MELEE CONFIG
     [HideInInspector] public GameObject hitbox;
     //RANGED CONFIG
-    private Transform gunpoint = null;
+    public Transform gunpoint = null;
     [HideInInspector] public GameObject projectile = null;
     [HideInInspector] public float fireRate = 100f; //Test field, not in use
 

@@ -68,6 +68,11 @@ public static class InputController
         return Input.mousePosition;
     }
 
+    public static Vector3 GetNormalizaMouseDirection(Vector3 origin){
+        var vector = Input.mousePosition - origin;
+        return Vector3.Normalize(vector);
+    }
+
     // Acciones de keyboard
     public static bool keyAction(ICActions inputType, KeyCode key){
         switch (inputType)
