@@ -8,14 +8,10 @@ public class GameManagerScript : MonoBehaviour
     public GameObject playerPrefab;
     public GameObject vehiclePrefab;
     public Transform groundTransform;
-    public GameObject inGameMenu;
+    public UIController uiController;
     
     [SerializeField]
     public Game gameInstance;
-
-    void Awake() {
-        inGameMenu.SetActive(false);
-    }
     
     void Start()
     {
@@ -33,7 +29,7 @@ public class GameManagerScript : MonoBehaviour
     
     void Update() {
         if (InputController.Pause(ICActions.keyDown)) {
-            pauseMenu();
+            uiController.pauseMenu();
         }
     }
 
@@ -53,15 +49,5 @@ public class GameManagerScript : MonoBehaviour
 
     void BackToMenu(){
         SceneHelper.LoadScene(GameScenes.main_menu);
-    }
-
-    public void pauseMenu(){
-        if(Time.timeScale == 1.0f){
-            Time.timeScale = 0;
-            inGameMenu.SetActive(true);
-        }else{
-            inGameMenu.SetActive(false);
-            Time.timeScale = 1.0F;
-        }
     }
 }

@@ -9,12 +9,6 @@ public class UIMenuManager : MonoBehaviour
     public GameObject controlsPanel;
     public string firstScene;
 
-    void Awake()
-    {
-        // this.optionsPanel.SetActive(true);
-        // this.controlsPanel.SetActive(false);        
-    }
-
     public void moveTo(GameObject panel){
         this.closeAllPanels();
         panel.SetActive(true);
