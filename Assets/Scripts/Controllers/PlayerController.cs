@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private BoxCollider2D bc;
     private SpriteRenderer sr;
-    public Health hc;
+    private Health hc;
     private Animator ani;
     private InteractableController interactable;
 

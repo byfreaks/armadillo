@@ -8,6 +8,7 @@ public class UIController : MonoBehaviour
     public GameObject inGameMenu;
     public Slider HUDHealthBar;
     private Health playerHealth;
+    [HideInInspector]
     public GameObject player;
 
     private void Start() { 
@@ -20,7 +21,6 @@ public class UIController : MonoBehaviour
         this.setHealthBar();
         this.resetHUDHealth();
     }
-
 
     public void pauseMenu(){
         if(Time.timeScale == 1.0f){

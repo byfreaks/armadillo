@@ -558,6 +558,11 @@ PrefabInstance:
       propertyPath: uiController
       value: 
       objectReference: {fileID: 1082787214}
+    - target: {fileID: 3385109607677488921, guid: 513e3d8bdf861f14cbeb14cf81632545,
+        type: 3}
+      propertyPath: playerPrefab
+      value: 
+      objectReference: {fileID: 1675799043}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 513e3d8bdf861f14cbeb14cf81632545, type: 3}
 --- !u!1001 &591457951
@@ -850,7 +855,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inGameMenu: {fileID: 244815198}
   HUDHealthBar: {fileID: 641462653}
-  player: {fileID: 1675799043}
+  player: {fileID: 0}
 --- !u!114 &1163245041 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2017736812954544512, guid: f849aaba12447e74c98549648dc87791,

@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour
 {
+    [HideInInspector]
     public GameObject playerPrefab;
     public GameObject vehiclePrefab;
     public Transform groundTransform;
@@ -15,6 +16,8 @@ public class GameManagerScript : MonoBehaviour
     
     void Start()
     {
+        playerPrefab = GameHelper.Player.gameObject;
+        uiController.player = playerPrefab;
         gameInstance = new Game(playerPrefab, vehiclePrefab);
         SetGameState(GameState.RUN_Running);
     }
@@ -49,5 +52,9 @@ public class GameManagerScript : MonoBehaviour
 
     void BackToMenu(){
         SceneHelper.LoadScene(GameScenes.main_menu);
+    }
+
+    private void OnDestroy() {
+        GameHelper.ClearCache();    
     }
 }

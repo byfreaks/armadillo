@@ -16,14 +16,17 @@ public class Health : MonoBehaviour
     public bool hasSprite;
     public Color damageColor, gainColor, defaultColor;
 
-    private void Start() {
-        if(hasSprite){
-            createDamageFeedback();
-        }
+    private void Awake() {
         this.healthPoints = 100;
         this.maxHealthPoints = 100;
         this.minHealthPoints = 10;
         this.alive = true;  
+    }
+
+    private void Start() {
+        if(hasSprite){
+            createDamageFeedback();
+        }
         
         this.damageColor = Color.red;
         this.gainColor = Color.green;
