@@ -8,14 +8,19 @@ public class BuildableObject : MonoBehaviour
 
     //Components
     private Health hc;
+    [HideInInspector]
+    public bool isGhost;
     public bool CanBeBuilt { get => CheckCost(); }
     public BuildingRequirements requirements;
+    public BuildingRequirements constraints;
     [Range(0,360)]
     public int surfaceArc;
 
     private DamageTypes damageFrom = DamageTypes.PLAYER_DAMAGE;
 
     private void Awake() {
+        if(!(transform.name == "BuildingObject"))
+            this.gameObject.layer = (int)SystemLayer.Buildable;
         hc = GetComponent<Health>();
     }
 
