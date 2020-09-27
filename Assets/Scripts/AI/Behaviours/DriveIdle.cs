@@ -5,11 +5,13 @@ using UnityEngine;
 namespace AI
 {
     [System.Serializable]
-    public sealed class  DriveIdle : Drive
+    public sealed class  DriveIdle : EnemyBehaviour
     {
         #region Properties
         private float zoneProb;
         private float boardProb;
+        private Vector2 anchorPoint;
+        private Vector2 boardPoint;
         #endregion
         
         #region Methods
@@ -17,6 +19,17 @@ namespace AI
         {
             this.zoneProb = 0f;
             this.boardProb = 0f;
+            //Get screen zone (left or right)
+            if(Random.Range(0,2) == 0)
+            {
+                this.anchorPoint = new Vector2(20,-14);
+                this.boardPoint = new Vector2(0,-15);
+            }
+            else
+            {
+                this.anchorPoint = new Vector2(-20,-14);
+                this.boardPoint = new Vector2(0,-15); 
+            }
         }
         #endregion
 
@@ -53,19 +66,19 @@ namespace AI
             else
             {
                 float nextAction = Random.Range(0f,1f);
-                //[AI TRANSITION]: DriveInZone
+                //[AI TRANSITION]: DriveToPoint == InZone
                 if(nextAction < zoneProb)
                     ec.StartCoroutine(
                         ec.BehaviourTransition(
-                            nextBehaviour: new DriveInZone(ec,cc),
+                            nextBehaviour: new DriveToPoint(ec,cc,anchorPoint,false),
                             secondsBefore: 5f //[HARDCODE]
                         )
                     );
-                //[AI TRANSITION]: DriveToBoard
+                //[AI TRANSITION]: DriveToPoint == BoardZone
                 else if(cc.NumberOfCurrentPassengers > 0 && nextAction < boardProb)
                     ec.StartCoroutine(
                         ec.BehaviourTransition(
-                            nextBehaviour: new DriveToBoard(ec,cc),
+                            nextBehaviour: new DriveToPoint(ec,cc,boardPoint,true),
                             secondsBefore: 5f //[HARDCODE]
                         )
                     );

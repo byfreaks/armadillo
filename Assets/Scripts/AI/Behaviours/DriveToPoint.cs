@@ -1,38 +1,48 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace AI
 {
     [System.Serializable]
-    public sealed class  DriveInZone : Drive
+    public sealed class  DriveToPoint : EnemyBehaviour
     {   
         #region Properties
+        private Vector2 targetPoint;
+        private Vector2 distanceToPoint;
+        private bool boardingMode;
         #endregion
         
         #region Methods
-        public DriveInZone(EnemyController ec, CarController cc) : base(ec, cc){}
+        public DriveToPoint(EnemyController ec, CarController cc, Vector2 targetPoint, bool boardingMode) : base(ec, cc) 
+        {
+            this.targetPoint = targetPoint;
+            this.boardingMode = boardingMode;
+        }
         #endregion
 
         #region Behaviour flow
         public override void init()
         {  
-            if(!cc.HasDriver) cc.linkAsDriver(ec.gameObject); //[REVIEW]: Is it the right place??
-            currentPoint = anchorPoint + new Vector2(Random.Range(-3f,3f), Random.Range(-5f,5f));
             cc.InBoardingPosition = false;
             
-            Debug.Log("Start: DriveInZone"); //[DEBUG]
+            Debug.Log("Start: DriveToPoint"); //[DEBUG]
             ec.sr.color = new Color32(159,33,184,255); //[DEBUG] Sprite Color: Purple
         }
         public override void update()
         { 
-            distanceToPoint = currentPoint - (Vector2) cc.transform.position;
+            distanceToPoint = targetPoint - (Vector2) cc.transform.position;
             cc.moveTo(distanceToPoint.normalized, 6.5f); //[HARDCODE]
             checkBehaviourEnd();
         }
         public override void final()
         {
-            Debug.Log("End: DriveInZone"); //[DEBUG]
+            if(boardingMode)
+            {
+                cc.InBoardingPosition = true;
+                cc.moveTo(Vector2.zero,0f);
+            }
+            Debug.Log("End: DriveToPoint"); //[DEBUG]
         }
         #endregion
         
@@ -49,7 +59,7 @@ namespace AI
                 );
         }
         public override string getBehaviourName(){
-            return "DriveInZone";
+            return "DriveToPoint";
         }
         #endregion
     } 

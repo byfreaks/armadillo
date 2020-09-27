@@ -27,6 +27,7 @@ namespace AI
         #endregion
         
         #region Behaviour Helpers
+        public virtual bool checkInitConditions() { return true; }
         public abstract void checkBehaviourEnd();
         public abstract string getBehaviourName();
         #endregion
