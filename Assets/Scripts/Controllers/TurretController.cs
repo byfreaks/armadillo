@@ -22,6 +22,10 @@ public class TurretController : MonoBehaviour
     [SerializeField] private GameObject shooter;
     [SerializeField] private GameObject shooterSeat = null;
 
+    [Header("Gun")]
+    [SerializeField] private GameObject gun;
+    [SerializeField] private List<Transform> fireholes;
+
     #region Unity Engine Loop Methods     
     void Start()
     {
@@ -34,6 +38,11 @@ public class TurretController : MonoBehaviour
     void Update()
     {
         if(IsActive) shooter.transform.position = shooterSeat.transform.position; //Shooter position updated to turret position
+        // TEST
+        // pointTo( (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition) );
+        // if(Input.GetKey(KeyCode.Q)){
+        //     shoot();
+        // }
     }
     #endregion
 
@@ -55,6 +64,7 @@ public class TurretController : MonoBehaviour
     public void pointTo(Vector2 point)
     {
         direction = point - rb.position; //[TODO] Visual aiming of the turret
+        PointHelper.PointAtTarget(gun.transform, point, true);
     }
     public void shoot(){
         if(!canShoot) return;
@@ -63,9 +73,10 @@ public class TurretController : MonoBehaviour
         //[REVIEW] Set Damage component
         projectile.AddComponent<Damage>();
         projectile.GetComponent<Damage>().setDamage(DamageTypes.ENM_BULLET, projectileDamage);
-        projectile.transform.position = transform.position;
+        projectile.transform.position = fireholes[0].position; //FIX: 
         projectile.GetComponent<ProjectileController>().Setup(direction, projectileSpeed);
         //
+
         StartCoroutine(Cooldown());
     }
     #endregion
