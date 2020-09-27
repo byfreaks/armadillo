@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6333744379113008227}
   - component: {fileID: 8195168115825386245}
   - component: {fileID: 3163737768306996896}
+  - component: {fileID: 1172591095895535620}
   m_Layer: 0
   m_Name: Enemy Knife
   m_TagString: Untagged
@@ -25,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8589514804312919792}
-  m_LocalRotation: {x: 0, y: 0, z: -0.86602545, w: 0.49999997}
+  m_LocalRotation: {x: 0, y: 0, z: -0.86602545, w: 0.49999994}
   m_LocalPosition: {x: 0.52, y: -1.47, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120}
 --- !u!114 &8195168115825386245
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44,14 +45,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ba117d401c5b0d48a637f5d7058c817, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0
+  damage: 25
   spriteOffset: 90
-  Wielder: 0
+  wielderType: 0
   WeaponAimStyle: 0
   currentCommand: 8
   wielderTransform: {fileID: 0}
   WeaponType: 0
   hitbox: {fileID: 7334158385443366072, guid: 32f4a321c3088724fb31af27bce24017, type: 3}
+  gunpoint: {fileID: 0}
   projectile: {fileID: 0}
   fireRate: 100
 --- !u!212 &3163737768306996896
@@ -105,3 +107,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1172591095895535620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8589514804312919792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6525a253b438ac4469dd00bdc918f76d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactableType: 1
+  areaSize: {x: 0, y: 0}
+  areaOffset: {x: 0, y: 0}

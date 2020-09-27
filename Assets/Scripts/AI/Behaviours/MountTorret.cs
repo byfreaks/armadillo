@@ -13,10 +13,9 @@ namespace AI
         #endregion
         
         #region Methods
-        public MountTorret(EnemyController ec, CarController cc, GameObject target) : base(ec)
+        public MountTorret(EnemyController ec, CarController cc, GameObject target) : base(ec,cc)
         {
             this.target = target;
-            tc = cc.NextAvailableWeaponController;
         }
         #endregion
 
@@ -41,6 +40,11 @@ namespace AI
         #endregion
 
         #region Helpers
+        public override bool checkInitConditions()
+        {
+            tc = cc.NextAvailableWeaponController;
+            return (tc != null);
+        }
         public override void checkBehaviourEnd(){}
         public override string getBehaviourName()
         {

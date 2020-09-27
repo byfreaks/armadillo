@@ -5,7 +5,7 @@ using UnityEngine;
 namespace AI
 {
     [System.Serializable]
-    public sealed class  DriveEscape : Drive
+    public sealed class  DriveEscape : EnemyBehaviour
     {   
         #region Properties
         #endregion
@@ -16,9 +16,7 @@ namespace AI
 
         #region Behaviour flow
         public override void init()
-        {  
-            currentPoint = Vector2.zero;
-            
+        {   
             Debug.Log("Start: DriveEscape"); //[DEBUG]
             ec.sr.color = new Color32(6, 19, 161,255); //[DEBUG] Sprite Color: Blue
         }

@@ -22,6 +22,7 @@ public class EnemyController : MonoBehaviour
 
     [Header("AI Properties")]
     [SerializeField] private EnemyType enemyType;
+    [SerializeField] private EnemyType previousEnemyType = EnemyType.None;
     [SerializeField] private EnemyContext currentContext;
     [SerializeField] private GameObject currentVehicle;
     [SerializeField] private bool blockUpdate = false;
@@ -115,7 +116,7 @@ public class EnemyController : MonoBehaviour
         else if(CurrentContext == EnemyContext.OtherCar && EnemyType == EnemyType.Driver) 
             StartCoroutine(
                 BehaviourTransition(
-                    nextBehaviour: new DriveInZone(this,currentVehicle.GetComponent<CarController>())
+                    nextBehaviour: new DriveInit(this,currentVehicle.GetComponent<CarController>())
                 )
             );
         //[AI TRANSITION]: OtherCar && Shooter => MountTorret
@@ -136,12 +137,20 @@ public class EnemyController : MonoBehaviour
     public IEnumerator BehaviourTransition(EnemyBehaviour nextBehaviour, float secondsBefore = 0, float secondsDuring = 0,float secondsAfter = 0)
     {
         blockUpdate = true;
-        if(currentBehaviour != null) Debug.Log("Transition from: " + currentBehaviour.getBehaviourName() + " to " + nextBehaviour.getBehaviourName()); //[DEBUG]
         if(secondsBefore > 0) yield return new WaitForSeconds(secondsBefore);
-        if(currentBehaviour!=null) currentBehaviour.final(); //END CURRENT BEHAVIOUR
+        if(currentBehaviour!=null) currentBehaviour.final();                    //END BEHAVIOUR
         if(secondsDuring > 0) yield return new WaitForSeconds(secondsDuring);
-        currentBehaviour = nextBehaviour; //SET NEW BEHAVIOUR
-        currentBehaviour.init(); //INIT BEHAVIOUR
+        if(nextBehaviour.checkInitConditions())                                 //CHECK IF IT IS POSSIBLE TO CHANGE BEHAVIOUR
+            currentBehaviour = nextBehaviour;                                       //SET NEW BEHAVIOUR
+        else
+        {
+            if(previousEnemyType != EnemyType.None)                             //CHECK IF IT IS NECESSARY TO ROLLBACK ENEMY TYPE
+            {
+                enemyType = previousEnemyType;                                      //[MODIFIED ENEMY TYPE] <- ROLLBACK
+                previousEnemyType = EnemyType.None;
+            }
+        }
+        currentBehaviour.init();                                                //INIT (PREVIOUS OR NEW) BEHAVIOUR 
         if(secondsAfter > 0) yield return new WaitForSeconds(secondsAfter);
         blockUpdate = false;
     }
@@ -164,6 +173,7 @@ public class EnemyController : MonoBehaviour
     {
         set
         {
+            previousEnemyType = enemyType;
             enemyType = value;
             calculateNextBehaviour();
         }
