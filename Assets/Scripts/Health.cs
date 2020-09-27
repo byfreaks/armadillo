@@ -13,21 +13,20 @@ public class Health : MonoBehaviour
     private bool alive;
     private GameObject damageFeedback;
     private IEnumerator coroutine;
+    public bool hasSprite;
     public Color damageColor, gainColor, defaultColor;
 
     private void Awake() {
-        //Instancia de objeto para feedback
-        this.damageFeedback = new GameObject("DamageFeedback");
-        this.damageFeedback.AddComponent<SpriteRenderer>();
-        this.damageFeedback.AddComponent<SpriteMask>().sprite = GetComponent<SpriteRenderer>().sprite;    
-        this.damageFeedback.transform.SetParent(this.transform, false);
-    }
-
-    private void Start() {
         this.healthPoints = 100;
         this.maxHealthPoints = 100;
         this.minHealthPoints = 10;
         this.alive = true;  
+    }
+
+    private void Start() {
+        if(hasSprite){
+            createDamageFeedback();
+        }
         
         this.damageColor = Color.red;
         this.gainColor = Color.green;
@@ -66,13 +65,17 @@ public class Health : MonoBehaviour
     }
 
     public void incrementHealthPoints(int points){
-        this.showFeedback(gainColor);
+        if(hasSprite){
+            this.showFeedback(gainColor);
+        }
         int newHealthPoints = this.HealthPoints + points;
         this.HealthPoints = newHealthPoints > this.MaxHealthPoints ? this.MaxHealthPoints : newHealthPoints;
     } 
 
     public void decrementHealthPoints(int points){
-        this.showFeedback(damageColor);
+        if(hasSprite){
+            this.showFeedback(damageColor);
+        }
         this.HealthPoints = this.HealthPoints - points;
     }
 
@@ -99,5 +102,12 @@ public class Health : MonoBehaviour
         sr.color = color;
         coroutine = activeDamageFeedback(sr);
         StartCoroutine(coroutine);
+    }
+
+    private void createDamageFeedback(){
+        this.damageFeedback = new GameObject("DamageFeedback");
+        this.damageFeedback.AddComponent<SpriteRenderer>();
+        this.damageFeedback.AddComponent<SpriteMask>().sprite = GetComponent<SpriteRenderer>().sprite;    
+        this.damageFeedback.transform.SetParent(this.transform, false);
     }
 }

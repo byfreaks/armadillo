@@ -3,20 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HUDController : MonoBehaviour
+public class UIController : MonoBehaviour
 {
-    public GameObject player;
+    public GameObject inGameMenu;
     public Slider HUDHealthBar;
     private Health playerHealth;
+    [HideInInspector]
+    public GameObject player;
 
-    public void Awake() {
-        this.playerHealth = player.GetComponent<Health>();
-        this.initHealthBar();
+    private void Start() { 
+        inGameMenu.SetActive(false);
+        playerHealth = player.GetComponent<Health>();
+        initHealthBar();
     }
 
     private void Update() {
         this.setHealthBar();
         this.resetHUDHealth();
+    }
+
+    public void pauseMenu(){
+        if(Time.timeScale == 1.0f){
+            Time.timeScale = 0;
+            inGameMenu.SetActive(true);
+        }else{
+            inGameMenu.SetActive(false);
+            Time.timeScale = 1.0F;
+        }                
     }
 
     // Valores de inicio para el HUD.
@@ -54,5 +67,4 @@ public class HUDController : MonoBehaviour
             HUDColor.color = Color.cyan;
         }
     }
-
 }

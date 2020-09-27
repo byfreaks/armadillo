@@ -102,6 +102,7 @@ public class PlayerController : MonoBehaviour
         sr = gameObject.AddComponent<SpriteRenderer>();
         bc = gameObject.AddComponent<BoxCollider2D>();
         hc = gameObject.AddComponent<Health>();
+        hc.hasSprite = true;
         input = gameObject.AddComponent<PlayerInput>();
         ani = gameObject.AddComponent<Animator>();
         interactable = gameObject.AddComponent<InteractableController>();
