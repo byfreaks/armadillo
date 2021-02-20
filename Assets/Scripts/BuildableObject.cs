@@ -10,6 +10,7 @@ public class BuildableObject : MonoBehaviour
     private Health hc;
     [HideInInspector]
     public bool isGhost;
+    public bool isClippable;
     public bool CanBeBuilt { get => CheckCost(); }
     public BuildingRequirements requirements;
     public BuildingRequirements constraints;
@@ -20,7 +21,10 @@ public class BuildableObject : MonoBehaviour
 
     private void Awake() {
         if(!(transform.name == "BuildingObject"))
-            this.gameObject.layer = (int)SystemLayer.Buildable;
+            if(isClippable)
+                this.gameObject.layer = (int)SystemLayer.BuildableClip;
+            else
+                this.gameObject.layer = (int)SystemLayer.Buildable;
         hc = GetComponent<Health>();
     }
 

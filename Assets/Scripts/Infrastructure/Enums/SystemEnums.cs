@@ -5,5 +5,6 @@
     Water = 4,
     UI = 5,
     Buildable = 10,
-    Area = 11
+    Area = 11,
+    BuildableClip = 13
 }
