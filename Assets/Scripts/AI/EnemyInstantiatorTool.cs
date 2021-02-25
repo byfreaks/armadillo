@@ -50,25 +50,45 @@ namespace AI{
             GameObject enemyCar = Instantiate(prefabCar);
             CarController cc = enemyCar.GetComponent<CarController>();
             cc.constructor(transform.position,numberOfPassengers,numberOfTurrets);
+
             //Create Driver
             createEnemy(transform.position,enemySpeed,EnemyContext.OtherCar,EnemyType.Driver, enemyCar);
+
             //Create Torrets
             for(int i=0; i<numberOfTurrets;i++) cc.linkAsWeapon(createTurret());
+
             //Create Passengers
             for(int i=0; i<numberOfPassengers;i++)
                 createEnemy(transform.position,enemySpeed,EnemyContext.OtherCar,EnemyType.Fighter,enemyCar);
 
             return enemyCar;
         }
-        public void CreateFromEncounter(Encounter enc)
+        public void CreateFromEncounter(Encounter encounter)
         {
-            //TODO: proper encounter instantiator
-            //This method is a HACK. Instantiatior tools should have mehtods to instantiate objects using outside reference (maybe :) )
-            this.prefabCar = enc.Vehicle;
-            var vehicle = createCar();
-            foreach(GameObject passenger in enc.Passangers){
-                this.prefabEnemy = enc.Passangers[0];
-                createEnemy(transform.position, 5f, EnemyContext.OtherCar, EnemyType.Shooter, vehicle);
+            foreach (Vehicle vehicle in encounter.Vehicles)
+            {
+                //Create Car
+                GameObject enemyCar = Instantiate(vehicle.EnemyVehicle);
+                CarController carController = enemyCar.GetComponent<CarController>();
+                carController.constructor(transform.position, vehicle.Passangers.Count, vehicle.NumberOfTurrets);
+
+                //Create Driver
+                GameObject driver = Instantiate(prefabEnemy);
+                EnemyController enemyControllerDriver = driver.GetComponent<EnemyController>();
+                enemyControllerDriver.constructor(transform.position, enemySpeed, EnemyContext.OtherCar, EnemyType.Driver, enemyCar);
+
+                //Create Torrets
+                for(int i = 0; i < vehicle.NumberOfTurrets; i++){
+                    carController.linkAsWeapon(createTurret());
+                }
+
+                //Create Passengers
+                foreach (GameObject passenger in vehicle.Passangers)
+                {
+                    GameObject enemy = Instantiate(passenger);
+                    EnemyController enemyController = enemy.GetComponent<EnemyController>();
+                    enemyController.constructor(transform.position, enemySpeed, EnemyContext.OtherCar, EnemyType.Fighter, enemyCar);
+                }
             }
         }
         //Methods with parameters are used to pass values from the code

@@ -12,5 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6cf264c53d956541979c72563b3912f, type: 3}
   m_Name: TestEncounter
   m_EditorClassIdentifier: 
-  Vehicle: {fileID: 0}
-  Passangers: []
+  Vehicles:
+  - vehicle: {fileID: 7816215632602703431, guid: 10669462834672548b5a824b2f90074e,
+      type: 3}
+    Passangers:
+    - {fileID: 7744555143750784081, guid: 15d034cc869cb9b46816cce33d815f21, type: 3}
+    - {fileID: 7744555143750784081, guid: 15d034cc869cb9b46816cce33d815f21, type: 3}
+  - vehicle: {fileID: 7816215632602703431, guid: 10669462834672548b5a824b2f90074e,
+      type: 3}
+    Passangers:
+    - {fileID: 7744555143750784081, guid: 15d034cc869cb9b46816cce33d815f21, type: 3}

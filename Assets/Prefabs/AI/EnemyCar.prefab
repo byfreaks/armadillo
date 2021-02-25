@@ -81,6 +81,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -129,11 +130,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bb28ce3164bdf246827fe7836c65b13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  passengers: []
+  numberOfPassengerSeats: 0
+  numberOfWeaponSeats: 0
+  inBoardingPosition: 0
+  driverSeat: {fileID: 7816215633982907442}
   passengerSeat: {fileID: 7816215632344968444}
   distanceBetweenSeats: 2
   driver: {fileID: 0}
-  driverSeat: {fileID: 7816215633982907442}
+  weapons: []
+  passengers:
+  - {fileID: 0}
 --- !u!1 &7816215633982907442
 GameObject:
   m_ObjectHideFlags: 0
