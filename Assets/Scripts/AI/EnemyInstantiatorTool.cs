@@ -70,20 +70,23 @@ namespace AI{
                 //Create Car
                 GameObject enemyCar = Instantiate(vehicle.EnemyVehicle);
                 CarController carController = enemyCar.GetComponent<CarController>();
-                carController.constructor(transform.position, vehicle.Passangers.Count, vehicle.NumberOfTurrets);
+                carController.constructor(transform.position, vehicle.Passengers.Count, vehicle.NumberOfTurrets);
 
                 //Create Driver
                 GameObject driver = Instantiate(prefabEnemy);
                 EnemyController enemyControllerDriver = driver.GetComponent<EnemyController>();
                 enemyControllerDriver.constructor(transform.position, enemySpeed, EnemyContext.OtherCar, EnemyType.Driver, enemyCar);
 
+                //Asing passengers to enemy car
+                carController.setPassengers(vehicle.Passengers);
+                
                 //Create Torrets
                 for(int i = 0; i < vehicle.NumberOfTurrets; i++){
                     carController.linkAsWeapon(createTurret());
                 }
 
                 //Create Passengers
-                foreach (GameObject passenger in vehicle.Passangers)
+                foreach (GameObject passenger in vehicle.Passengers)
                 {
                     GameObject enemy = Instantiate(passenger);
                     EnemyController enemyController = enemy.GetComponent<EnemyController>();

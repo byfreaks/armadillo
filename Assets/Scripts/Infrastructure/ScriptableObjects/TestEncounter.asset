@@ -13,12 +13,9 @@ MonoBehaviour:
   m_Name: TestEncounter
   m_EditorClassIdentifier: 
   Vehicles:
-  - vehicle: {fileID: 7816215632602703431, guid: 10669462834672548b5a824b2f90074e,
+  - EnemyVehicle: {fileID: 7816215632602703431, guid: 10669462834672548b5a824b2f90074e,
       type: 3}
-    Passangers:
+    Passengers:
     - {fileID: 7744555143750784081, guid: 15d034cc869cb9b46816cce33d815f21, type: 3}
     - {fileID: 7744555143750784081, guid: 15d034cc869cb9b46816cce33d815f21, type: 3}
-  - vehicle: {fileID: 7816215632602703431, guid: 10669462834672548b5a824b2f90074e,
-      type: 3}
-    Passangers:
-    - {fileID: 7744555143750784081, guid: 15d034cc869cb9b46816cce33d815f21, type: 3}
+    NumberOfTurrets: 1

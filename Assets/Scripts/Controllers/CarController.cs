@@ -128,5 +128,8 @@ public class CarController : MonoBehaviour
             return null;
         }
     }
+    public void setPassengers(List<GameObject> passengers){
+        this.passengers = passengers;
+    }
     #endregion
 }
