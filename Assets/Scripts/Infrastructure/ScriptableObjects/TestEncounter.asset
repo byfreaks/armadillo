@@ -17,5 +17,4 @@ MonoBehaviour:
       type: 3}
     Passengers:
     - {fileID: 7744555143750784081, guid: 15d034cc869cb9b46816cce33d815f21, type: 3}
-    - {fileID: 7744555143750784081, guid: 15d034cc869cb9b46816cce33d815f21, type: 3}
     NumberOfTurrets: 1
