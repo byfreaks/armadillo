@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(InteractableObject))]
 public class TurretController : MonoBehaviour
 {
     //[REVIEW] Should projectile properties be part of this controller?
@@ -26,6 +27,8 @@ public class TurretController : MonoBehaviour
     [SerializeField] private GameObject gun;
     [SerializeField] private List<Transform> fireholes;
 
+    public Transform SeatTransform { get => shooterSeat.transform; }
+
     #region Unity Engine Loop Methods     
     void Start()
     {
@@ -34,6 +37,8 @@ public class TurretController : MonoBehaviour
         rb = gameObject.AddComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Kinematic;
         bc = gameObject.AddComponent<BoxCollider2D>();
+
+        this.GetComponent<InteractableController>().GetObject().interaction = new MountTurret(this);
     }
     void Update()
     {
