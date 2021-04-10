@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private Sprite sprite = null;
     //Animation
     public RuntimeAnimatorController animationController;
+    public Material material;
 
     [Header("Temporal")]
     //Weapon Settings
@@ -100,6 +101,7 @@ public class PlayerController : MonoBehaviour
 
         //Create and save component references
         sr = gameObject.AddComponent<SpriteRenderer>();
+        sr.material = new Material(material);
         bc = gameObject.AddComponent<BoxCollider2D>();
         hc = gameObject.AddComponent<Health>();
         hc.hasSprite = true;
