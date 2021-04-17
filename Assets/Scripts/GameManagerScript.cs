@@ -17,7 +17,7 @@ public class GameManagerScript : MonoBehaviour
     void Start()
     {
         playerPrefab = GameHelper.Player.gameObject;
-        uiController.player = playerPrefab;
+        // uiController.player = playerPrefab;
         gameInstance = new Game(playerPrefab, vehiclePrefab);
         SetGameState(GameState.RUN_Running);
     }
@@ -39,7 +39,7 @@ public class GameManagerScript : MonoBehaviour
     void EvaluateState(){
         if(GameState.GAMEOVER.HasFlag(gameInstance.gameState)){
             //game is over
-            BackToMenu();
+            // BackToMenu();
         }
     }
 
