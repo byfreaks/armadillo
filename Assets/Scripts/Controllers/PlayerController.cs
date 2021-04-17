@@ -188,6 +188,9 @@ public class PlayerController : MonoBehaviour
             } else {
                 EquipedWeapon.Set(WeaponCommands.sheath, Vector2.zero);
             }
+
+            if(Input.GetKey(KeyCode.Q))
+                EquipedWeapon.Drop();
         }
 
         //ANIMATE

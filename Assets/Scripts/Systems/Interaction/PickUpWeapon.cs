@@ -12,6 +12,7 @@ public class PickUpWeapon : Interaction
     public override void OnInteraction(InteractableActor actor)
     {
         weapon.GetComponent<WeaponController>().Wield(actor);
+        weapon.GetComponent<InteractableController>().canBeInteractedWith = false;
     }
     
 }
