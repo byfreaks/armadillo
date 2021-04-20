@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private Health hc;
     private Animator ani;
     private InteractableController interactable;
+    private DriverActor dac;
 
     //Weapon
     private WeaponController wc;
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private Sprite sprite = null;
     //Animation
     public RuntimeAnimatorController animationController;
+    public Material material;
 
     [Header("Temporal")]
     //Weapon Settings
@@ -80,7 +82,7 @@ public class PlayerController : MonoBehaviour
     }
     [SerializeField]
     PlayerStatus status = new PlayerStatus();
-    
+
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.TryGetComponent<Damage>(out var dmg)){
             if(damageFrom.HasFlag(dmg.type)){
@@ -100,6 +102,7 @@ public class PlayerController : MonoBehaviour
 
         //Create and save component references
         sr = gameObject.AddComponent<SpriteRenderer>();
+        sr.material = new Material(material);
         bc = gameObject.AddComponent<BoxCollider2D>();
         hc = gameObject.AddComponent<Health>();
         hc.hasSprite = true;
@@ -108,6 +111,8 @@ public class PlayerController : MonoBehaviour
         interactable = gameObject.AddComponent<InteractableController>();
 
         controller = gameObject.GetComponent<Controller2D>();
+
+        dac = gameObject.GetComponent<DriverActor>();
 
         //Setup
         //TODO: consider setting up component as they are created to declutter code
@@ -144,13 +149,49 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     private void Update() {
-        #region STATUS CHECK
-        //STATUS UPDATE
-        if(!status.dead && !hc.IsAlive){ HandlePlayerDeath(); }
-        #endregion
+        if(dac.isMounted){
+            //Handle unmounting conditions
+            
+            if(dac.ride.TryGetComponent<TurretController>(out var turret)){
+                turret.pointTo( input.CursorWorldPos );
+                if(InputController.mouseAction(ICActions.key, 0)){
+                    turret.shoot();
+                }
+            }
 
-        #region MOVEMENT
-        //MOVEMENT
+            if(Input.GetKey(KeyCode.Q)){
+                dac.UnMount();
+            }
+
+        } else {
+
+            Debug.Log("normal movement");
+
+             //Status
+            if(!status.dead && !hc.IsAlive){ HandlePlayerDeath(); }
+
+            //Movement
+            this.HandlePlayerMovement();
+
+            //Equipment
+            this.HandlePlayerWeapons();
+
+            //Animations
+            this.HandlePlayerAnimation();
+        }
+
+        
+    }
+
+    void HandlePlayerDeath(){
+        status.set_dead();
+        // this.gameObject.GetComponent<Rigidbody2D>().freezeRotation = false;
+        CorpseController corpse = gameObject.AddComponent<CorpseController>();
+        bc.isTrigger = true;
+    }
+
+
+    void HandlePlayerMovement(){
         if(controller.collisions.above || controller.collisions.below){
             velocity.y = 0;
         }
@@ -165,11 +206,12 @@ public class PlayerController : MonoBehaviour
 
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
         velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
-        #endregion
+        
+        if(status.canMove)
+            controller.Move(velocity * Time.deltaTime);
+    }
 
-        #region TEMPORAL CODE
-        //Handle weapons //TODO: create weapon inventory component
+    void HandlePlayerWeapons(){
         if(EquipedWeapon){
             //TODO: REMOVE ONCE WEAPON EQUIP HAS BEEN IMPLEMENTED
             var weapon = EquipedWeapon;
@@ -188,21 +230,27 @@ public class PlayerController : MonoBehaviour
             } else {
                 EquipedWeapon.Set(WeaponCommands.sheath, Vector2.zero);
             }
-        }
 
-        //ANIMATE
+            if(Input.GetKey(KeyCode.Q))
+                EquipedWeapon.Drop();
+        }
+    }
+
+    void HandlePlayerAnimation(){
         ani.SetBool("walking", input.AxisHorizontal != 0); 
         ani.SetBool("grounded", controller.collisions.below);
         ani.SetFloat("vertical_speed", velocity.y);
 
         sr.flipX = input.CursorWorldPos.x < this.transform.position.x;
-        #endregion
     }
 
     void HandlePlayerDeath(){
         status.set_dead();
-        // this.gameObject.GetComponent<Rigidbody2D>().freezeRotation = false;
+        var rb = this.gameObject.AddComponent<Rigidbody2D>();
+        rb.freezeRotation = false;
+
         CorpseController corpse = gameObject.AddComponent<CorpseController>();
+        gameObject.GetComponent<Controller2D>().enabled = false;
         bc.isTrigger = true;
     }
 

@@ -23,7 +23,10 @@ public class GameManagerScript : MonoBehaviour
     void Start()
     {
         playerPrefab = GameHelper.Player.gameObject;
-        // uiController.player = playerPrefab;
+
+        if(uiController)
+            uiController.player = playerPrefab;
+
         gameInstance = new Game(playerPrefab, vehiclePrefab);
         SetGameState(GameState.RUN_Running);
 
@@ -45,17 +48,15 @@ public class GameManagerScript : MonoBehaviour
     }
     
     void Update() {
-        if (InputController.Pause(ICActions.keyDown)) {
+        if (InputController.Pause(ICActions.keyDown) && uiController) {
             uiController.pauseMenu();
         }
     }
 
     void EvaluateState(){
         if(GameState.GAMEOVER.HasFlag(gameInstance.gameState)){
-            //game is over
             if(gameOverPanel != null)
                 gameOverPanel.SetActive(true);
-            // BackToMenu();
         }
     }
 
