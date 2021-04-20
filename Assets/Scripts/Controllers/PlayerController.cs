@@ -206,7 +206,9 @@ public class PlayerController : MonoBehaviour
 
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below)?accelerationTimeGrounded:accelerationTimeAirborne);
         velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+        
+        if(status.canMove)
+            controller.Move(velocity * Time.deltaTime);
     }
 
     void HandlePlayerWeapons(){
@@ -240,6 +242,16 @@ public class PlayerController : MonoBehaviour
         ani.SetFloat("vertical_speed", velocity.y);
 
         sr.flipX = input.CursorWorldPos.x < this.transform.position.x;
+    }
+
+    void HandlePlayerDeath(){
+        status.set_dead();
+        var rb = this.gameObject.AddComponent<Rigidbody2D>();
+        rb.freezeRotation = false;
+
+        CorpseController corpse = gameObject.AddComponent<CorpseController>();
+        gameObject.GetComponent<Controller2D>().enabled = false;
+        bc.isTrigger = true;
     }
 
 }
