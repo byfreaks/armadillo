@@ -98,6 +98,14 @@ public class WeaponController : MonoBehaviour
         rb.simulated = false;
     }
 
+    public void Drop(){
+        wielderTransform = null;
+        this.transform.SetParent(null);
+        rb.simulated = true;
+        if(TryGetComponent<InteractableController>(out var ic))
+            ic.canBeInteractedWith = true;
+    }
+
 #region Attack
     public GameObject Attack(Vector2 direction){
         //TODO: handle ranged weapons
