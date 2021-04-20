@@ -12,6 +12,8 @@ public class InteractableController : MonoBehaviour
 {
     public InteractableType interactableType = InteractableType.Object;
 
+    public bool canBeInteractedWith = true;
+
     protected GameObject interactionArea;
     public Vector2 areaSize;
     public Vector2 areaOffset;
@@ -32,10 +34,11 @@ public class InteractableController : MonoBehaviour
     }
 
     GameObject CreateObject(){
-        var area = SetupInteractionArea(out BoxCollider2D ibc, out Rigidbody2D irb); 
+        var area = SetupInteractionArea(out BoxCollider2D ibc, out Rigidbody2D irb);
         ibc.size = areaSize;
         ibc.offset = areaOffset;
-        area.AddComponent<InteractableObject>();
+        var obj = area.AddComponent<InteractableObject>();
+        obj.controller = this;
         return area;
     }
 

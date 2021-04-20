@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +17,7 @@ public class InteractableActor : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.TryGetComponent<InteractableObject>(out var obj)){
-            objectsWithinRange.Add(obj);
+            if(obj.CanBeInteractedWith) objectsWithinRange.Add(obj);
         }
     }
 
@@ -32,6 +32,8 @@ public class InteractableActor : MonoBehaviour
         float shortest = 999;
 
         foreach(InteractableObject obj in objectsWithinRange){
+            if(!obj.CanBeInteractedWith) continue;
+
             var distance = Vector2.Distance(transform.position, (Vector2)obj.transform.position);
 
             if(distance < shortest){
@@ -41,7 +43,10 @@ public class InteractableActor : MonoBehaviour
         }
 
         if(InputController.MeleeAttack(ICActions.keyDown) && closestObject){
-            closestObject.interaction.OnInteraction(this);
+            if(closestObject.CanBeInteractedWith)
+                closestObject.interaction.OnInteraction(this);
+            else
+                closestObject = null;
         }
     }
 

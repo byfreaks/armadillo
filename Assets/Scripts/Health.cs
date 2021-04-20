@@ -14,23 +14,21 @@ public class Health : MonoBehaviour
     private GameObject damageFeedback;
     private IEnumerator coroutine;
     public bool hasSprite;
-    public Color damageColor, gainColor, defaultColor;
+    public Color damageColor, gainColor;
+
+    [Header("FeedbackEffect Settings")]
+    public float duration = 0.4f;
 
     private void Awake() {
         this.healthPoints = 100;
         this.maxHealthPoints = 100;
         this.minHealthPoints = 10;
-        this.alive = true;  
+        this.alive = true;
     }
 
-    private void Start() {
-        if(hasSprite){
-            createDamageFeedback();
-        }
-        
+    private void Start() {       
         this.damageColor = Color.red;
         this.gainColor = Color.green;
-        this.defaultColor = Color.white;
     }
 
     //Propiedad que sirve para verificar si una entidad está viva tomando en cuenta los puntos de vida de la misma.
@@ -64,18 +62,18 @@ public class Health : MonoBehaviour
         }
     }
 
-    public void incrementHealthPoints(int points){
-        if(hasSprite){
-            this.showFeedback(gainColor);
-        }
+    public void incrementHealthPoints(int points, bool showFeedback = true){
+        if(showFeedback)
+            this.StartFeedbackEffect(gainColor);
+
         int newHealthPoints = this.HealthPoints + points;
         this.HealthPoints = newHealthPoints > this.MaxHealthPoints ? this.MaxHealthPoints : newHealthPoints;
     } 
 
-    public void decrementHealthPoints(int points){
-        if(hasSprite){
-            this.showFeedback(damageColor);
-        }
+    public void decrementHealthPoints(int points, bool showFeedback = true){
+        if(showFeedback)
+            this.StartFeedbackEffect();
+
         this.HealthPoints = this.HealthPoints - points;
     }
 
@@ -83,31 +81,36 @@ public class Health : MonoBehaviour
         this.HealthPoints = 0;
     }
 
-    private IEnumerator activeDamageFeedback(SpriteRenderer df){
-        for (float ft = 1f; ft >= 0; ft -= 0.09f) 
-        {
-            Color c = df.color;
-            c.a = ft;
-            df.color = c;
-            yield return new WaitForSeconds(.1f);
+    private void StartFeedbackEffect(Color? color = null){
+        if(!color.HasValue) color = Color.white;
+        
+        if(this.gameObject.TryGetComponent<SpriteRenderer>(out var sr)){
+            if(sr.sharedMaterial.HasProperty("_Tint")){
+                if(coroutine != null){
+                    StopCoroutine(coroutine);
+                }
+                coroutine = FeedbackEffect(sr, color.Value);
+                StartCoroutine( coroutine );
+            } else {
+                Debug.Log($"Health Component FeedbackEffect does not work with {sr.sharedMaterial.name}");
+            }
+        } else {
+            Debug.Log($"Game Object has no Sprite Renderer to apply the effect to");
         }
     }
 
-    private void showFeedback(Color color){
-        if(coroutine != null){
-            StopCoroutine(coroutine);
-        }
-        var sr = this.damageFeedback.GetComponent<SpriteRenderer>();
-        sr.sprite = GetComponent<SpriteRenderer>().sprite;
-        sr.color = color;
-        coroutine = activeDamageFeedback(sr);
-        StartCoroutine(coroutine);
-    }
+    private IEnumerator FeedbackEffect(SpriteRenderer sr, Color color){
+        sr.sharedMaterial.SetColor("_Tint", color);
 
-    private void createDamageFeedback(){
-        this.damageFeedback = new GameObject("DamageFeedback");
-        this.damageFeedback.AddComponent<SpriteRenderer>();
-        this.damageFeedback.AddComponent<SpriteMask>().sprite = GetComponent<SpriteRenderer>().sprite;    
-        this.damageFeedback.transform.SetParent(this.transform, false);
+        var alpha = 0f;
+
+        for(float i = duration; i>= 0; i -= Time.deltaTime){
+            alpha = (i-0) / (duration-0);
+            sr.sharedMaterial.SetColor("_Tint", new Color(color.r, color.g, color.b, alpha) );
+            
+            yield return null;
+        }
+
+        StopCoroutine(coroutine);
     }
 }
