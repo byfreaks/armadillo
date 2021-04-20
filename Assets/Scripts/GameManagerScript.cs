@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEditor.Events;
 using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour
@@ -10,6 +12,10 @@ public class GameManagerScript : MonoBehaviour
     public GameObject vehiclePrefab;
     public Transform groundTransform;
     public UIController uiController;
+    public GameObject gameOverPanelPrefab;
+
+    private GameObject canvas;
+    private GameObject gameOverPanel;
     
     [SerializeField]
     public Game gameInstance;
@@ -23,6 +29,14 @@ public class GameManagerScript : MonoBehaviour
 
         gameInstance = new Game(playerPrefab, vehiclePrefab);
         SetGameState(GameState.RUN_Running);
+
+        canvas = GameObject.Find("Canvas");
+
+        if(gameOverPanelPrefab != null){
+            gameOverPanel = Instantiate(gameOverPanelPrefab, canvas.transform.position, Quaternion.identity, canvas.transform);
+            gameOverPanel.GetComponentInChildren<Button>().onClick.AddListener( () => this.BackToMenu() );
+            gameOverPanel.SetActive(false);
+        }
     }
 
     public void PlayerIsDead(){
@@ -41,8 +55,8 @@ public class GameManagerScript : MonoBehaviour
 
     void EvaluateState(){
         if(GameState.GAMEOVER.HasFlag(gameInstance.gameState)){
-            //game is over
-            // BackToMenu();
+            if(gameOverPanel != null)
+                gameOverPanel.SetActive(true);
         }
     }
 
