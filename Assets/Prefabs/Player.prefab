@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2048454768646577345}
   - component: {fileID: 41414535}
   - component: {fileID: 598990841}
+  - component: {fileID: 9139606001747291770}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -47,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 5864988276522048943, guid: ae8f56aeabdaad143abf6352d432a1ce, type: 3}
   animationController: {fileID: 9100000, guid: 0be205027025cc64298f2b1545f96dc8, type: 2}
+  material: {fileID: 2100000, guid: d3cabe36ed1e33a469d302fb6b76be19, type: 2}
   EquipedWeapon: {fileID: 0}
   damageFrom: 24
   jumpHeight: 4
@@ -94,3 +96,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd16549e61db2a449de76146a9ea1e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ride: {fileID: 0}
+--- !u!61 &9139606001747291770
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3565173152638740738}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0

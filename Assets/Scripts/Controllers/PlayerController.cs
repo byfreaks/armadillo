@@ -183,14 +183,6 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    void HandlePlayerDeath(){
-        status.set_dead();
-        // this.gameObject.GetComponent<Rigidbody2D>().freezeRotation = false;
-        CorpseController corpse = gameObject.AddComponent<CorpseController>();
-        bc.isTrigger = true;
-    }
-
-
     void HandlePlayerMovement(){
         if(controller.collisions.above || controller.collisions.below){
             velocity.y = 0;
