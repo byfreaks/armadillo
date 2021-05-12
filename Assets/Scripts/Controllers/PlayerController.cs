@@ -165,8 +165,6 @@ public class PlayerController : MonoBehaviour
 
         } else {
 
-            Debug.Log("normal movement");
-
              //Status
             if(!status.dead && !hc.IsAlive){ HandlePlayerDeath(); }
 

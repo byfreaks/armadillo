@@ -199,6 +199,13 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "studio.bitcake.bitstrap": {
+      "version": "https://github.com/bitcake/bitstrap.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "22bf28c27cbf6a01b998428126f293f37ee0483e"
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

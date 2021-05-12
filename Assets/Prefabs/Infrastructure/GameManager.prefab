@@ -48,8 +48,8 @@ MonoBehaviour:
   vehiclePrefab: {fileID: 1380336377063555561, guid: c7150001ae4f0bf43ba2d11fd2f71866,
     type: 3}
   groundTransform: {fileID: 0}
-  inGameMenu: {fileID: 1539080455554775490, guid: 3e4126b2fca10e744beee3a2da1d0abb,
-    type: 3}
+  uiController: {fileID: 0}
+  gameOverPanelPrefab: {fileID: 0}
   gameInstance:
     playerObj: {fileID: 0}
     vehicleObj: {fileID: 0}
