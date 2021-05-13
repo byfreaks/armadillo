@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Armadillo.Game.GameInstance.Components;
 using UnityEngine;
 
 public static class GameHelper
