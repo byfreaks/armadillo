@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7141213804756913605
+--- !u!1 &8849745858553341725
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7141213804756913607}
-  - component: {fileID: 7141213804756913606}
+  - component: {fileID: 8849745858553341727}
+  - component: {fileID: 8849745858553341726}
   m_Layer: 0
   m_Name: BuildingManager
   m_TagString: Untagged
@@ -17,27 +17,27 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7141213804756913607
+--- !u!4 &8849745858553341727
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7141213804756913605}
+  m_GameObject: {fileID: 8849745858553341725}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.16, y: 15.02, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7141213804756913606
+--- !u!114 &8849745858553341726
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7141213804756913605}
+  m_GameObject: {fileID: 8849745858553341725}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2bf31cc21e075014f98d573fdf386447, type: 3}
@@ -45,14 +45,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   VehicleObject: {fileID: 0}
   buildState: {fileID: 0}
+  fluxEnginePrefab: {fileID: 5093156123107004744, guid: 5c662466f700d56419b7258b9ccba1e6,
+    type: 3}
+  BuiltEngine: {fileID: 0}
   BuildMode: 0
-  gridSize: 2
+  gridSize: 1
   buildableObjects:
-  - {fileID: 2073723445093467212, guid: 2b8d8932226862b48b04c541833662a4, type: 3}
-  - {fileID: 8163864309859765598, guid: 7683a523b51ba8843b54ab624ef6ca73, type: 3}
-  - {fileID: 5093156123107004744, guid: 5c662466f700d56419b7258b9ccba1e6, type: 3}
+  - {fileID: 5938389998988844742, guid: cefee5e7b58b5f14184630838133a8df, type: 3}
+  - {fileID: 5938389998988844742, guid: f9bbda4885a693c45a92022ef2d5bbf3, type: 3}
+  - {fileID: 5938389998988844742, guid: d82f245104089c14182cd2b9e13e7c2d, type: 3}
+  - {fileID: 5938389998988844742, guid: 401ac892dda5a304b9d3640c41351ebf, type: 3}
+  - {fileID: 1849234132031864422, guid: edb6b20ff3c889b4c8d3b314cb990f38, type: 3}
   currentBuildableObject: 0
   ghostObject: {fileID: 0}
   buildingMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 1280
