@@ -5,9 +5,9 @@ using UnityEngine;
 
 public static class GameHelper
 {
-    private static GameManagerScript gameManager;
-    public static GameManagerScript GameManager { get => gameManager ?? GetGameManager(); set => gameManager = value; }
-    private static GameManagerScript GetGameManager(){ return gameManager = GameObject.Find("GameManager").GetComponent<GameManagerScript>(); }
+    private static GameManager gameManager;
+    public static GameManager GameManager { get => gameManager ?? GetGameManager(); set => gameManager = value; }
+    private static GameManager GetGameManager(){ return gameManager = GameObject.Find("GameManager").GetComponent<GameManager>(); }
     
     private static PlayerController player;
     public static PlayerController Player { get => player ?? GetPlayerController(); set => player = value; }

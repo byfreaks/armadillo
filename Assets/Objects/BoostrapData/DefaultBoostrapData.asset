@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47a26191c89922b41ad6a5f7f5928ff8, type: 3}
+  m_Name: DefaultBoostrapData
+  m_EditorClassIdentifier: 
+  textarea: 'This is the default game boostrap configuration file.
+
+    All references
+    MUST be filled for the BoostrapService to work properly'
+  game: {fileID: 3385109607677488902, guid: 513e3d8bdf861f14cbeb14cf81632545, type: 3}
+  encounter: {fileID: 8880741638942569528, guid: 8b13fb406bcb33343a335b65de6c9453,
+    type: 3}
+  building: {fileID: 8849745858553341725, guid: e036c43bd77e74b4ba4d0302d44d8953,
+    type: 3}
+  background: {fileID: 8298159087969023555, guid: e3217d0b335a79d4396a88547e6985ef,
+    type: 3}
+  player: {fileID: 3565173152638740738, guid: 44caf857d2f69e046b047eb430874518, type: 3}
+  vehicle: {fileID: 1380336377063555561, guid: c7150001ae4f0bf43ba2d11fd2f71866, type: 3}
+  camera: {fileID: 7932658714647270554, guid: 5f927aad61db2ba48b951afb50024f38, type: 3}

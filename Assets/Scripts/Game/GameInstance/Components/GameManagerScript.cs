@@ -4,7 +4,7 @@ using Armadillo.Game.GameInstance.Models;
 
 namespace Armadillo.Game.GameInstance.Components
 {
-    public class GameManagerScript : MonoBehaviour
+    public class GameManager : MonoBehaviour
     {
         [HideInInspector]
         public GameObject playerPrefab;

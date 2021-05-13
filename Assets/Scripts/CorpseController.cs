@@ -9,7 +9,7 @@ public class CorpseController : MonoBehaviour
 
     private void Start() {
         if(ground is null)
-            ground = GameObject.Find("GameManager").GetComponent<GameManagerScript>().groundTransform;    
+            ground = GameObject.Find("GameManager").GetComponent<GameManager>().groundTransform;    
     }
 
     private void Update() {
