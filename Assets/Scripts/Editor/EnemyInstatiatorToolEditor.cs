@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
+using Armadillo.Game.Encounters.Models;
 
 namespace AI{
     
@@ -45,7 +44,7 @@ namespace AI{
             EditorGUILayout.PropertyField(EncounterData, new GUIContent(""));
             if(GUILayout.Button("Create From Encounter") && EncounterData != null)
             {
-                var enc = EncounterData.objectReferenceValue as System.Object as Encounter;
+                var enc = EncounterData.objectReferenceValue as System.Object as EncounterData;
                 tool.CreateFromEncounter(enc);
             }
             EditorGUILayout.EndHorizontal();

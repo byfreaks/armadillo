@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using Armadillo.Game.Encounters.Models;
 
-namespace AI{
+namespace AI {
     [ExecuteInEditMode]
     public class EnemyInstantiatorTool : MonoBehaviour
     {
@@ -10,7 +9,7 @@ namespace AI{
         public GameObject prefabEnemy;
         public GameObject prefabCar;
         public GameObject prefabTorret;
-        [HideInInspector] public Encounter scriptedEncounter = null;
+        [HideInInspector] public EncounterData scriptedEncounter = null;
 
         [Header("Enemy Properties")]
         public float enemySpeed = 5f;
@@ -60,16 +59,17 @@ namespace AI{
 
             return enemyCar;
         }
-        public void CreateFromEncounter(Encounter enc)
+        public void CreateFromEncounter(EncounterData enc)
         {
-            //TODO: proper encounter instantiator
-            //This method is a HACK. Instantiatior tools should have mehtods to instantiate objects using outside reference (maybe :) )
-            this.prefabCar = enc.Vehicle;
-            var vehicle = createCar();
-            foreach(GameObject passenger in enc.Passangers){
-                this.prefabEnemy = enc.Passangers[0];
-                createEnemy(transform.position, 5f, EnemyContext.OtherCar, EnemyType.Shooter, vehicle);
-            }
+            // TODO: proper encounter instantiator
+            // This method is a HACK. Instantiatior tools should have mehtods to instantiate objects using outside reference (maybe :) )
+            
+            // this.prefabCar = enc.Vehicle;
+            // var vehicle = createCar();
+            // foreach(GameObject passenger in enc.Passangers){
+            //     this.prefabEnemy = enc.Passangers[0];
+            //     createEnemy(transform.position, 5f, EnemyContext.OtherCar, EnemyType.Shooter, vehicle);
+            // }
         }
         //Methods with parameters are used to pass values from the code
         public GameObject createEnemy(Vector3 position, float enemySpeed, EnemyContext context, EnemyType enemyType, GameObject vehicle = null)
