@@ -1,77 +1,87 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor.Events;
-using UnityEngine.SceneManagement;
+using Armadillo.Game.GameInstance.Models;
 
-public class GameManagerScript : MonoBehaviour
+namespace Armadillo.Game.GameInstance.Components
 {
-    [HideInInspector]
-    public GameObject playerPrefab;
-    public GameObject vehiclePrefab;
-    public Transform groundTransform;
-    public UIController uiController;
-    public GameObject gameOverPanelPrefab;
-
-    private GameObject canvas;
-    private GameObject gameOverPanel;
-    
-    [SerializeField]
-    public Game gameInstance;
-    
-    void Start()
+    public class GameManager : MonoBehaviour
     {
-        playerPrefab = GameHelper.Player.gameObject;
+        [HideInInspector]
+        public GameObject playerPrefab;
+        public GameObject vehiclePrefab;
+        public Transform groundTransform;
+        public UIController uiController;
+        public GameObject gameOverPanelPrefab;
 
-        if(uiController)
-            uiController.player = playerPrefab;
+        private GameObject canvas;
+        private GameObject gameOverPanel;
 
-        gameInstance = new Game(playerPrefab, vehiclePrefab);
-        SetGameState(GameState.RUN_Running);
+        [SerializeField]
+        public GameContext gameInstance;
 
-        canvas = GameObject.Find("Canvas");
+        void Start()
+        {
+            playerPrefab = GameHelper.Player.gameObject;
 
-        if(gameOverPanelPrefab != null){
-            gameOverPanel = Instantiate(gameOverPanelPrefab, canvas.transform.position, Quaternion.identity, canvas.transform);
-            gameOverPanel.GetComponentInChildren<Button>().onClick.AddListener( () => this.BackToMenu() );
-            gameOverPanel.SetActive(false);
+            if (uiController)
+                uiController.player = playerPrefab;
+
+            gameInstance = new GameContext(playerPrefab, vehiclePrefab);
+            SetGameState(GameState.RUN_Running);
+
+            canvas = GameObject.Find("Canvas");
+
+            if (gameOverPanelPrefab != null)
+            {
+                gameOverPanel = Instantiate(gameOverPanelPrefab, canvas.transform.position, Quaternion.identity, canvas.transform);
+                gameOverPanel.GetComponentInChildren<Button>().onClick.AddListener(() => BackToMenu());
+                gameOverPanel.SetActive(false);
+            }
         }
-    }
 
-    public void PlayerIsDead(){
-       SetGameState(GameState.GOV_DeadPlayer);
-    }
-
-    public void EngineDestroyed(){
-        SetGameState(GameState.GOV_VehicleDestroyed);
-    }
-    
-    void Update() {
-        if (InputController.Pause(ICActions.keyDown) && uiController) {
-            uiController.pauseMenu();
+        public void PlayerIsDead()
+        {
+            SetGameState(GameState.GOV_DeadPlayer);
         }
-    }
 
-    void EvaluateState(){
-        if(GameState.GAMEOVER.HasFlag(gameInstance.gameState)){
-            if(gameOverPanel != null)
-                gameOverPanel.SetActive(true);
+        public void EngineDestroyed()
+        {
+            SetGameState(GameState.GOV_VehicleDestroyed);
         }
-    }
 
-    GameState SetGameState(GameState state, bool evaluate = true){
-        gameInstance.gameState = state;
-        if(evaluate)
-            EvaluateState();
-        return gameInstance.gameState;
-    }
+        void Update()
+        {
+            if (InputController.Pause(ICActions.keyDown) && uiController)
+            {
+                uiController.pauseMenu();
+            }
+        }
 
-    void BackToMenu(){
-        SceneHelper.LoadScene(GameScenes.main_menu);
-    }
+        void EvaluateState()
+        {
+            if (GameState.GAMEOVER.HasFlag(gameInstance.gameState))
+            {
+                if (gameOverPanel != null)
+                    gameOverPanel.SetActive(true);
+            }
+        }
 
-    private void OnDestroy() {
-        GameHelper.ClearCache();    
+        GameState SetGameState(GameState state, bool evaluate = true)
+        {
+            gameInstance.gameState = state;
+            if (evaluate)
+                EvaluateState();
+            return gameInstance.gameState;
+        }
+
+        void BackToMenu()
+        {
+            SceneHelper.LoadScene(GameScenes.main_menu);
+        }
+
+        private void OnDestroy()
+        {
+            GameHelper.ClearCache();
+        }
     }
 }

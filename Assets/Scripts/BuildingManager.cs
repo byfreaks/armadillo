@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildingManagerScript : MonoBehaviour
+public class BuildingManager : MonoBehaviour
 {
 
     //Objects
